@@ -2558,7 +2558,7 @@ LilyPond で台詞を譜刻することはできますが、台詞には音楽�
 @ref{Text},
 @ref{Text markup commands}
 
-LilyPond の拡張:
+拡張:
 @rextend{Markup construction in Scheme}
 
 

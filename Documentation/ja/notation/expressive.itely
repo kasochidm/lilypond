@@ -648,7 +648,7 @@ moltoF = \tweak DynamicText.self-alignment-X #LEFT
 @ref{Enhancing MIDI output},
 @ref{Controlling MIDI dynamics}
 
-LilyPond の拡張:
+拡張:
 @rextend{Markup construction in Scheme}
 
 コード断片集:
