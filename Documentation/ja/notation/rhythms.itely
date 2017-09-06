@@ -1097,7 +1097,7 @@ R1^"right"
 @end lilypond
 
 
-定量拍子については @ref{Mensural time signatures} でカバーされています。
+計量拍子については @ref{Mensural time signatures} でカバーされています。
 
 @cindex time signature default settings (拍子のデフォルト設定)
 @cindex autobeaming properties for time signatures (拍子のための自動連桁プロパティ)
