@@ -203,7 +203,7 @@ Score コンテキストは、@code{\score @{@dots{}@}} や @code{\layout @{@dot
 
 @strong{@emph{MensuralStaff}}
 
-@code{Staff} と同じでが、@c
+@code{Staff} と同じですが、@c
 計量形式の楽曲を譜刻するためにデザインされている点が異なります。
 
 @node 下位コンテキスト - ボイス
