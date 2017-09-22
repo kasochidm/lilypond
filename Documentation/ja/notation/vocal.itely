@@ -10,7 +10,7 @@
 
 @c \version "2.19.21"
 
-@c Translators: Yoshiki Sawada
+@c Translators: Tomohiro Tatejima, Yoshiki Sawada
 @c Translation status: post-GDP
 
 @node 声楽
@@ -877,6 +877,7 @@
 * 歌詞の水平方向の配置::
 * 歌詞と繰り返し::
 * 歌詞のディヴィージ::
+* 歌詞を共有する多声::
 @end menu
 
 
@@ -1646,6 +1647,95 @@ contraltoWords = \lyricmode { Con -- tral -- to words }
     }
   >>
 }
+@end lilypond
+
+@c 2017-9-22 このノードのみ先に翻訳
+@c 第1章のxrefを正しく動作させるため。
+@node 歌詞を共有する多声
+@unnumberedsubsubsec 歌詞を共有する多声
+@translationof Polyphony with shared lyrics
+
+@cindex NullVoice
+@cindex polyphony, shared lyrics (歌詞を共有する多声)
+@cindex lyrics, shared among voices (歌詞を共有する多声)
+@cindex \partcombine and lyrics (\partcombine と歌詞)
+@funindex \partcombine
+
+2 つのボイスが異なるリズムを持ち、同じ歌詞を共有する場合、@c
+片方のボイスに歌詞を合わせるともう片方には合いません。@c
+下の例では、歌詞が上のボイスにのみ合わせられているため、@c
+2 つ目の延長線が短すぎます:
+
+@lilypond[quote,verbatim]
+soprano = \relative { b'8( c d c) d2 }
+alto = \relative { g'2 b8( a g a) }
+words = \lyricmode { la __ la __ }
+
+\new Staff <<
+  \new Voice = "sopranoVoice" { \voiceOne \soprano }
+  \new Voice { \voiceTwo \alto }
+  \new Lyrics \lyricsto "sopranoVoice" \words
+>>
+@end lilypond
+
+望んでいた結果を得るには、2 つのボイスを適切に合わせた新たな
+@code{NullVoice} コンテキストを作り、歌詞をそれに合わせます。@c
+@code{NullVoice} コンテキストの音符は出力には現れませんが、@c
+歌詞を正しく合わせるのに使うことができます:
+
+@lilypond[quote,verbatim]
+soprano = \relative { b'8( c d c) d2 }
+alto = \relative { g'2 b8( a g a) }
+aligner = \relative { b'8( c d c) b( a g a) }
+words = \lyricmode { la __ la __ }
+
+\new Staff <<
+  \new Voice { \voiceOne \soprano }
+  \new Voice { \voiceTwo \alto }
+  \new NullVoice = "aligner" \aligner
+  \new Lyrics \lyricsto "aligner" \words
+>>
+@end lilypond
+
+この方法は、単体では歌詞をサポートしていない
+@code{\partcombine} 関数にも用いることができます:
+
+@lilypond[quote,verbatim]
+soprano = \relative { b'8( c d c) d2 }
+alto = \relative { g'2 b8( a g a) }
+aligner = \relative { b'8( c d c) b( a g a) }
+words = \lyricmode { la __ la __ }
+
+\new Staff <<
+  \new Voice \partcombine \soprano \alto
+  \new NullVoice = "aligner" \aligner
+  \new Lyrics \lyricsto "aligner" \words
+>>
+@end lilypond
+
+@knownissues
+@code{\addLyrics} 関数は @code{Voice} にのみ動作するため、@c
+@code{NullVoice} と一緒に用いることはできません。
+
+@noindent
+@code{\partcombine} 関数については、@ref{自動パート結合}に説明があります。
+
+最後に、この方法はボイスが異なる譜にある場合にも用いることができ、@c
+2 つよりも多くのボイスにも適用することができます:
+
+@lilypond[quote,verbatim]
+soprano = \relative { b'8( c d c) d2 }
+altoOne = \relative { g'2 b8( a b4) }
+altoTwo = \relative { d'2 g4( fis8 g) }
+aligner = \relative { b'8( c d c) d( d d d) }
+words = \lyricmode { la __ la __ }
+
+\new ChoirStaff \with {\accepts NullVoice } <<
+  \new Staff \soprano
+  \new NullVoice = "aligner" \aligner
+  \new Lyrics \lyricsto "aligner" \words
+  \new Staff \partcombine \altoOne \altoTwo
+>>
 @end lilypond
 
 
