@@ -39,16 +39,16 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 習慣として、それらのファイルの最後には @file{.ly} を付けます。
 
 @menu
-* score の構造::
-* book の中にある複数の score::
+* スコアの構造::
+* ブックの中にある複数のスコア::
 * 1 つの入力ファイルから複数の出力ファイルを生成する::
 * 出力ファイル名::
 * ファイル構造::
 @end menu
 
 
-@node score の構造
-@subsection score の構造
+@node スコアの構造
+@subsection スコアの構造
 @translationof Structure of a score
 
 @funindex \score
@@ -58,7 +58,7 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 
 @example
 \score @{
-...
+  @dots{}
 @}
 @end example
 
@@ -105,7 +105,7 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 
 この一般規則の例外の 1 つにコメントがあります。@c
 (他の例外は、@ref{File structure} を参照してください。)@c
-単一行コメントと複数行コメント (@code{%@{ .. %@}} で囲まれます) は@c
+単一行コメントと複数行コメント (@code{%@{ @dots{} %@}} で囲まれます) は@c
 どちらも入力ファイルの任意の場所に配置することができます。@c
 コメントは @code{\score} ブロックの内側あるいは外側に@c
 配置することができ、@code{\score} ブロックの中にある単一の音楽表記の@c
@@ -131,8 +131,8 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 @rlearning{Score is a (single) compound musical expression}
 
 
-@node book の中にある複数の score
-@subsection book の中にある複数の score
+@node ブックの中にある複数のスコア
+@subsection ブックの中にある複数のスコア
 @translationof Multiple scores in a book
 
 @funindex \book
@@ -145,7 +145,7 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 
 @example
 \score @{
-  @var{..music..}
+  @var{@dots{}music@dots{}}
 @}
 @end example
 
@@ -153,7 +153,7 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 
 @example
 \markup @{
-  @var{..text..}
+  @var{@dots{}text@dots{}}
 @}
 @end example
 
@@ -164,13 +164,13 @@ LilyPond の入力の主となるフォーマットはテキスト ファイル�
 
 @example
 \score @{
-  @var{..}
+  @var{@dots{}}
 @}
 \markup @{
-  @var{..}
+  @var{@dots{}}
 @}
 \score @{
-  @var{..}
+  @var{@dots{}}
 @}
 @end example
 
@@ -182,7 +182,7 @@ lilypond-book ドキュメントでは、明示的に @code{\book} ブロック�
 
 音楽の各節のヘッダはその節の @code{\score} ブロックの中に置くことができます。@c
 そのヘッダからの @code{piece} 名がそれぞれの楽章の前に譜刻されます。@c
-book 全体のタイトルは @code{\book} の中に置くことができます。@c
+ブック全体のタイトルは @code{\book} の中に置くことができます。@c
 しかしながら、@code{\book} が存在しない場合は、@code{\header} を@c
 入力ファイルの先頭に挿入します。
 
@@ -196,10 +196,10 @@ book 全体のタイトルは @code{\book} の中に置くことができます�
   \header @{ piece = "Romanze" @}
 @}
 \markup @{
-   ..text of second verse..
+   @dots{}text of second verse@dots{}
 @}
 \markup @{
-   ..text of third verse..
+   @dots{}text of third verse@dots{}
 @}
 \score @{
   @dots{}
@@ -210,9 +210,9 @@ book 全体のタイトルは @code{\book} の中に置くことができます�
 @funindex \bookpart
 
 @code{\bookpart} ブロックを用いて、
-複数の楽曲を book のパートとしてグループ化することができます。
+複数の楽曲をブックのパートとしてグループ化することができます。
 
-book パートは改ページで区切られ、book 自体と同様に
+ブック パートは改ページで区切られ、ブック自体と同様に
 @code{\header} ブロックによりタイトルを持つことができます。
 
 @example
@@ -260,15 +260,15 @@ LilyPond は、@code{\book} ブロックが作り出す出力ファイルが@c
 @example
 \book @{
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 \book @{
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 \book @{
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 @end example
 
@@ -309,17 +309,17 @@ LilyPond がどのように単一のソース ファイルから作り出され�
 \book @{
   \bookOutputSuffix "Romanze"
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 \book @{
   \bookOutputSuffix "Menuetto"
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 \book @{
   \bookOutputSuffix "Nocturne"
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 @end example
 
@@ -331,17 +331,17 @@ LilyPond がどのように単一のソース ファイルから作り出され�
 \book @{
   \bookOutputName "Romanze"
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 \book @{
   \bookOutputName "Menuetto"
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 \book @{
   \bookOutputName "Nocturne"
   \score @{ @dots{} @}
-  \layout @{ @dots{} @}
+  \paper @{ @dots{} @}
 @}
 @end example
 
@@ -379,7 +379,7 @@ LilyPond がどのように単一のソース ファイルから作り出され�
 最上位に同じタイプの出力定義が複数ある場合は組み合わされますが、@c
 衝突した場合は後ろの方にある出力定義が優先されます。@c
 出力定義が @code{\layout} ブロックにどのような影響を与えるかの詳細は
-@ref{The \layout block} を参照してください。
+@ref{The layout block,,The @code{@bs{}layout} block} を参照してください。
 
 
 @item
@@ -387,17 +387,21 @@ LilyPond がどのように単一のソース ファイルから作り出され�
 @code{#(ly:set-option 'point-and-click #f)} などの Scheme 表記。
 
 @item
-@code{\header} ブロック。これはグローバル ヘッダ ブロックになります。@c
-このブロックは、作曲者、曲名などのブック全体の設定定義を保持します。
+@code{\header} ブロック。これはグローバル (ファイル構造の最上位)
+ヘッダ ブロックになります。@c
+このブロックは、ファイル内にある全てのブックにおける、@c
+作曲者、曲名といったタイトル フィールドのデフォルト設定を持ちます
+(@ref{Titles explained}を参照してください)。
 
 @item
 @code{\score} ブロック。@c
-この score は他の最上位の score とともに単一の @code{\book} にまとめられます。@c
+このスコアは他の最上位のスコアとともに単一の @code{\book} にまとめられます。@c
 この振る舞いは、@c
 変数 @code{toplevel-score-handler} を最上位の階層で設定することによって、@c
 変更することができます。@c
-デフォルトのハンドラは@c
-初期化ファイル @file{../scm/lily.scm} で定義されています。
+(デフォルトのハンドラは@c
+ファイル @file{../scm/lily-library.scm} で定義され、@c
+@file{../ly/declarations-init.ly} でセットされています。)
 
 @item
 @code{\book} ブロックは複数の楽章 (すなわち、複数の @code{\score} ブロック) を@c
@@ -421,7 +425,7 @@ LilyPond がどのように単一のソース ファイルから作り出され�
 @code{\bookpart} ブロック。@c
 改ページを簡単にするため、@c
 あるいは異なるパートで別々の @code{\paper} 設定を使用するために、@c
-book は
+ブックは
 -- @code{\bookpart} を用いて --
 いくつかのパートに分割される可能性があります。
 
@@ -468,7 +472,7 @@ book は
 @end example
 
 マークアップ テキストは、それが出現した場所で、@c
-score あるいは音楽表記の上、間、あるいは下に描かれます。
+スコアあるいは音楽表記の上、間、あるいは下に描かれます。
 
 @cindex variables (変数)
 
@@ -512,7 +516,7 @@ foo = @{ c4 d e d @}
 @code{%} 記号で始まる単一行コメント。
 
 @item
-@code{%@{ .. %@}} で囲まれる複数行コメント。
+@code{%@{ @dots{} %@}} で囲まれる複数行コメント。
 
 @end itemize
 
@@ -528,11 +532,7 @@ foo = @{ c4 d e d @}
 @item Scheme 表記として解釈される要素
 -- すなわち、@code{#} 記号で始まる要素 -- の後。
 @item Scheme 表記要素を区切る空白。
-@item @code{lyricmode} モードの @code{\override} と @code{\set} コマンドの@c
-中にある単語を区切る空白。@c
-特に、@code{\override Score.LyricText.font-size = #5} のように、@c
-コマンドの中のドットとイコール記号の前後、コマンド全体の前後に@c
-空白を挿入することを忘れないで下さい。
+@item @code{lyricmode} 中にある @code{\set} と @code{\override} コマンドの前後。
 
 @end itemize
 
@@ -541,19 +541,25 @@ foo = @{ c4 d e d @}
 @rlearning{How LilyPond input files work}
 
 記譜法リファレンス:
-@ref{The \layout block}
+@ref{Titles explained},
+@ref{The layout block,,The @code{@bs{}layout} block}
 
 
 @node タイトルとヘッダ
 @section タイトルとヘッダ
 @translationof Titles and headers
 
+@cindex titles (タイトル)
+@cindex headers (ヘッダ)
+@cindex footers (フッタ)
+
 ほとんどすべての楽譜にはタイトルと作曲者名が含まれます。@c
 楽譜の中にはさらに多くの情報を含むものもあります。
 
 @menu
 * タイトル、ヘッダ、フッタを作成する::
-* カスタム ヘッダ、フッタ、タイトル::
+* カスタム タイトル、ヘッダ、フッタ::
+* 出力ファイルのメタデータを作成する::
 * 脚注を作成する::
 * ページ番号の参照::
 * 目次::
@@ -565,29 +571,105 @@ foo = @{ c4 d e d @}
 @translationof Creating titles headers and footers
 
 @menu
-* タイトル ブロックの説明::
-* book と score のタイトル ブロックのデフォルト レイアウト::
+* タイトルの説明::
+* ブック パートとスコアのタイトルのデフォルト レイアウト::
 * ヘッダとフッタのデフォルト レウアウト::
 @end menu
 
-@node タイトル ブロックの説明
-@unnumberedsubsubsec タイトル ブロックの説明
-@translationof Title blocks explained
+@node タイトルの説明
+@unnumberedsubsubsec タイトルの説明
+@translationof Titles explained
 
-@c TODO: figure out how \bookpart titles work
+1 つの入力ファイルにある各 @code{\book} ブロックは、別々の出力ファイルを@c
+作り出します。@ref{File structure} を参照してください。出力ファイルごとに
+3 種類のタイトル エリアが提供されています: 各ブックの最初にある@c
+@emph{ブック タイトル}、各ブック パートの最初にある@c
+@emph{ブック パート タイトル}、各スコアの最初にある@emph{スコア タイトル}です。
 
-タイトル ブロックには 2 つのタイプがあります:
-book の最初の @code{\score} の上に表示されるメインのタイトル ブロックと、@c
-各 @code{\score} ブロック内に表示される個々のタイトル ブロックです。@c
-両タイプのテキスト フィールドは @code{\header} ブロックを用いて挿入します。
+@code{title} や @code{composer} のようなタイトル フィールドの値は
+@code{\header} ブロックでセットします (@code{\header} ブロックの@c
+構文や、デフォルトで使用可能なフィールドの完全なリストは、@c
+@ref{Default layout of bookpart and score titles} を参照してください)。@c
+ブック タイトル、ブック パート タイトル、スコア タイトルは同じフィールドを含む@c
+ことができますが、デフォルトではスコア タイトルに使用されるのは
+@code{piece} と @code{opus} に限られています。
 
-book が単一の score しか持たない場合、@c
-@code{\header} ブロックを配置する場所は @code{\score} ブロックの内側でも@c
-外側でも構いません。
+@code{\header} ブロックは、4 つの異なる場所に配置することができ、@c
+それぞれが階層構造を作り出します。
+
+@itemize
+
+@item
+入力ファイルの最初。つまり全ての @code{\book}, @code{\bookpart}, @code{\score}
+ブロックよりも前。
+
+@item
+@code{\book} ブロックの中だが、そのブックにある全ての @code{\bookpart} や
+@code{\score} ブロックよりも外側。
+
+@item
+@code{\bookpart} ブロックの中だが、そのブック パートにある全ての @code{\score}
+よりも外側。
+
+@item
+@code{\score} ブロックの中にあり、音楽表記の後。
+
+@end itemize
+
+それぞれのフィールドの値は、この階層に沿って上書きされます。@c
+高い階層にある値は、下の階層においてオーバライドされない限り保たれます。
+つまり:
+
+@itemize
+
+@item
+ブック タイトルはまず、入力ファイルの最初にあるフィールドから設定され、@c
+@code{\book} ブロック内でフィールドが定義されていた場合にはそれで@c
+上書きされます。最終的な値は、ブックの一番始め、つまり最初のブック パートの@c
+前に、ページを割くような何らかのものがある場合に、@c
+そのブックのブック タイトルを表示するために使われます。@c
+@code{\pageBreak} が 1 つあればブック タイトルは表示されるようになります。
+
+@item
+ブック パート タイトルはまず、入力ファイルの最初にあるフィールドから設定され、@c
+@code{\book} ブロック内でフィールドが定義されていた場合はそれで上書きされ、@c
+また @code{\bookpart} ブロック内で定義されていた場合には更に上書きされます。@c
+最終的な値は、そのブック パートのブック パート タイトルを表示するために@c
+使われます。
+
+@item
+スコア タイトルはまず、入力ファイルの最初にあるフィールドから設定され、@c
+@code{\book} ブロック内でフィールドが定義されていた場合はそれで上書きされ、@c
+@code{\bookpart} ブロック内で定義されていた場合には更に上書きされ、@c
+最後に @code{\score} ブロックで定義されていた場合にも上書きされます。@c
+最終的な値は、そのスコアのスコア タイトルを表示するために使われます。@c
+しかしスコア タイトルは、@code{\paper} 変数の
+@code{print-all-headers} が @code{#t} にセットされていない限り、@c
+@code{piece} と @code{opus} フィールドのみが表示されるということに注意@c
+してください。
+
+@end itemize
 
 @warning{@bs{}@code{score} ブロックの内側に @bs{}@code{header} ブロックを@c
-追加する場合、@c
-@bs{}@code{header} ブロックの前に音楽表記を配置する必要があります。}
+配置する場合、@c
+音楽表記は @bs{}@code{header} ブロックの前にある必要があります。}
+
+@code{\header} ブロックを 4 つの場所全てに配置する必要はありません。@c
+どれかを、あるいは全てを省略することができます。@c
+同様に、単純な入力ファイルでは、@code{\book} や @code{\bookpart} ブロックを@c
+省略することができ、その時にはコンパイル時に暗黙的に作成されます。
+
+ブックにスコアが 1 つだけある場合、@code{\header} ブロックは通常、@c
+ファイルの先頭に配置するべきです。こうすることで、ブック パート タイトルのみが@c
+生成され、全てのタイトル フィールドが使用できます。
+
+ブックにスコアが複数ある場合、@code{\header} ブロックの配置方法は@c
+出版のスタイルに応じていくつか考えられます。例えば、@c
+出版譜が同じ作曲家によるいくつかの楽曲を含む場合、まずファイルの先頭に
+@code{\header} ブロックを配置し、そこでブック タイトルと作曲家を指定して、@c
+次にそれぞれの @code{\score} ブロック内に @code{\header} ブロックを配置し、@c
+そこで @code{piece} や @code{opus} を指定するのが最適でしょう。@c
+以下に例を示します:
 
 @lilypond[papersize=a5,quote,verbatim,noragged-right]
 \header {
@@ -621,8 +703,9 @@ book が単一の score しか持たない場合、@c
 }
 @end lilypond
 
-book のメイン タイトル ブロックのテキスト フィールドはすべての @code{\score}
-ブロックに表示させることができ、手動で表示を抑制することもできます:
+更に複雑な配置をすることもできます。例えば、ブック内の @code{\header}
+ブロックにあるテキスト フィールドは全てのスコア タイトルに表示させることが@c
+でき、いくつかのフィールドを上書きしたり、手動で表示を抑制することもできます:
 
 @c KEEP LY
 @lilypond[papersize=a5,quote,verbatim,noragged-right]
@@ -633,7 +716,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
   \header {
     title = "DAS WOHLTEMPERIRTE CLAVIER"
     subtitle = "TEIL I"
-    % この book では tagline を表示しません
+    % このブックではデフォルトで LilyPond が生成するフッタを表示しません
     tagline = ##f
   }
   \markup { \vspace #1 }
@@ -645,7 +728,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
     \header {
       title = "PRAELUDIUM I"
       opus = "BWV 846"
-      % この score では subtitle を表示しません
+      % このスコアでは subtitle を表示しません
       subtitle = ##f
     }
   }
@@ -658,7 +741,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
       title = "FUGA I"
       subsubtitle = "A 4 VOCI"
       opus = "BWV 846"
-      % この score では subtitle を表示しません
+      % このスコアでは subtitle を表示しません
       subtitle = ##f
     }
   }
@@ -668,23 +751,18 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 @seealso
 記譜法リファレンス:
 @ref{File structure},
-@ref{Custom layout for title blocks}
+@ref{Default layout of bookpart and score titles},
+@ref{Custom layout for titles}
 
 
-@node book と score のタイトル ブロックのデフォルト レイアウト
-@unnumberedsubsubsec book と score のタイトル ブロックのデフォルト レイアウト
-@translationof Default layout of book and score title blocks
+@node ブック パートとスコアのタイトルのデフォルト レイアウト
+@unnumberedsubsubsec ブック パートとスコアのタイトルのデフォルト レイアウト
+@translationof Default layout of bookpart and score titles
 
-タイトル ブロックのレイアウトとフォーマットは 2 つの @code{\paper}
-変数によって制御されます。@c
-メインの @code{\header} タイトル ブロックのための @code{bookTitleMarkup} と、@c
-@code{\score} 内部の個々の @code{\header} ブロックのための
-@code{scoreTitleMarkup} です。
-
-以下の例は @code{\header} のすべての変数の使用例です:
+以下の例は表示に反映される @code{\header} のすべての変数の使用例です:
 
 @c KEEP LY
-@lilypond[papersize=a7,quote,verbatim,noragged-right]
+@lilypond[papersize=a6landscape,quote,verbatim,noragged-right]
 \book {
   \header {
       % 以下のフィールドは中央揃えされます。
@@ -701,8 +779,10 @@ book のメイン タイトル ブロックのテキスト フィールドはす
     meter = "Meter"
     arranger = "Arranger"
       % 以下のフィールドは最下段の中央に配置されます
-    tagline = "tagline goes at the bottom of the last page"
-    copyright = "copyright goes at the bottom of the first page"
+      % tagline は最後のページの最下部に配置されます
+      % copyright は最初のページの最下部に配置されます
+    tagline = "The tagline goes at the bottom of the last page"
+    copyright = "The copyright goes at the bottom of the first page"
   }
   \score {
     { s1 }
@@ -739,7 +819,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 楽器名は各ページに繰り返し表示されます。
 
 @item
-紙面変数 @code{print-all-headers} に @code{##f} がセットされている場合
+@code{\paper} 変数 @code{print-all-headers} に @code{##f} がセットされている場合
 (デフォルトの設定です)、@code{\score} には @code{piece} と @code{opus}
 だけが表示されます。
 
@@ -760,12 +840,18 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 
 @cindex breakbefore
 
-最上位の @code{\header} ブロックのタイトルを最初のページに配置して、@c
+@code{\book} ブロックが、すぐ後に @code{\bookpart} ブロックが来るような形で@c
+始まった場合、ブック タイトルを表示するためのページが存在しないため、
+ブック タイトルは表示されません。ブック タイトルが必要ならば、@c
+@code{\book} ブロックをマークアップや @code{\pageBreak} コマンドで開始して@c
+ください。
+
+より上位の @code{\header} ブロックのタイトルを最初のページに配置して、@c
 @code{\score} ブロックで定義される楽譜を次のページから始めるするには、@c
 @code{\score} ブロックの中にある @code{\header} ブロック内で@c
 @code{breakbefore} 変数を使用します。
 
-@lilypond[papersize=a8landscape,verbatim,noragged-right]
+@lilypond[papersize=c7landscape,verbatim,noragged-right]
 \book {
   \header {
     title = "This is my Title"
@@ -787,18 +873,18 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 @rlearning{How LilyPond input files work}
 
 記譜法リファレンス:
-@ref{Custom layout for title blocks},
+@ref{Custom layout for titles},
 @ref{File structure}
 
 インストールされているファイル:
 @file{ly/titling-init.ly}
 
 
-@node ヘッダとフッタのデフォルト レウアウト
-@unnumberedsubsubsec ヘッダとフッタのデフォルト レウアウト
+@node ヘッダとフッタのデフォルト レイアウト
+@unnumberedsubsubsec ヘッダとフッタのデフォルト レイアウト
 @translationof Default layout of headers and footers
 
-@emph{ヘッダ} と @emph{フッタ} は、book のテキストとは別の、@c
+@emph{ヘッダ} と @emph{フッタ} は、ブックのテキストとは別の、@c
 ページの最初と最後に表示されるテキスト行です。@c
 ヘッダとフッタは以下の @code{\paper} 変数によって制御されます:
 
@@ -810,7 +896,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 @end itemize
 
 これらのマークアップ変数は、最上位の @code{\header} ブロック
-(これは book のすべての score に適用されます) から、@c
+(これはブックのすべてのスコアに適用されます) から、@c
 テキスト フィールドのみにアクセスすることができ、@c
 @file{ly/titling-init.ly} で定義されています。@c
 デフォルトでは以下のようになっています:
@@ -834,18 +920,8 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 
 @end itemize
 
-@lilypond[papersize=a8landscape]
-\book {
-  \score {
-    \relative {
-      c'4 d e f
-    }
-  }
-}
-@end lilypond
-
 最上位の @code{\header} ブロックの中に @code{tagline} を追加することで、@c
-デフォルトのタグラインを変更することができます。
+デフォルトの LilyPond フッタ テキストを変更することができます。
 
 @lilypond[papersize=a8landscape,verbatim]
 \book {
@@ -860,25 +936,26 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 }
 @end lilypond
 
-タグラインを削除するには、@code{tagline}  に @code{##f} をセットします。
+デフォルトの LilyPond フッタ テキストを削除するには、@code{tagline} に
+@code{##f} をセットします。
 
 
-@node カスタム ヘッダ、フッタ、タイトル
-@subsection カスタム ヘッダ、フッタ、タイトル
-@translationof Custom headers footers and titles
+@node カスタム タイトル、ヘッダ、フッタ
+@subsection カスタム タイトル、ヘッダ、フッタ
+@translationof Custom titles headers and footers
 
 @c TODO: somewhere put a link to header spacing info
 @c       (you'll have to explain it more in NR 4).
 
 @menu
-* タイトル ブロックのカスタム テキスト フォーマット::
-* タイトル ブロックのカスタム レイアウト::
+* タイトルのカスタム テキスト フォーマット::
+* タイトルのカスタム レイアウト::
 * ヘッダとフッタのカスタム レイアウト::
 @end menu
 
-@node タイトル ブロックのカスタム テキスト フォーマット
-@unnumberedsubsubsec タイトル ブロックのカスタム テキスト フォーマット
-@translationof Custom text formatting for title blocks
+@node タイトルのカスタム テキスト フォーマット
+@unnumberedsubsubsec タイトルのカスタム テキスト フォーマット
+@translationof Custom text formatting for titles
 
 標準の @code{\markup} コマンドを使って @code{\header} ブロックの中にある@c
 ヘッダ、フッタ、それにタイトル テキストをカスタマイズすることができます。
@@ -888,7 +965,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
   { s1 }
   \header {
     piece = \markup { \fontsize #4 \bold "PRAELUDIUM I" }
-    subtitle = \markup { \italic "(Excerpt)" }
+    opus = \markup { \italic "BWV 846" }
   }
 }
 @end lilypond
@@ -898,9 +975,9 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 @ref{Formatting text}
 
 
-@node タイトル ブロックのカスタム レイアウト
-@unnumberedsubsubsec タイトル ブロックのカスタム レイアウト
-@translationof Custom layout for title blocks
+@node タイトルのカスタム レイアウト
+@unnumberedsubsubsec タイトルのカスタム レイアウト
+@translationof Custom layout for titles
 
 @cindex bookTitleMarkup
 @cindex scoreTitleMarkup
@@ -919,7 +996,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 @end itemize
 
 これらの @code{\markup} のデフォルト値を用いた場合のタイトルの配置は
-@ref{Default layout of book and score title blocks} の中にある例で@c
+@ref{Default layout of bookpart and score titles} の中にある例で@c
 示しています。
 
 @file{ly/titling-init.ly} で定義されている @code{scoreTitleMarkup}
@@ -927,7 +1004,7 @@ book のメイン タイトル ブロックのテキスト フィールドはす
 
 @example
 scoreTitleMarkup = \markup @{ \column @{
-  \on-the-fly #print-all-headers @{ \bookTitleMarkup \hspace #1 @}
+  \on-the-fly \print-all-headers @{ \bookTitleMarkup \hspace #1 @}
   \fill-line @{
     \fromproperty #'header:piece
     \fromproperty #'header:opus
@@ -977,19 +1054,23 @@ scoreTitleMarkup = \markup @{ \column @{
 @end lilypond
 
 @code{print-all-headers} を @code{\paper} ブロックの中に配置することにより、@c
-メイン タイトル ブロックのテキスト フィールドを個々の score タイトル ブロック@c
+メイン タイトル ブロックのテキスト フィールドを個々のスコア タイトル ブロック@c
 に表示させることができます。@c
+
+@code{paper} ブロックに @code{print-all-headers} をセットすると、@c
+スコアの @code{\header} ブロックでは通常表示されないテキスト フィールドを、@c
+スコア タイトル領域に表示させることができます。@c
 この方法の欠点は、個々の @code{\score} ブロックで、@c
-最上位の @code{\header} ブロックだけに表示させるテキスト フィールドを@c
+ブック パート タイトル領域のみに表示させたいテキスト フィールドを@c
 手動で抑制する必要があることです。@c
-@ref{Title blocks explained} を参照してください。
+@ref{Titles explained} を参照してください。
 
 この欠点を回避するには、個々の @code{\score} ブロックに表示させたい@c
 テキスト フィールドを @code{scoreTitleMarkup} 定義に追加します。@c
 以下の例では、@code{composer} テキスト フィールド
 (通常、これは @code{bookTitleMarkup} に関連付けされています)
 を @code{scoreTitleMarkup} に追加することにより、@c
-各 score は異なる作曲者を表示しています:
+各スコアは異なる作曲者を表示しています:
 
 @lilypond[papersize=a5,quote,verbatim,noragged-right]
 \book {
@@ -1057,7 +1138,7 @@ scoreTitleMarkup = \markup @{ \column @{
 
 @seealso
 記譜法リファレンス:
-@ref{Title blocks explained}
+@ref{Titles explained}
 
 
 @node ヘッダとフッタのカスタム レイアウト
@@ -1091,9 +1172,9 @@ scoreTitleMarkup = \markup @{ \column @{
 
 @example
 variable = \markup @{
-  ...
-  \on-the-fly  #@var{procedure}  @var{markup}
-  ...
+  @dots{}
+  \on-the-fly  \@var{procedure}  @var{markup}
+  @dots{}
 @}
 @end example
 
@@ -1110,13 +1191,14 @@ variable = \markup @{
 @headitem  Procedure name           @tab  Condition tested
 
 @item print-page-number-check-first @tab  このページ番号は表示されるか？
-@item create-page-number-stencil    @tab  'print-page-numbers は真か？
-@item print-all-headers             @tab  'print-all-headers は真か？
+@item create-page-number-stencil    @tab  print-page-numbers は真か？
+@item print-all-headers             @tab  print-all-headers は真か？
 @item first-page                    @tab  ブックの最初のページか？
+@item not-first-page                @tab  ブックの最初ではないページか？
 @item (on-page nmbr)                @tab  ページ番号 = nmbr か？
 @item last-page                     @tab  ブックの最後のページか？
-@item not-first-page                @tab  ブックの最初ではないページか？
 @item part-first-page               @tab  ブック パートの最初のページか？
+@item not-part-first-page           @tab  ブック パートの最初ではないページか？
 @item part-last-page                @tab  ブック パートの最後のページか？
 @item not-single-page               @tab  ブック パートのページ数 > 1 か？
 
@@ -1139,7 +1221,7 @@ variable = \markup @{
     evenHeaderMarkup = \markup \null
     oddFooterMarkup = \markup {
       \fill-line {
-        \on-the-fly #print-page-number-check-first
+        \on-the-fly \print-page-number-check-first
         \fromproperty #'page:page-number-string
       }
     }
@@ -1155,275 +1237,490 @@ variable = \markup @{
 できます。例えば、
 
 @example
-  \on-the-fly #first-page
-  \on-the-fly #last-page
-  @{ \markup ... \fromproperty #'header: ... @}
+  \on-the-fly \first-page
+  \on-the-fly \last-page
+  @{ \markup @dots{} \fromproperty #'header: @dots{} @}
 @end example
 
 これは、出力が単一のページかどうかを判断します。
 
 @seealso
 記譜法リファレンス:
-@ref{Title blocks explained},
-@ref{Default layout of book and score title blocks}
+@ref{Titles explained},
+@ref{Default layout of bookpart and score titles}
 
 インストールされているファイル:
 @file{../ly/titling-init.ly}
 
+@node 出力ファイルのメタデータを作成する::
+@subsection 出力ファイルのメタデータを作成する::
+@translationof Creating output file metadata
+
+@cindex PDF metadata (PDF メタデータ)
+@cindex MIDI metadata (MIDI メタデータ)
+
+@code{\header} 変数には、楽譜の見た目上の出力に表示されるデータだけではなく、@c
+出力ファイルのメタデータを作り出すためにも使われます。@c
+例えば、PDF ファイルでは、このメタデータが PDF ファイルの @code{properties}
+フィールドとして PDF リーダに表示されます。それぞれの出力ファイルの@c
+形式に応じて、別々のファイルを作り出すようなレベルより上位での
+@code{\header} ブロックのみが使用されます。@c
+すなわち、PDF ファイルにおいては、@code{\book} レベルやトップレベルの
+@code{\header} 定義のみが PDF ドキュメント全体のメタデータとして有効で、@c
+MIDI ファイルにおいては、上で挙げたレベルに加えて @code{\score} レベルの
+@code{\header} ブロックでも有効です。
+
+例えば、@code{\header} ブロックの @code{title} プロパティを @q{Symphony I} に@c
+セットすると、PDF ドキュメントのタイトルと、MIDI ファイルのシーケンス名に@c
+使われることになります。
+
+@example
+\header@{
+  title = "Symphony I"
+@}
+@end example
+
+楽譜上のタイトルと、PDF のタイトル プロパティを@c
+別の値にしたい場合、下の例のように @code{pdftitle} を使用することができます:
+
+@example
+\header@{
+  title = "Symphony I"
+  pdftitle = "Symphony I by Beethoven"
+@}
+@end example
+
+
+変数 @code{title}, @code{subject}, @code{keywords},
+@code{subtitle}, @code{composer}, @code{arranger}, @code{poet}, @code{author},
+@code{copyright} は全て、PDF のプロパティに使われます。@c
+これらは、頭に @q{pdf} を付け加えることで楽譜上の出力とは違う値をセットする@c
+こともできます。
+
+PDF の @code{Creator} プロパティは自動的に、@q{LilyPond} と現在の LilyPond の@c
+バージョンが組み合わされてセットされます。@code{CreationDate} と
+@code{ModDate} はどちらも、現在の日時にセットされますが、@code{ModDate} は@c
+@code{\header} 変数 @code{moddate} (あるいは @code{pdfmoddate}) を@c
+正しい PDF 日時文字列にセットすることでオーバライドすることができます。
+
+@code{title} 変数は MIDI でのシーケンス名としてもセットされます。@c
+@code{midititle} 変数を使うことで、楽譜上の出力と独立してシーケンス名を@c
+指定することができます。
 
 @node 脚注を作成する
 @subsection 脚注を作成する
 @translationof Creating footnotes
 
-作成できる脚注には 2 つのタイプがあります。@c
-自動脚注と手動脚注です。
+@cindex footnotes (脚注)
+
+Footnotes may be used in many different situations.  In all cases,
+a @q{footnote mark} is placed as a reference in text or music, and
+the corresponding @q{footnote text} appears at the bottom of the
+same page.
+
+Footnotes within music expressions and footnotes in stand-alone text
+outside music expressions are created in different ways.
 
 @menu
-* 脚注の概要::
-* 自動脚注::
-* 手動脚注::
+* Footnotes in music expressions::
+* Footnotes in stand-alone text::
 @end menu
 
-@node 脚注の概要
-@unnumberedsubsubsec 脚注の概要
-@translationof Footnotes overview
+@node Footnotes in music expressions
+@unnumberedsubsubsec Footnotes in music expressions
 
-自動脚注は繰り上がっていくページ番号を作り出し、@c
-手動脚注はページ番号をカスタマイズすることができます。@c
-通常、脚注は @code{\tweak} のように適用されるので、多くの音楽要素や@c
-ポスト-イベントによって作成されるグラフィカル オブジェクト上に直接配置@c
-することができます。@c
-これがうまくいかない場合 (小節線や拍の変更のように、プロパティの変更の結果@c
-として作り出されるグラフィカル オブジェクトの場合)、脚注を独立した音楽@c
-イベントとして入力することである特定のタイミングにある指定したタイプの@c
-すべてのグラフィカルに影響を与えることもできます。
+@cindex footnotes in music expressions
+@funindex \footnote
 
-脚注コマンドの完全な形式は以下のようなものです:
+@subsubsubheading Music footnotes overview
+
+Footnotes in music expressions fall into two categories:
+
+@table @emph
+@item Event-based footnotes
+are attached to a particular event.  Examples for such events are
+single notes, articulations (like fingering indications, accents,
+dynamics), and post-events (like slurs and manual beams).  The
+general form for event-based footnotes is as follows:
 
 @example
-\footnote @var{mark} @var{offset} @var{grob-name} @var{footnote}
-@var{music}
+[@var{direction}] \footnote [@var{mark}] @var{offset} @var{footnote} @var{music}
 @end example
 
-要素は以下の通りです:
+@item Time-based footnotes
+are bound to a particular point of time in a musical context.  Some
+commands like @code{\time} and @code{\clef} don't actually use events
+for creating objects like time signatures and clefs.  Neither does a
+chord create an event of its own: its stem or flag is created at the
+end of a time step (nominally through one of the note events inside).
+Exactly which of a chord's multiple note events will be deemed the
+root cause of a stem or flag is undefined.  So for annotating those,
+time-based footnotes are preferable as well.
 
-@table @var
-@item mark
-これは脚注を指定するマークアップや文字列で、参照ポイントとページ下の@c
-脚注自体を指すマークになります。@c
-これは省略することができ (@code{\default} で置き換えられます)、省略した@c
-場合は連続した数字が生成されます。
-@item offset
-脚注マークを配置する参照ポイントからの X と Y オフセットを指定する
-@samp{#(2 . 1)} のような数字のペアです。
-@item grob-name
-脚注マークを付けるグラフィカル オブジェクトのタイプを指定します (例えば
-@samp{#'Flag} です)。@c
-これが指定された場合、対応するグラフィカル オブジェクトが参照される
-@var{music} 自体にあるものでなくても、そこから作成されたものであれば@c
-参照ポイントになります。@c
-これは省略するができ (@code{\default} で置き換えられます)、その場合は@c
-直接作成されたグラフィカル オブジェクトだけに脚注が付けられます。
-@item footnote
-このマークアップあるいは文字列はページ下の脚注テキストになります。
-@item music
-これは脚注を付ける要素 -- 音楽イベント、和音構成要素、あるいは@c
-ポスト-イベントです。@c
-これを省略することはできませんが、@code{\default} で置き換えることで@c
-脚注をある特定の音楽表記ではなく音楽タイミングに付けることができます。@c
-@code{\default} を用いた場合、影響を与えるグラフィカル オブジェクトの@c
-タイプを指定する @var{grob-name} 引数を指定する必要があります。
+A time-based footnote allows such layout objects to be annotated
+without referring to an event.  The general form for Time-based
+footnotes is:
+
+@example
+\footnote [@var{mark}] @var{offset} @var{footnote} [@var{Context}].@var{GrobName}
+@end example
+
 @end table
 
-@code{\tweak} と同様に、@code{\footnote} をポスト-イベントや@c
-アーティキュレーションに適用する場合、それ自体の前に @code{-} を配置@c
-して、構文解析の結果を前にある音符や休符にくっつけさせる必要があります。
+The elements for both forms are:
 
+@table @var
 
-@node 自動脚注
-@unnumberedsubsubsec 自動脚注
-@translationof Automatic footnotes
+@item direction
+If (and only if) the @code{\footnote} is being applied to a
+post-event or articulation, it must be preceded with a direction
+indicator (@code{-, _, ^}) in order to attach @var{music} (with
+a footnote mark) to the preceding note or rest.
 
-自動脚注は 4 つの引数を取ります: 脚注マークの位置 @samp{(x . y)}、@c
-脚注を付ける @var{レイアウト オブジェクト} を指定するオプションの
-@var{grob-name}、ページ下の脚注に表示される @var{footnote} マークアップ、@c
-それに脚注を付ける @var{music} です。
+@item mark
+is a markup or string specifying the footnote mark which is used for
+marking both the reference point and the footnote itself at the
+bottom of the page.  It may be omitted (or equivalently replaced with
+@code{\default}) in which case a number in sequence will be generated
+automatically.  Such numerical sequences restart on each page
+containing a footnote.
 
+@item offset
+is a number pair such as @samp{#(2 . 1)} specifying the X and
+Y@tie{}offsets in units of staff-spaces from the boundary of the
+object where the mark should be placed.  Positive values of the
+offsets are taken from the right/top edge, negative values from the
+left/bottom edge and zero implies the mark is centered on the edge.
 
-@lilypond[verbatim,quote,ragged-right,papersize=a8]
+@item Context
+is the context in which the grob being footnoted is created.  It
+may be omitted if the grob is in a bottom context, e.g., a
+@code{Voice} context.
+
+@item GrobName
+specifies a type of grob to mark (like @samp{Flag}).  If it is
+specified, the footnote is not attached to a music expression in
+particular, but rather to all grobs of the type specified which
+occur at that moment of musical time.
+
+@item footnote
+is the markup or string specifying the footnote text to use at the
+bottom of the page.
+
+@item music
+is the music event or post-event or articulation
+that is being annotated.
+
+@end table
+
+@subsubsubheading Event-based footnotes
+
+@cindex footnotes, event-based
+
+A footnote may be attached to a layout object directly caused
+by the event corresponding to @var{music} with the syntax:
+
+@example
+\footnote [@var{mark}] @var{offset} @var{footnote} @var{music}
+@end example
+
+@lilypond[quote,verbatim,papersize=a8landscape]
 \book {
   \header { tagline = ##f }
-  \relative c' {
-    \footnote #'(0.5 . -2)
-      \markup { The first note }
-    a'4 b8
-    \single\footnote #'(0.5 . 1)
-      \markup { The third note } Flag
-    e\noBeam c4 d4
+  \relative c'' {
+    \footnote #'(-1 . 3) "A note" a4
+    a4
+    \footnote #'(2 . 2) "A rest" r4
+    a4
   }
 }
 @end lilypond
 
-和音の音符でも難しいことはありません:
+Marking a @emph{whole} chord with an event-based footnote is not
+possible: a chord, even one containing just a single note, does
+not produce an actual event of its own.  However, individual
+notes @emph{inside} of the chord can be marked:
 
-@c KEEP LY
-@lilypond[verbatim,quote,ragged-right,papersize=a8]
+@lilypond[quote,verbatim,papersize=a8landscape]
 \book {
   \header { tagline = ##f }
-  \relative c' {
-    <
-    \footnote #'(1 . -1.25) "これは C です" c
-    \footnote #'(2 . -0.25) \markup { \italic "E-flat です" } es
-    \footnote #'(2 . 3) \markup { \bold "これは G です" } g
-    >1
+  \relative c'' {
+    \footnote #'(2 . 3) "Does not work" <a-3>2
+    <\footnote #'(-2 . -3) "Does work" a-3>4
+    <a-3 \footnote #'(3 . 1/2) "Also works" c-5>4
   }
 }
 @end lilypond
 
-@warning {
-脚注の垂直方向の位置が同じになる場合、下方向に並べられます。@c
-高い位置にある脚注は、リストでも上に来ます。
-}
+If the footnote is to be attached to a post-event or articulation
+the @code{\footnote} command @emph{must} be preceded by a direction
+indicator, @code{-, _, ^}, and followed by the post-event or
+articulation to be annotated as the @var{music} argument.  In this
+form the @code{\footnote} can be considered to be simply a copy of
+its last argument with a footnote mark attached to it.  The syntax
+is:
 
-ここで、グラフィカル オブジェクト動脚注を付ける例をいくつか挙げ、@c
-さらに脚注とタグラインやコピーライトとの位置関係を示します。
+@example
+@var{direction} \footnote [@var{mark}] @var{offset} @var{footnote} @var{music}
+@end example
 
-@c KEEP LY
-@lilypond[verbatim,quote,ragged-right,papersize=a8]
+@lilypond[quote,verbatim,papersize=a8landscape]
 \book {
-  \header { copyright = \markup { "Copyright 1970" } }
+  \header { tagline = ##f }
   \relative {
-    a'4-\footnote #'(-3 . 0) \markup { \bold Forte } \f
-    -\footnote #'(0 . 1.5) \markup { スラー } (
-    b8)-\footnote #'(0 . -2) \markup { 連桁 } [ e]
-    \single\footnote #'(1 . -1)
-      \markup  { \teeny { これは符幹です } } Stem
-    c4
-    \single\footnote #'(0 . 0.5)
-      \markup \italic { 忠告の臨時記号 } AccidentalCautionary
-    \footnote #'(1 . 1) "音符自体"
-    dis?4-\footnote #'(0.5 . -0.5) \markup \italic { スロー ダウン }
-         _"rit."
+    a'4_\footnote #'(0 . -1) "A slur forced down" (
+    b8^\footnote #'(1 . 0.5) "A manual beam forced up" [
+    b8 ]
+    c4 )
+    c-\footnote #'(1 . 1) "Tenuto" --
   }
 }
 @end lilypond
 
-最上位の @code{\markup} に脚注を付ける場合、@c
-@code{\auto-footnote} コマンドを使う必要があります:
+@subsubsubheading Time-based footnotes
+
+@cindex footnotes, time-based
+
+If the layout object being footmarked is @emph{indirectly} caused by
+an event (like an @code{Accidental} or @code{Stem} caused by a
+@code{NoteHead} event), the @var{GrobName} of the layout object
+is required after the footnote text instead of @var{music}:
+
+@lilypond[quote,verbatim,papersize=a8landscape]
+\book {
+  \header { tagline = ##f }
+  \relative c'' {
+    \footnote #'(-1 . -3) "A flat" Accidental
+    aes4 c
+    \footnote #'(-1 . 0.5) "Another flat" Accidental
+    ees
+    \footnote #'(1 . -2) "A stem" Stem
+    aes
+  }
+}
+@end lilypond
+
+Note, however, that when a GrobName is specified, a footnote
+will be attached to all grobs of that type at the current time step:
+
+@lilypond[quote,verbatim,papersize=a8landscape]
+\book {
+  \header { tagline = ##f }
+  \relative c' {
+    \footnote #'(-1 . 3) "A flat" Accidental
+    <ees ges bes>4
+    \footnote #'(2 . 0.5) "Articulation" Script
+    c'->-.
+  }
+}
+@end lilypond
+
+A note inside of a chord can be given an individual (event-based)
+footnote.  A @samp{NoteHead} is the only grob directly caused
+from a chord note, so an event-based footnote command is
+@emph{only} suitable for adding a footnote to the @samp{NoteHead}
+within a chord.  All other chord note grobs are indirectly caused.
+The @code{\footnote} command itself offers no syntax for
+specifying @emph{both} a particular grob type @emph{as well as} a
+particular event to attach to.  However, one can use a time-based
+@code{\footnote} command for specifying the grob type, and then
+prefix this command with @code{\single} in order to have it
+applied to just the following event:
+
+@lilypond[quote,verbatim,papersize=a8landscape]
+\book {
+  \header { tagline = ##f }
+  \relative c'' {
+    < \footnote #'(1 . -2) "An A" a
+      \single \footnote #'(-1 . -1) "A sharp" Accidental
+      cis
+      \single \footnote #'(0.5 . 0.5) "A flat" Accidental
+      ees fis
+    >2
+  }
+}
+@end lilypond
+
+@warning {When footnotes are attached to several musical elements at
+the same musical moment, as they are in the example above, the
+footnotes are numbered from the higher to the lower elements as they
+appear in the printed output, not in the order in which they are
+written in the input stream.}
+
+Layout objects like clefs and key-change signatures are mostly caused
+as a consequence of changed properties rather than actual events.
+Others, like bar lines and bar numbers, are a direct consequence of
+timing.  For this reason, footnotes on such objects have to be based
+on their musical timing.  Time-based footnotes are also preferable
+when marking features like stems and beams on @emph{chords}: while
+such per-chord features are nominally assigned to @emph{one} event
+inside the chord, relying on a particular choice would be imprudent.
+
+The layout object in question must always be explicitly specified
+for time-based footnotes, and the appropriate context must be
+specified if the grob is created in a context other than the bottom
+context.
+
+@lilypond[quote,verbatim,papersize=a8landscape]
+\book {
+  \header { tagline = ##f }
+  \relative c'' {
+    r1 |
+    \footnote #'(-0.5 . -1) "Meter change" Staff.TimeSignature
+    \time 3/4
+    \footnote #'(1 . -1) "Chord stem" Stem
+    <c e g>4 q q
+    \footnote #'(-0.5 . 1) "Bar line" Staff.BarLine
+    q q
+    \footnote #'(0.5 . -1) "Key change" Staff.KeySignature
+    \key c \minor
+    q
+  }
+}
+@end lilypond
+
+Custom marks can be used as alternatives to numerical marks, and the
+annotation line joining the marked object to the mark can be
+suppressed:
+
+@lilypond[quote,verbatim,papersize=a8landscape]
+\book {
+  \header { tagline = ##f }
+  \relative c' {
+    \footnote "*" #'(0.5 . -2) \markup { \italic "* The first note" } a'4
+    b8
+    \footnote \markup { \super "$" } #'(0.5 . 1)
+      \markup { \super "$" \italic " The second note" } e
+    c4
+    \once \override Score.FootnoteItem.annotation-line = ##f
+    b-\footnote \markup \tiny "+" #'(0.1 . 0.1)
+      \markup { \super "+" \italic " Editorial" } \p
+  }
+}
+@end lilypond
+
+More examples of custom marks are shown in
+@ref{Footnotes in stand-alone text}.
+
+
+@node Footnotes in stand-alone text
+@unnumberedsubsubsec Footnotes in stand-alone text
+
+@cindex footnotes in stand-alone text
+
+These are for use in markup outside of music expressions.  They do
+not have a line drawn to their point of reference: their marks simply
+follow the referenced markup.  Marks can be inserted automatically,
+in which case they are numerical.  Alternatively, custom marks can be
+provided manually.
+
+Footnotes to stand-alone text with automatic and custom marks are
+created in different ways.
+
+@subsubsubheading Footnotes in stand-alone text with automatic marks
+
+The syntax of a footnote in stand-alone text with automatic marks is
+
+@example
+\markup @{ @dots{} \auto-footnote @var{text} @var{footnote} @dots{} @}
+@end example
+
+The elements are:
+
+@table @var
+
+@item text
+is the markup or string to be marked.
+
+@item footnote
+is the markup or string specifying the footnote text to use at the bottom
+of the page.
+
+@end table
+
+For example:
 
 @lilypond[verbatim,quote,ragged-right,papersize=a8]
 \book {
   \header { tagline = ##f }
-  \markup { \auto-footnote "A simple tune" \italic "By me" }
+  \markup {
+    "A simple"
+    \auto-footnote "tune" \italic " By me"
+    "is shown below.  It is a"
+    \auto-footnote "recent" \italic " Aug 2012"
+    "composition."
+  }
   \relative {
     a'4 b8 e c4 d
   }
 }
 @end lilypond
 
+@subsubsubheading Footnotes in stand-alone text with custom marks
 
-@node 手動脚注
-@unnumberedsubsubsec 手動脚注
-@translationof Manual footnotes
+The syntax of a footnote in stand-alone text with custom marks is
 
-@cindex footnotes, manual (手動の脚注
+@example
+\markup @{ @dots{} \footnote @var{mark} @var{footnote} @dots{} @}
+@end example
 
-手動で付ける脚注は追加で最初の引数として参照マークとなる @var{mark} を@c
-取ります。@c
-自動的に生成される脚注マークとは対照的に、ページ下の @var{footnote}
-マークアップの前には表示されません: 見た目のつながりはユーザ自身で作成@c
-する必要があります。@c
-LilyPond は対応するマークアップを同じページの下に表示するだけです。
+The elements are:
 
-上記のことを除けば、手動脚注は自動的に付番される脚注と同じです。
+@table @var
 
-@c KEEP LY
+@item mark
+is a markup or string specifying the footnote mark which is used for
+marking the reference point.  Note that this mark is @emph{not}
+inserted automatically before the footnote itself.
+
+@item footnote
+is the markup or string specifying the footnote text to use at the
+bottom of the page, preceded by the @var{mark}.
+
+@end table
+
+Any easy-to-type character such as * or + may be used as a mark, as
+shown in @ref{Footnotes in music expressions}.  Alteratively, ASCII
+aliases may be used (see @ref{ASCII aliases}):
+
 @lilypond[verbatim,quote,ragged-right,papersize=a8]
 \book {
+  \paper { #(include-special-characters) }
   \header { tagline = ##f }
-  \relative c' {
-    \footnote
-          "1" #'(0.5 . -2)
-          \markup { \italic "1. 最初の音符" }
-    a'4
-    b8
-    \footnote
-          \markup { \bold "2" } #'(0.5 . 1)
-          "2. 2 番目の音符"
-    e
-    c4
-    d-\footnote "3" #'(0.5 . -1) "3. ピアノ" \p
+  \markup {
+    "A simple tune"
+    \footnote "*" \italic "* By me"
+    "is shown below.  It is a recent"
+    \footnote \super &dagger; \concat {
+      \super &dagger; \italic " Aug 2012"
+    }
+    "composition."
   }
-}
-@end lilypond
-
-和音に手動脚注を付ける場合、以下のようにします:
-
-@c KEEP LY
-@lilypond[verbatim,quote,ragged-right,papersize=a8]
-\book {
-  \header { tagline = ##f }
-  \relative c' {
-    <
-    \footnote "1" #'(1 . -1.25) "1. C" c
-    \footnote
-       \markup { \bold "b" } #'(2 . -0.25) "b. E-フラット" es
-    \footnote "3" #'(2 . 3) \markup { \italic "iii. G" } g
-    >1
-  }
-}
-@end lilypond
-
-@warning {
-脚注の垂直方向の位置が同じになる場合、下方向に並べられます。@c
-高い位置にある脚注は、リストでも上に来ます。
-}
-
-ここで、グラフィカル オブジェクトに手動脚注を付ける例をいくつか挙げ、@c
-脚注とタグラインやコピーライトとの位置関係を示します。
-
-@c KEEP LY
-@lilypond[verbatim,quote,ragged-right,papersize=a8]
-\book {
-  \header { tagline = ##f }
   \relative {
-    a'4-\footnote
-      \markup { \teeny 1 } #'(-3 . 0)
-      \markup { 1. \bold フォルテ } \f
-    -\footnote
-      \markup { \teeny b } #'(0 . 1.5)
-      \markup { b. スラー } (
-    b8)-\footnote
-      \markup { \teeny 3 } #'(0 . -2)
-      \markup { 3. 連桁 } [
-    e]
-    \single\footnote
-      \markup { 4 } #'(1 . -1)
-      \markup  { \bold 4. { これは符幹です } } Stem
-    c4
-    \single\footnote
-      \markup \concat \teeny { "sharp (v)" }
-          #'(0 . 0.5)
-      \markup \italic { v. 忠告の臨時記号 } AccidentalCautionary
-    dis?4-\footnote
-      \markup \concat \teeny { "a" } #'(0.5 . -0.5)
-      \markup \italic { a. スローダウン } _"rit."
-    \footnote
-      \markup { \teeny \musicglyph #"rests.4" }
-          #'(1.5 . -0.25)
-      \markup { \null } \breathe
+    a'4 b8 e c4 d
   }
 }
 @end lilypond
 
-最上位の @code{\markup} に脚注を付ける場合、下記のようにします:
+Unicode character codes may also be used to specify marks
+(see @ref{Unicode}):
 
 @lilypond[verbatim,quote,ragged-right,papersize=a8]
 \book {
   \header { tagline = ##f }
-  \markup { "A simple tune" \footnote "*" \italic "* By me" }
+  \markup {
+    "A simple tune"
+    \footnote \super \char##x00a7 \concat {
+      \super \char##x00a7 \italic " By me"
+    }
+    "is shown below.  It is a recent"
+    \footnote \super \char##x00b6 \concat {
+      \super \char##x00b6 \italic " Aug 2012"
+    }
+    "composition."
+  }
   \relative {
-    a'4 b8 e c4 d4
+    a'4 b8 e c4 d
   }
 }
 @end lilypond
@@ -1433,11 +1730,12 @@ LilyPond は対応するマークアップを同じページの下に表示す�
 @rlearning{Objects and interfaces}
 
 記譜法リファレンス:
+@ref{ASCII aliases}
 @ref{Balloon help},
-@ref{Page layout},
+@ref{List of special characters},
 @ref{Text marks},
 @ref{Text scripts},
-@ref{Titles and headers}
+@ref{Unicode}
 
 内部リファレンス:
 @rinternals{FootnoteEvent},
@@ -1568,7 +1866,7 @@ containing @code{footnote-auto-number = ##f} を保持している
 実際のマークアップ解釈はもっと後に延期されます。@c
 しかしながら、マークアップの大きさは事前に判明している必要があるため、@c
 ゲージを使ってマークアップの大きさを決定します。@c
-book のページ数が 10 から 99 までの範囲であるのなら、ゲージを "00"
+ブックのページ数が 10 から 99 までの範囲であるのなら、ゲージを "00"
 -- つまり、2 桁の数 -- にします。
 
 
@@ -2571,7 +2869,7 @@ MIDI 出力は譜毎に 1 つのチャンネルを割り当て、@c
 @translationof Creating MIDI files
 
 LilyPond 入力ファイルから MIDI ファイルを作り出すには、@c
-score に @code{\midi} ブロックを付け加えます。@c
+スコアに @code{\midi} ブロックを付け加えます。@c
 例えば、以下のように:
 
 @example
@@ -2710,7 +3008,7 @@ MIDI ボリュームの変化は音符の開始点でのみ起こります。@c
 @cindex MIDI block (MIDI ブロック)
 
 MIDI 出力が必要な場合、@c
-score 内部に @code{\midi} ブロックを置く必要があります。@c
+スコア内部に @code{\midi} ブロックを置く必要があります。@c
 MIDI ブロックはレイアウト ブロックに似ていますが、それよりも単純です。@c
 しばしば、@code{\midi} ブロックは空のままですが、コンテキストの再編成
 -- 新しいコンテキスト定義やプロパティの値を設定するためのコード --
@@ -2753,11 +3051,11 @@ MIDI 出力のためのコンテキストは
 @}
 @end example
 
-MIDI 出力は、@code{\score} コマンドで定義された score ブロック内部に
+MIDI 出力は、@code{\score} コマンドで定義されたスコア ブロック内部に
 @code{\midi} ブロックが存在する場合にのみ生成されます。
 
 @ignore
-@code{\midi} ブロックが明示的にインスタンス化された score コンテキストの中
+@code{\midi} ブロックが明示的にインスタンス化されたスコア コンテキストの中
 (例えば、@code{\new Score} ブロックの中) に配置された場合、@c
 その LilyPond ファイルはエラーになります。@c
 これを解決するには、@code{\new Score} と @code{\midi} コマンドを
@@ -2870,7 +3168,7 @@ MIDI 出力は、@code{\score} コマンドで定義された score ブロック
 \bar "|."
 @end lilypond
 
-複数のボイスを持つ score で、繰り返しを正しく MIDI 出力に展開するには、@c
+複数のボイスを持つスコアで、繰り返しを正しく MIDI 出力に展開するには、@c
 @emph{各ボイス} の繰り返し指示が完全に記譜されている必要があります。
 
 MIDI のために @code{\unfoldRepeats} を使用する楽譜ファイルを作成する場合、@c
