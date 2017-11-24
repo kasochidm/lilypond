@@ -1313,53 +1313,53 @@ PDF の @code{Creator} プロパティは自動的に、@q{LilyPond} と現在�
 
 @cindex footnotes (脚注)
 
-Footnotes may be used in many different situations.  In all cases,
-a @q{footnote mark} is placed as a reference in text or music, and
-the corresponding @q{footnote text} appears at the bottom of the
-same page.
+脚注はいくつかの異なる場面で使われます。どのような場合であっても、@c
+@q{脚注マーク}が参照としてテキストや音楽のところに配置され、@c
+対応する@q{脚注テキスト}が同じページの下部に配置されます。
 
-Footnotes within music expressions and footnotes in stand-alone text
-outside music expressions are created in different ways.
+音楽表記の中にある脚注と、音楽表記外の独立したテキストにある脚注では、@c
+作り方が異なります。
 
 @menu
-* Footnotes in music expressions::
-* Footnotes in stand-alone text::
+* 音楽表記の中にある脚注::
+* 独立したテキストの中にある脚注::
 @end menu
 
-@node Footnotes in music expressions
-@unnumberedsubsubsec Footnotes in music expressions
+@node 音楽表記の中にある脚注
+@unnumberedsubsubsec 音楽表記の中にある脚注
+@translationof Footnotes in music expressions
 
-@cindex footnotes in music expressions
+@cindex footnotes in music expressions (音楽表記の中にある脚注)
 @funindex \footnote
 
-@subsubsubheading Music footnotes overview
+@subsubsubheading 音楽内の脚注の概要
 
-Footnotes in music expressions fall into two categories:
+音楽表記の中にある脚注は 2 つのカテゴリーに分けられます:
 
 @table @emph
-@item Event-based footnotes
-are attached to a particular event.  Examples for such events are
-single notes, articulations (like fingering indications, accents,
-dynamics), and post-events (like slurs and manual beams).  The
-general form for event-based footnotes is as follows:
+@item イベントに紐づく脚注
+これは、単一の音符、アーティキュレーション (指番号、アクセント、@c
+強弱記号など)、音符の後に付加するイベント (スラーや手動の連桁など) といった@c
+特定のイベントに付加されます。イベントに紐づく脚注の一般的な形は@c
+以下のようなものです:
 
 @example
 [@var{direction}] \footnote [@var{mark}] @var{offset} @var{footnote} @var{music}
 @end example
 
-@item Time-based footnotes
-are bound to a particular point of time in a musical context.  Some
-commands like @code{\time} and @code{\clef} don't actually use events
-for creating objects like time signatures and clefs.  Neither does a
-chord create an event of its own: its stem or flag is created at the
-end of a time step (nominally through one of the note events inside).
-Exactly which of a chord's multiple note events will be deemed the
-root cause of a stem or flag is undefined.  So for annotating those,
-time-based footnotes are preferable as well.
+@item 時間に紐づく脚注
+これは、音楽コンテキスト内の時間の一点に関連付けられます。@c
+@code{\time} や @code{\clef} といったいくつかのコマンドは、@c
+拍子記号や音部記号を作り出すのにイベントを使いません。@c
+和音もそれ自体ではイベントを作りません: その和音の符幹や符尾が、
+タイム ステップの最後に (名目上は中にある音符のどれかを通して) 作られます。@c
+和音の中のどの音符が符幹や符尾の生成元として見なされるのかは、@c
+正確に定義されていません。そのため、符幹や符尾に脚注を付加する場合にも、@c
+こちらのタイプを用いると良いでしょう。
 
-A time-based footnote allows such layout objects to be annotated
-without referring to an event.  The general form for Time-based
-footnotes is:
+時間に基づく脚注は、イベントを参照せずに、@c
+このようなレイアウト オブジェクトに注釈を入れることができます。@c
+この脚注の一般的な形は以下のようなものです:
 
 @example
 \footnote [@var{mark}] @var{offset} @var{footnote} [@var{Context}].@var{GrobName}
@@ -1367,58 +1367,57 @@ footnotes is:
 
 @end table
 
-The elements for both forms are:
+2 つの形にあるそれぞれの要素は以下のような意味を持ちます:
 
 @table @var
 
 @item direction
-If (and only if) the @code{\footnote} is being applied to a
-post-event or articulation, it must be preceded with a direction
-indicator (@code{-, _, ^}) in order to attach @var{music} (with
-a footnote mark) to the preceding note or rest.
+@code{\footnote} が音符の後に付加するイベントやアーティキュレンションに@c
+適用される場合に限り、方向指示子 (@code{-, _, ^}) を前に付けて、@c
+@var{music} が (脚注マークと共に) その前にある音符や休符に付加されるように@c
+しなければなりません。
 
 @item mark
-is a markup or string specifying the footnote mark which is used for
-marking both the reference point and the footnote itself at the
-bottom of the page.  It may be omitted (or equivalently replaced with
-@code{\default}) in which case a number in sequence will be generated
-automatically.  Such numerical sequences restart on each page
-containing a footnote.
+これは参照ポイントとページの下の脚注自体の両方に使われる、@c
+脚注マークを指定するマークアップや文字列です。これは省略することができ
+(これは @code{\default} に置き換えるのと同じです)、その時は自動的に@c
+連番が振られます。この連番は脚注が含まれるページごとにリセットされます。
 
 @item offset
-is a number pair such as @samp{#(2 . 1)} specifying the X and
-Y@tie{}offsets in units of staff-spaces from the boundary of the
-object where the mark should be placed.  Positive values of the
-offsets are taken from the right/top edge, negative values from the
-left/bottom edge and zero implies the mark is centered on the edge.
+これは @samp{#(2 . 1)} のような数のペアで、マークを配置する場所の
+X, Y@tie{}オフセットを、@c
+オブジェクトの境界からの譜スペース単位で指定します。@c
+正の値の場合は右/上からのオフセットとして、@c
+負の値の場合は左/下からのオフセットとして解釈されます。@c
+0 は境界に中央揃えされることを意味します。
 
 @item Context
-is the context in which the grob being footnoted is created.  It
-may be omitted if the grob is in a bottom context, e.g., a
-@code{Voice} context.
+これは脚注の付加されるグラフィカル オブジェクトが作られるコンテキストを@c
+指定します。グラフィカル オブジェクトが @code{Voice} のような@c
+下位のコンテキストに属している場合は省略することができます。
 
 @item GrobName
-specifies a type of grob to mark (like @samp{Flag}).  If it is
-specified, the footnote is not attached to a music expression in
-particular, but rather to all grobs of the type specified which
-occur at that moment of musical time.
+これは (@samp{Flag} のように) 脚注の付加されるグラフィカル オブジェクトを@c
+指定します。これが指定された場合、脚注はある特定の音楽表記に付加される@c
+ことはなく、その音楽タイミングで生成される、指定したグラフィカル オブジェクト@c
+全てに付加されます。
 
 @item footnote
-is the markup or string specifying the footnote text to use at the
-bottom of the page.
+ページの下で用いる脚注テキストを指定するマークアップや文字列です。
 
 @item music
-is the music event or post-event or articulation
-that is being annotated.
+脚注が付加される、音楽イベントや音符の後に付加するイベント、@c
+アーティキュレーションです。
 
 @end table
 
-@subsubsubheading Event-based footnotes
+@subsubsubheading イベントに紐づく脚注
 
-@cindex footnotes, event-based
+@cindex footnotes, event-based (イベントに紐づく脚注)
 
-A footnote may be attached to a layout object directly caused
-by the event corresponding to @var{music} with the syntax:
+
+以下の構文で、@var{music} によるイベントから生成されるレイアウト
+オブジェクトに脚注を加えることができます:
 
 @example
 \footnote [@var{mark}] @var{offset} @var{footnote} @var{music}
@@ -1436,29 +1435,30 @@ by the event corresponding to @var{music} with the syntax:
 }
 @end lilypond
 
-Marking a @emph{whole} chord with an event-based footnote is not
-possible: a chord, even one containing just a single note, does
-not produce an actual event of its own.  However, individual
-notes @emph{inside} of the chord can be marked:
+和音@emph{全体}にイベントに紐づく脚注を付け加えることはできません。@c
+和音は、例え 1 つの音符しか持っていなかったとしても、@c
+それ自身ではイベントを作り出さないからです。しかし、@c
+和音の@emph{中}にある個別の音符には脚注を付け加えることができます:
 
+@c KEEP LY
 @lilypond[quote,verbatim,papersize=a8landscape]
 \book {
   \header { tagline = ##f }
   \relative c'' {
-    \footnote #'(2 . 3) "Does not work" <a-3>2
-    <\footnote #'(-2 . -3) "Does work" a-3>4
-    <a-3 \footnote #'(3 . 1/2) "Also works" c-5>4
+    \footnote #'(2 . 3) "Does not work" <a-3>2 % これは動作しません
+    <\footnote #'(-2 . -3) "Does work" a-3>4 % これは動作します
+    <a-3 \footnote #'(3 . 1/2) "Also works" c-5>4 % これも動作します
   }
 }
 @end lilypond
 
-If the footnote is to be attached to a post-event or articulation
-the @code{\footnote} command @emph{must} be preceded by a direction
-indicator, @code{-, _, ^}, and followed by the post-event or
-articulation to be annotated as the @var{music} argument.  In this
-form the @code{\footnote} can be considered to be simply a copy of
-its last argument with a footnote mark attached to it.  The syntax
-is:
+脚注が音符の後に付加するイベントやアーティキュレンションに@c
+付加される場合、@code{\footnote} コマンドの前に@emph{必ず}@c
+方向指示子 (@code{-, _, ^}) を付けて、@c
+後にイベントやアーティキュレーションを続けなければなりません。@c
+この形では、@code{\footnote} の部分が、@c
+最後の引数 @var{music} に脚注マークが付加されたもののコピーとして@c
+解釈することができます。構文は以下です:
 
 @example
 @var{direction} \footnote [@var{mark}] @var{offset} @var{footnote} @var{music}
@@ -1477,14 +1477,14 @@ is:
 }
 @end lilypond
 
-@subsubsubheading Time-based footnotes
+@subsubsubheading 時間に紐づく脚注
 
-@cindex footnotes, time-based
+@cindex footnotes, time-based (時間に紐づく脚注)
 
-If the layout object being footmarked is @emph{indirectly} caused by
-an event (like an @code{Accidental} or @code{Stem} caused by a
-@code{NoteHead} event), the @var{GrobName} of the layout object
-is required after the footnote text instead of @var{music}:
+脚注が付加されるレイアウト オブジェクトがイベントから@emph{間接的に}@c
+生成されるものである場合 (@code{Accidental} や @code{Stem} など) には、@c
+そのレイアウト オブジェクトの @var{GrobName} が脚注テキストの後に、@c
+@var{music} の代わりに必要です:
 
 @lilypond[quote,verbatim,papersize=a8landscape]
 \book {
@@ -1500,8 +1500,8 @@ is required after the footnote text instead of @var{music}:
 }
 @end lilypond
 
-Note, however, that when a GrobName is specified, a footnote
-will be attached to all grobs of that type at the current time step:
+しかし、GrobName が指定された場合、脚注が現在のタイム ステップにある@c
+全てのグラフィカル オブジェクトに付加されることに注意してください:
 
 @lilypond[quote,verbatim,papersize=a8landscape]
 \book {
@@ -1515,17 +1515,16 @@ will be attached to all grobs of that type at the current time step:
 }
 @end lilypond
 
-A note inside of a chord can be given an individual (event-based)
-footnote.  A @samp{NoteHead} is the only grob directly caused
-from a chord note, so an event-based footnote command is
-@emph{only} suitable for adding a footnote to the @samp{NoteHead}
-within a chord.  All other chord note grobs are indirectly caused.
-The @code{\footnote} command itself offers no syntax for
-specifying @emph{both} a particular grob type @emph{as well as} a
-particular event to attach to.  However, one can use a time-based
-@code{\footnote} command for specifying the grob type, and then
-prefix this command with @code{\single} in order to have it
-applied to just the following event:
+和音内の各音符にはそれぞれ (イベントに紐づく) 脚注を加えることができます。@c
+@samp{NoteHead} のみが音符から直接生成されるグラフィカル オブジェクトです。@c
+そのため、イベントに紐づく脚注は、和音内の @samp{NoteHead} に脚注を@c
+加える時に@emph{のみ}有効です。和音における他のグラフィカル オブジェクトは@c
+間接的に生成されるものです。@code{\footnote} コマンド自体は、@c
+グラフィカル オブジェクトの種類と、どの特定のイベントに付加するかを@c
+@emph{両方}指定できるような構文がありません。しかし、@c
+グラフィカル オブジェクトの種類を指定するために時間に紐づく脚注を使用し、@c
+それを @code{\single} で前置することで次に来るイベントのみに適用させることが@c
+できます。
 
 @lilypond[quote,verbatim,papersize=a8landscape]
 \book {
@@ -1541,11 +1540,9 @@ applied to just the following event:
 }
 @end lilypond
 
-@warning {When footnotes are attached to several musical elements at
-the same musical moment, as they are in the example above, the
-footnotes are numbered from the higher to the lower elements as they
-appear in the printed output, not in the order in which they are
-written in the input stream.}
+@warning {脚注が上の例のように、同じ音楽タイミングにあるいくつかの要素に@c
+付加する場合、脚注の番号は入力ファイルでの順番ではなく、@c
+上に表示されるものから順番に割り振られます。}
 
 Layout objects like clefs and key-change signatures are mostly caused
 as a consequence of changed properties rather than actual events.
