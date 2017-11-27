@@ -1544,19 +1544,20 @@ X, Y@tie{}オフセットを、@c
 付加する場合、脚注の番号は入力ファイルでの順番ではなく、@c
 上に表示されるものから順番に割り振られます。}
 
-Layout objects like clefs and key-change signatures are mostly caused
-as a consequence of changed properties rather than actual events.
-Others, like bar lines and bar numbers, are a direct consequence of
-timing.  For this reason, footnotes on such objects have to be based
-on their musical timing.  Time-based footnotes are also preferable
-when marking features like stems and beams on @emph{chords}: while
-such per-chord features are nominally assigned to @emph{one} event
-inside the chord, relying on a particular choice would be imprudent.
+音部記号や転調を示す調号のようなレイアウト オブジェクトは、@c
+基本的には実際のイベントから作られるわけではなく、@c
+プロパティが変化した結果として生成されるものです。@c
+また、小節線や小節番号は、タイミングに基づいて生成されるものです。@c
+そのため、このようなオブジェクトに脚注を付ける場合には、それが生成される@c
+音楽的タイミングに紐付ける必要があります。@c
+時間に紐づく脚注は、@emph{和音}にある符幹や連桁に脚注を付加する場合にも@c
+有効です。このようなオブジェクトは名目上、和音内のどれか 1 つのイベントに@c
+割り当てられて生成されます。特定の音符に脚注を紐付けることは軽率でしょう。
 
-The layout object in question must always be explicitly specified
-for time-based footnotes, and the appropriate context must be
-specified if the grob is created in a context other than the bottom
-context.
+脚注を付ける対象となるレイアウト オブジェクトは、時間に紐づく脚注の場合には@c
+常に明示する必要があります。また、グラフィカル オブジェクトが下位
+(訳注: Voice など) ではないコンテキストで生成される場合には、@c
+正しいコンテキストを指定する必要があります。
 
 @lilypond[quote,verbatim,papersize=a8landscape]
 \book {
@@ -1576,6 +1577,7 @@ context.
 }
 @end lilypond
 
+数字の代わりに独自の脚注マークを使うことができ、
 Custom marks can be used as alternatives to numerical marks, and the
 annotation line joining the marked object to the mark can be
 suppressed:
