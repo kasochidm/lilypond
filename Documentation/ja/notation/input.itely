@@ -1577,10 +1577,9 @@ X, Y@tie{}オフセットを、@c
 }
 @end lilypond
 
-数字の代わりに独自の脚注マークを使うことができ、
-Custom marks can be used as alternatives to numerical marks, and the
-annotation line joining the marked object to the mark can be
-suppressed:
+数字の代わりに独自の脚注マークを使うことができ、@c
+マークされるオブジェクトと、脚注マークを繋げる線の表示を@c
+抑制することができます:
 
 @lilypond[quote,verbatim,papersize=a8landscape]
 \book {
@@ -1598,46 +1597,46 @@ suppressed:
 }
 @end lilypond
 
-More examples of custom marks are shown in
-@ref{Footnotes in stand-alone text}.
+脚注マークのカスタマイズについての更なる例は、@c
+@ref{Footnotes in stand-alone text} にあります。
 
 
-@node Footnotes in stand-alone text
-@unnumberedsubsubsec Footnotes in stand-alone text
+@node 独立したテキストの中にある脚注
+@unnumberedsubsubsec 独立したテキストの中にある脚注
+@translationof Footnotes in stand-alone text
 
-@cindex footnotes in stand-alone text
+@cindex footnotes in stand-alone text (独立したテキストの中にある脚注)
 
-These are for use in markup outside of music expressions.  They do
-not have a line drawn to their point of reference: their marks simply
-follow the referenced markup.  Marks can be inserted automatically,
-in which case they are numerical.  Alternatively, custom marks can be
-provided manually.
+これらは参照ポイントを指す線を表示しません。脚注マークは、@c
+脚注を付加されるマークアップの後に続いて表示されます。@c
+マークは自動で挿入することができ、その場合には連番が割り振られます。@c
+手動で、独自のマークを使うよう設定することもできます。
 
-Footnotes to stand-alone text with automatic and custom marks are
-created in different ways.
+独立したテキストの中にある脚注を自動で作る方法と、独自のマークを使うために@c
+手動で作る方法は異なります。
 
-@subsubsubheading Footnotes in stand-alone text with automatic marks
+@subsubsubheading 独立したテキストに自動マークで脚注を付加する
 
-The syntax of a footnote in stand-alone text with automatic marks is
+独立したテキストに自動マークで脚注を付加するための構文は以下です:
 
 @example
 \markup @{ @dots{} \auto-footnote @var{text} @var{footnote} @dots{} @}
 @end example
 
-The elements are:
+要素は以下の通りです:
 
 @table @var
 
 @item text
-is the markup or string to be marked.
+これは、脚注を付加するマークアップや文字列です。
 
 @item footnote
-is the markup or string specifying the footnote text to use at the bottom
-of the page.
+
+ページの下で用いる脚注テキストを指定するマークアップや文字列です。
 
 @end table
 
-For example:
+例を示します:
 
 @lilypond[verbatim,quote,ragged-right,papersize=a8]
 \book {
@@ -1655,32 +1654,34 @@ For example:
 }
 @end lilypond
 
-@subsubsubheading Footnotes in stand-alone text with custom marks
+@subsubsubheading 独立したテキストに独自のマークで脚注を付加する
 
-The syntax of a footnote in stand-alone text with custom marks is
+独立したテキストに独自のマークで脚注を付加するための構文は以下です:
 
 @example
 \markup @{ @dots{} \footnote @var{mark} @var{footnote} @dots{} @}
 @end example
 
-The elements are:
+要素は以下の通りです:
 
 @table @var
 
 @item mark
-is a markup or string specifying the footnote mark which is used for
-marking the reference point.  Note that this mark is @emph{not}
-inserted automatically before the footnote itself.
+
+これは参照ポイントに使われる、@c
+脚注マークを指定するマークアップや文字列です。@c
+このマークは脚注自体の最初に自動で挿入@emph{されない}ことに注意してください。
 
 @item footnote
-is the markup or string specifying the footnote text to use at the
-bottom of the page, preceded by the @var{mark}.
+ページの下で用いる脚注テキストを指定するマークアップや文字列です。@c
+通常、@var{mark} から始めます。
 
 @end table
 
-Any easy-to-type character such as * or + may be used as a mark, as
-shown in @ref{Footnotes in music expressions}.  Alteratively, ASCII
-aliases may be used (see @ref{ASCII aliases}):
+@ref{Footnotes in music expressions} にあるように、@c
+* や + などの簡単な文字をマークとして用いることができます。@c
+他に、ASCII エイリアスを用いることができます (@ref{ASCII aliases} を@c
+参照してください)。
 
 @lilypond[verbatim,quote,ragged-right,papersize=a8]
 \book {
@@ -1701,8 +1702,8 @@ aliases may be used (see @ref{ASCII aliases}):
 }
 @end lilypond
 
-Unicode character codes may also be used to specify marks
-(see @ref{Unicode}):
+Unicode 文字をマークに使うこともできます
+(@ref{Unicode} を参照してください)。
 
 @lilypond[verbatim,quote,ragged-right,papersize=a8]
 \book {
@@ -1729,7 +1730,7 @@ Unicode character codes may also be used to specify marks
 @rlearning{Objects and interfaces}
 
 記譜法リファレンス:
-@ref{ASCII aliases}
+@ref{ASCII aliases},
 @ref{Balloon help},
 @ref{List of special characters},
 @ref{Text marks},
@@ -1744,82 +1745,12 @@ Unicode character codes may also be used to specify marks
 
 @knownissues
 同じページにある複数の脚注は上下にしか配置できません。@c
-ある脚注が他の脚注の上に配置され、同じ行に配置することはできません。@c
-@code{MultiMeasureRests} に脚注を付けることはできず、@c
-@code{Staff}、@code{\markup} オブジェクト、それに他の @code{footnote} と@c
-衝突する可能性があります。@c
-手動の @code{footnote} コマンドを使う場合、@c
-containing @code{footnote-auto-number = ##f} を保持している
-@code{\paper} ブロックが必要です。
+一方の脚注はもう一方の脚注の上に配置され、同じ行に配置することはできません。
 
+@code{MultiMeasureRests}、自動連桁、歌詞に脚注を付けることはできません。
 
-@ignore
-@node カスタム タイトル
-@subsection カスタム タイトル
-@translationof Custom titles
-
-さらに高度なオプションとして、@c
-@code{\paper} ブロックの中にある以下の変数の定義を変更することができます。@c
-初期化ファイル @file{../ly/titling-init.ly} が@c
-デフォルトのレイアウトの設定リストです。
-
-@table @code
-@funindex bookTitleMarkup
-@item bookTitleMarkup
-  これは出力ドキュメントの先頭に付け加えられるタイトルです。@c
-通常、ここには作品の作曲者名とタイトルが含まれます。
-
-@funindex scoreTitleMarkup
-@item scoreTitleMarkup
-  これは @code{\score} ブロックの上に配置されるタイトルです。@c
-通常、ここには楽章の名前　(@code{piece} フィールド) が含まれます。
-
-@funindex oddHeaderMarkup
-@item oddHeaderMarkup
-  これは奇数番号ページのヘッダです。
-
-@funindex evenHeaderMarkup
-@item evenHeaderMarkup
-  これは偶数番号ページのヘッダです。@c
-これが指定されていない場合は、奇数番号ページのヘッダが代わりに使用されます。
-
-  デフォルトのヘッダ定義は、ページ番号は端に配置し、@c
-楽器名は中央に配置するようになっています。
-
-@funindex oddFooterMarkup
-@item oddFooterMarkup
-  これは奇数番号ページのフッタです。
-
-@funindex evenFooterMarkup
-@item evenFooterMarkup
-  これは偶数番号ページのフッタです。@c
-これが指定されていない場合は、偶数番号ページのフッタが代わりに使用されます。
-
-  デフォルトでは、最初のページのフッタには著作権についての注意書きが含まれ、@c
-最後のページのフッタにはタグ行が含まれます。
-@end table
-
-
-@cindex \paper
-@cindex header (ヘッダ)
-@cindex footer (フッタ)
-@cindex page layout (ページ レイアウト)
-@cindex titles (タイトル)
-
-以下の定義では、タイトルはページの左側に配置され、@c
-作曲者名は同じ行の右側に配置されます。
-
-@verbatim
-\paper {
-  bookTitleMarkup = \markup {
-   \fill-line {
-     \fromproperty #'header:title
-     \fromproperty #'header:composer
-   }
-  }
-}
-@end verbatim
-@end ignore
+脚注は譜や @code{\markup} オブジェクト、他の脚注マークや線と@c
+衝突する可能性があります。
 
 @node ページ番号の参照
 @subsection ページ番号の参照
@@ -1908,40 +1839,84 @@ containing @code{footnote-auto-number = ##f} を保持している
 
 目次を構成するために使用するマークアップは
 @code{\paper} ブロックの中で定義します。@c
-デフォルトのマークアップは、@c
-目次のタイトルを構成する @code{tocTitleMarkup} と、@c
-目次の要素 -- 要素のタイトルとページ番号 -- を構成する
-@code{tocItemMarkup} です。@c
-これらの変数はユーザによって変更することができます:
+@q{予め定義された}マークアップが 2 種類あります:
 
-@c KEEP LY
+@item
+@code{tocTitleMarkup}
+
+@noindent
+目次のタイトルをフォーマットするために使います。
+
+@verbatim
+tocTitleMarkup = \markup \huge \column {
+  \fill-line { \null "Table of Contents" \null }
+  \null
+}
+@end verbatim
+
+@item
+@code{tocItemMarkup}
+
+@noindent
+目次の中にある要素をフォーマットするために使います。
+
+@verbatim
+tocItemMarkup = \markup \fill-line {
+  \fromproperty #'toc:text \fromproperty #'toc:page
+}
+@end verbatim
+
+@end itemize
+
+@noindent
+これらの 2 つの変数は変更することができます。
+
+これは目次のタイトルをフランス語に変更する例です:
+
 @verbatim
 \paper {
-  %% 目次タイトルをフランス語に翻訳します:
   tocTitleMarkup = \markup \huge \column {
     \fill-line { \null "Table des matières" \null }
     \hspace #1
   }
-  %% より大きなフォント サイズを使用します
-  tocItemMarkup = \markup \large \fill-line {
-    \fromproperty #'toc:text \fromproperty #'toc:page
-  }
+@end verbatim
+
+これは目次の各要素のフォント サイズを変更する例です:
+
+@verbatim
+tocItemMarkup = \markup \large \fill-line {
+  \fromproperty #'toc:text \fromproperty #'toc:page
 }
 @end verbatim
 
-@code{tocItemMarkup} 定義の中で目次要素のテキストとページ番号を@c
+@code{tocItemMarkup} 定義の中で要素のテキストとページ番号を@c
 参照する方法に注目してください。
 
-より手の込んだ目次を構築するために新しいコマンドとマークアップを@c
-定義することもできます:
-@itemize
-@item まず、@code{\paper} ブロックの中で新しいマークアップ変数を定義します
-@item それから、このマークアップ変数を用いて、@c
-目次要素を付け加えるための音楽関数を定義します。
-@end itemize
+目次のアイテムと、対応するページ番号との間の部分をドットで埋めるために、@c
+@code{tocItemMarkup} の中に @code{\tocItemWithDotsMarkup} コマンドを@c
+挿入することができます:
 
-以下の例では、@c
-オペラの目次の中で幕の名前を挿入するために新しい様式を定義しています:
+@lilypond[verbatim,line-width=10.0\cm]
+\header { tagline = ##f }
+\paper {
+  tocItemMarkup = \tocItemWithDotsMarkup
+}
+
+\book {
+  \markuplist \table-of-contents
+  \tocItem \markup { Allegro }
+  \tocItem \markup { Largo }
+  \markup \null
+}
+@end lilypond
+
+更に複雑な目次を作るために、独自のマークアップを用いたカスタム コマンドを@c
+定義することもできます。次の例では、オペラの目次において幕の名前を入力する@c
+新たなスタイルを定義しています:
+
+@noindent
+新たなマークアップ変数 (@code{tocActMarkup}) は @code{\paper} ブロックに@c
+定義します:
 
 @verbatim
 \paper {
@@ -1951,11 +1926,20 @@ containing @code{footnote-auto-number = ##f} を保持している
     \hspace #1
   }
 }
-
-tocAct =
-#(define-music-function (text) (markup?)
-   (add-toc-item! 'tocActMarkup text))
 @end verbatim
+
+@noindent
+音楽関数 (@code{tocAct}) を定義します -- ここで、新たなマークアップ定義である@c
+@code{tocActMarkup} を使います:
+
+@verbatim
+tocAct =
+  #(define-music-function (text) (markup?)
+     (add-toc-item! 'tocActMarkup text))
+@end verbatim
+
+@noindent
+このカスタム定義を使う LilyPond 入力ファイルはこのようになります:
 
 @lilypond[line-width=10.0\cm]
 \header { tagline = ##f }
@@ -1975,7 +1959,7 @@ tocAct =
   \markuplist \table-of-contents
   \tocAct \markup { Atto Primo }
   \tocItem \markup { Coro. Viva il nostro Alcide }
-  \tocItem \markup { Cesare. Presti omai l'Egizzia terra }
+  \tocItem \markup { Cesare. Presti omai l'Egizia terra }
   \tocAct \markup { Atto Secondo }
   \tocItem \markup { Sinfonia }
   \tocItem \markup { Cleopatra. V'adoro, pupille, saette d'Amore }
@@ -1983,21 +1967,18 @@ tocAct =
 }
 @end lilypond
 
-要素とページ番号の間をドットで埋めることができます:
 
-@lilypond[verbatim,line-width=10.0\cm]
-\header { tagline = ##f }
+目次内で使う @code{\fill-with-pattern} コマンドの例です:
+
+@verbatim
 \paper {
-  tocItemMarkup = \tocItemWithDotsMarkup
+  tocItemMarkup = \markup { \fill-line {
+    \override #'(line-width . 70)
+    \fill-with-pattern #1.5 #CENTER . \fromproperty #'toc:text \fromproperty #'toc:page
+    }
+  }
 }
-
-\book {
-  \markuplist \table-of-contents
-  \tocItem \markup { Allegro }
-  \tocItem \markup { Largo }
-  \markup \null
-}
-@end lilypond
+@end verbatim
 
 @seealso
 インストールされているファイル:
@@ -2007,7 +1988,7 @@ tocAct =
 @funindex \table-of-contents
 @code{\table-of-contents},
 @funindex \tocItem
-@code{\tocItem}.
+@code{\tocItem}
 @endpredefined
 
 
