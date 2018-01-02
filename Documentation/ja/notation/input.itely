@@ -2050,7 +2050,7 @@ DOS/Windows ではバックスラッシュ \ を使用します) によって@c
 @example
 \include "parts/VI.ly"
 \include "parts/VII.ly"
-... etc
+@dots{} etc
 @end example
 
 インクルードされるファイルも @code{\include} 文を持つことができます。@c
@@ -2064,12 +2064,54 @@ DOS/Windows ではバックスラッシュ \ を使用します) によって@c
 コマンド ラインで渡すことによって
 (あるいは、メイン入力ファイルの先頭に
 @code{#(ly:set-option 'relative-includes #t)} を付け加えることによって)
-変更することができます。@c
-@code{relative-includes} をセットすることで、@c
+グローバルに変更することができます。@c
+@code{relative-includes} をセットした時、@c
 各 @code{\include} コマンドのパスは@c
 そのコマンドを保持しているファイルからの相対参照になります。@c
 この振る舞いを使用することが推奨されていて、@c
 lilypond の将来のバージョンではこの振る舞いがデフォルトになります。
+
+@code{relative-includes} をファイル内の正しい位置で @code{#t} あるいは
+@code{#f} にセットすることで、メイン ディレクトリからの相対位置にある@c
+ファイルや、その他のディレクトリからの相対位置にあるファイルを同時に
+@code{\include} することができます。@c
+例えば、様々なファイルから使われるようなライブラリ libA の@c
+エントリ ポイントが、サブ ファイルを @code{\include} している場合、@c
+これらの @code{\include} 文の前に
+@code{#(ly:set-option #relative-includes #t)}
+を配置し、メインの @code{.ly} ファイルに読み込まれる時に、パスが正しく解釈@c
+されるようにします。このようになります:
+
+@example
+libA/
+  libA.ly
+  A1.ly
+  A2.ly
+  @dots{}
+@end example
+
+@noindent
+
+エントリ ポイントとなるファイル @code{libA.ly} には以下の内容を含んでいます:
+
+@example
+#(ly:set-option 'relative-includes #t)
+\include "A1.ly"
+\include "A2.ly"
+@dots{}
+% 通常の設定に戻します
+#(ly:set-option 'relative-includes #f)
+@end example
+
+あとは以下の構文で、好きな @file{.ly} ファイルからライブラリ全体を@c
+読み込むことができます:
+
+@example
+\include "~/libA/libA.ly"
+@end example
+
+さらに複雑なファイル構造も、設定を適切な場所で変更することによって@c
+扱うことができます。
 
 コマンド ラインから LilyPond を呼び出すときにオプションとして指定した@c
 サーチ パスに含まれるディレクトリから@c
@@ -2089,7 +2131,7 @@ lilypond --include=parts main.ly
 @example
 \include "VI.ly"
 \include "VII.ly"
-... etc
+@dots{} etc
 @end example
 
 いくつもの楽譜でインクルードされるファイルは
@@ -2174,7 +2216,7 @@ sopranoMusic = \relative { a'4 b c b8( a) }
 altoMusic = \relative { e'4 e e f }
 tenorMusic = \relative { c'4 b e d8( c) }
 bassMusic = \relative { a4 gis a d, }
-allLyrics = \lyricmode {King of glo -- ry }
+allLyrics = \lyricmode { King of glo -- ry }
 <<
   \new Staff = "Soprano" \sopranoMusic
   \new Lyrics \allLyrics
@@ -2192,17 +2234,11 @@ allLyrics = \lyricmode {King of glo -- ry }
   \new Lyrics \allLyrics
   \new PianoStaff <<
     \new Staff = "RH" {
-      \set Staff.printPartCombineTexts = ##f
-      \partcombine
-      \sopranoMusic
-      \altoMusic
+      \partcombine \sopranoMusic \altoMusic
     }
     \new Staff = "LH" {
-      \set Staff.printPartCombineTexts = ##f
       \clef "bass"
-      \partcombine
-      \tenorMusic
-      \bassMusic
+      \partcombine \tenorMusic \bassMusic
     }
   >>
 >>
@@ -2222,12 +2258,9 @@ allLyrics = \lyricmode {King of glo -- ry }
 @funindex \tag
 @funindex \keepWithTag
 @funindex \removeWithTag
-@funindex \pushToTag
-@funindex \appendToTag
 @cindex tag (タグ)
 @cindex keep tagged music (タグの付いた音楽を保持する)
 @cindex remove tagged music (タグの付いた音楽を排除する)
-@cindex splice into tagged music (タグの付いた音楽を組み合わせる)
 
 @code{\tag #'@var{partA}} コマンドは音楽表記に
 @var{partA} という名前を付けます。@c
@@ -2240,24 +2273,35 @@ allLyrics = \lyricmode {King of glo -- ry }
 @headitem フィルタ
   @tab 結果
 @item
-@code{\keepWithTag #'@var{name}} が前に付くタグ付きの音楽
-  @tab タグの付いていない音楽と @var{name} というタグの付いた音楽が@c
+@code{\keepWithTag #'@var{name}} あるいは
+@code{\keepWithTag #'(@var{name1} @var{name2}@dots{})} が@c
+前に付くタグ付きの音楽
+@tab タグの付いていない音楽と、与えられたタグ名のいずれかに当てはまる音楽が@c
 インクルードされます。@c
 他のタグ名を持つタグ付き音楽は排除されます。
 @item
-@code{\removeWithTag #'@var{name}} が前に付くタグ付きの音楽
-  @tab タグの付いていない音楽と @var{name} 以外のタグを持つ音楽が@c
-インクルードされます。@c
-@var{name} というタグの付いた音楽は排除されます。
+@code{\removeWithTag #'@var{name}} あるいは
+@code{\removeWithTag #'(@var{name1} @var{name2}@dots{})} が@c
+前に付くタグ付きの音楽
+@tab タグの付いていない音楽と、与えられたタグ名のどれにも当てはまらない音楽が@c
+インクルードされます。与えられたタグ名のいずれかに当てはまる音楽は排除されます。
 @item
 @code{\keepWithTag} と @code{\removeWithTag} のどちらも@c
 前に付かないタグ付きの音楽
-  @tab タグの付いた音楽とタグの付いていない音楽すべてがインクルードされます。
+@tab タグの付いた音楽とタグの付いていない音楽すべてがインクルードされます。
 @end multitable
 
-@code{\tag}、@code{\keepWithTag} それに @code{\removeWithTag} コマンドの引数は@c
 シンボル (@code{#'score} や @code{#'part} など) とその後に続けて@c
 音楽表記であるべきです。
+
+@code{\tag}、@code{\keepWithTag} それに @code{\removeWithTag} コマンドの引数は@c
+シンボルやシンボルのリスト (例えば @code{#'score} or @code{#'(violinI violinII})
+と、音楽表記の順であるべきです。シンボルが LilyPond において正しい識別子
+(アルファベットのみから成り、数字、アンダースコア、ダッシュは含まない) で@c
+あり、音符名と混同しない場合である@emph{限り}、@code{#'} を省略することが@c
+でき、シンボルのリストはドットで区切る記法を用いることができます。例えば、@c
+@code{\tag #'(violinI violinII)} は @code{\tag violinI.violinII} と書くことが@c
+できます。@code{\keepWithTag} や @code{\removeWithTag} でも同様です。
 
 以下の例では、楽曲を 2 つのバージョンで示しています。@c
 1 つはトリルを通常の記譜法で示していて、@c
@@ -2317,12 +2361,13 @@ c1-\tag #'finger ^4
 c1-\tag #'warn ^"Watch!"
 @end example
 
-複数の @code{\tag} エントリで、表記に複数のタグを付ける場合もあります:
+複数の @code{\tag} エントリで、または複数のタグを一つのシンボルのリストにする@c
+ことで、表記に複数のタグを付けることもできます:
 
 @lilypond[quote,verbatim]
 music = \relative c'' {
   \tag #'a \tag #'both { a4 a a a }
-  \tag #'b \tag #'both { b4 b b b }
+  \tag #'(b both) { b4 b b b }
 }
 <<
 \keepWithTag #'a \music
@@ -2332,19 +2377,22 @@ music = \relative c'' {
 @end lilypond
 
 単一の音楽表記に複数の @code{\removeWithTag} フィルタを適用することによって、@c
-いくつかの異なる名前のタグが付いたセクションを排除することができます:
+いくつかの異なる名前のタグが付いたセクションを排除することができます。または、@c
+@code{\removeWitTag} にタグのリストを与える表記を用いることもできます:
 
 @lilypond[verbatim,quote]
 music = \relative c'' {
-\tag #'A { a4 a a a }
-\tag #'B { b4 b b b }
-\tag #'C { c4 c c c }
-\tag #'D { d4 d d d }
+  \tag #'A { a4 a a a }
+  \tag #'B { b4 b b b }
+  \tag #'C { c4 c c c }
+  \tag #'D { d4 d d d }
 }
-{
-\removeWithTag #'B
-\removeWithTag #'C
-\music
+\new Voice {
+  \removeWithTag #'B
+  \removeWithTag #'C
+  \music
+  \removeWithTag #'(B C)
+  \music
 }
 @end lilypond
 
