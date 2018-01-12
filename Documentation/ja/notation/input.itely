@@ -2291,9 +2291,6 @@ allLyrics = \lyricmode { King of glo -- ry }
 @tab タグの付いた音楽とタグの付いていない音楽すべてがインクルードされます。
 @end multitable
 
-シンボル (@code{#'score} や @code{#'part} など) とその後に続けて@c
-音楽表記であるべきです。
-
 @code{\tag}、@code{\keepWithTag} それに @code{\removeWithTag} コマンドの引数は@c
 シンボルやシンボルのリスト (例えば @code{#'score} or @code{#'(violinI violinII})
 と、音楽表記の順であるべきです。シンボルが LilyPond において正しい識別子
@@ -2396,34 +2393,106 @@ music = \relative c'' {
 }
 @end lilypond
 
-単一の音楽表記に複数の @code{\keepWithTag} フィルタを適用すると、@c
-タグ付きセクションは @emph{すべて} 排除されます。@c
-なぜなら、最初のフィルタはあるタグ名以外を持つセクションを排除し、@c
-2 番目のフィルタがそのタグ名を持つセクションを排除するからです。
+単一の音楽表記に 2 つ以上の @code{\keepWithTag} フィルタを適用すると、@c
+タグ付きセクションが @emph{すべて} 排除されてしまいます。@c
+なぜなら、最初のフィルタがそのタグ以外を持つセクションを排除し、@c
+2 番目のフィルタが更にそのセクションを排除するからです。@c
+@code{\keepWithTag} コマンドを、複数のタグのリストを引数に与えて使うことで、@c
+そのリストに無いタグを持つセクションのみを削除することができます。
+
+@lilypond[verbatim,quote]
+music = \relative c'' {
+  \tag #'violinI { a4 a a a }
+  \tag #'violinII { b4 b b b }
+  \tag #'viola { c4 c c c }
+  \tag #'cello { d4 d d d }
+}
+
+\new Staff {
+  \keepWithTag #'(violinI violinII)
+  \music
+}
+@end lilypond
+
+@noindent
+上の例では、@var{violinI} と @var{violinII} の @code{\tag} を表示しますが、@c
+@var{viola} や @var{cello} は表示しません。
+
+@cindex tag groups (タグ グループ)
+@funindex \tagGroup
+
+While @code{\keepWithTag} is convenient when dealing with @emph{one} set
+of alternatives, the removal of music tagged with @emph{unrelated} tags
+is problematic when using them for more than one purpose.
+@code{\keepWithTag} は、@emph{1 つだけの}入れ替えのセットを扱う場合には@c
+便利ですが、@emph{関係のない}タグが付けられた音楽を削除してしまうことは、@c
+タグを複数の目的で使用したい場合に問題となります。@c
+そのような場合では、タグの@q{グループ}を宣言することができます。
+
+@example
+\tagGroup #'(violinI violinII viola cello)
+@end example
+
+@noindent
+こうすることで、4 つの異なるタグが一つの@q{タグ グループ}になります。@c
+それぞれのタグは、複数の@q{タグ グループ}のメンバとなることはできません。
+
+@example
+\keepWithTag #'violinI @dots{}
+@end example
+
+@noindent
+これで、@code{violinI} のタグ グループに含まれるタグから、該当するタグのみが@c
+表示され、@emph{その他の}タグは削除されます。@emph{(訳注: 指定されたタグ
+グループに含まれないタグは表示されたままになります。)}
+
+@lilypond[verbatim,quote]
+music = \relative {
+  \tagGroup #'(violinI violinII viola cello)
+  \tag #'violinI { c''4^"violinI" c c c }
+  \tag #'violinII { a2 a }
+  \tag #'viola { e8 e e2. }
+  \tag #'cello { d'2 d4 d }
+  R1^"untagged"
+}
+
+\new Voice {
+  \keepWithTag #'violinI
+  \music
+}
+@end lilypond
+
+@c 「与えられたタグに属するタグ グループのタグのみが表示される」は
+@c 実態と異なる気がするのでコメントアウト (cf. 上の訳注,
+@c https://lists.gnu.org/archive/html/lilypond-user/2015-12/msg00059.html)
+@c When using the @code{\keepWithTag} command, only tags from the tag
+@c groups of the tags given in the command are visible.
+
+@funindex \pushToTag
+@funindex \appendToTag
+@cindex splice into tagged music (タグの付いた音楽に組み込む)
 
 既存の音楽表記のある特定の場所にいくつか音を組み込みたいことがあります。@c
 @code{\pushToTag} と @code{\appendToTag} を使って、@c
-既存の音楽構造の @code{要素} の前または後に素材を追加することができます。@c
-すべての音楽構造が @code{要素} を持つわけではありませんが、@c
-連続するか同時進行する音楽構造はまず間違いなく @code{要素} を持ちます:
+既存の音楽構造の @code{elements} の前または後に素材を追加することができます。@c
+すべての音楽構造が @code{elements} を持つわけではありませんが、@c
+連続するか同時進行する音楽構造はまず間違いなく @code{elements} を持ちます:
 
 @lilypond[verbatim,quote]
-test = { \tag #'here { \tag #'here <<c''>> } }
+music = { \tag #'here { \tag #'here <<c''>> } }
 
 {
   \pushToTag #'here c'
   \pushToTag #'here e'
-  \pushToTag #'here g' \test
+  \pushToTag #'here g' \music
   \appendToTag #'here c'
   \appendToTag #'here e'
-  \appendToTag #'here g' \test
+  \appendToTag #'here g' \music
 }
 @end lilypond
 
 どちらのコマンドもタグ、組み込む素材、それにタグ付けされた音楽表記を
 取り、タグが出現するたびに素材を組み込みます。@c
-これらのコマンドは変更するものを全てコピーするので、@c
-オリジナルの @code{\test} が元の意味を保持し続けることを保証します。
 
 @seealso
 学習マニュアル:
@@ -2433,19 +2502,13 @@ test = { \tag #'here { \tag #'here <<c''>> } }
 @ref{Automatic part combining},
 @ref{Including LilyPond files}
 
-@ignore
-@c This warning is more general than this placement implies.
-@c Rests are not merged whether or not they come from tagged sections.
-@c Should be deleted?  -td
-
 @knownissues
-Multiple rests are not merged if you create a score with more
-than one tagged section at the same place.
-
-複数のタグ付きセクションからを生成した場合、@c
-同じ場所にある複数の休符はマージされません。
-
-@end ignore
+@code{\keepWithTag} や @code{\removeWithTag} でフィルタリングされた@c
+音楽表記に @code{\relative} を用いると、オクターブ関係が変化してしまいます。@c
+これは、フィルタリングされた音符のみが @code{\relative} で解釈されるためです。@c
+@code{\keepWithTag} や @code{\removeWithTag} よりも先に@c
+まず @code{\relative} を適用することで、全ての音符が解釈されるようになるため、@c
+危険を回避することができます。
 
 
 @node グローバル設定を使用する
@@ -2521,7 +2584,7 @@ LilyPond は入力のエンコーディング変換をまったく行いませ�
 そのようなテキストを入力する最も容易な方法は Unicode を認識するエディタを@c
 用いて、ファイルを UTF-8 で保存することです。@c
 人気のある現代的なエディタのほとんどが UTF-8 をサポートします
- -- 例えば、vim, Emacs, jEdit, GEdit です。@c
+ -- 例えば、vim, Emacs, jEdit, Gedit です。@c
 NT より後の MS Windows システムはすべて@c
 ネイティブ キャラクタ エンコーディングとして Unicode を使用します。@c
 そのため、Notepad でさえ UTF-8 フォーマットのファイルを@c
@@ -2539,11 +2602,12 @@ FT_Get_Glyph_Name () error: invalid argument
 
 ここでキリル文字、ヘブライ文字、ポルトガル語のテキストを表示する例を挙げます:
 
+@c NOTE: No verbatim in the following example as the code does not
+@c display correctly in PDF Font settings for Cyrillic and Hebrew
+
 @c KEEP LY
 @lilypond[quote]
-%c No verbatim here as the code does not display correctly in PDF
-% Font settings for Cyrillic and Hebrew
-% Linux Libertine fonts contain Cyrillic and Hebrew glyphs.
+% Linux Libertine フォントはキリル文字やヘブライ文字を含みます
 \paper {
   #(define fonts
     (set-global-fonts
@@ -2568,7 +2632,7 @@ portuguese = \lyricmode {
   à vo -- cê uma can -- ção legal
 }
 
-\relative  {
+\relative {
   c'2 d e f g f e
 }
 \addlyrics { \bulgarian }
@@ -2703,42 +2767,53 @@ Unicode U+03BE の文字を入力します
 * 記譜フォントを置換する::
 @end menu
 
+@funindex clip-regions
+@cindex Fragments, music (音楽の断片)
+@cindex Music fragments (音楽の断片)
+
 @node 音楽の断片を抽出する
 @subsection 音楽の断片を抽出する
 @translationof Extracting fragments of music
 
-大きな楽譜の中の小さな範囲を、出力から直接引用することができます。@c
-これは紙の楽譜の一部をはさみで切り抜くことに相当します。
+1 つあるいは複数の楽譜の断片を出力することができます。@c
+そのためには、@code{\layout} ブロックに抽出する部分を @code{clip-regions}
+関数で明示します。@c
+そして、LilyPond を @option{-dclip-systems} オプション付きで実行します。
 
-これは切り抜く小節を定義することによって実行されます。@c
-例えば、以下の定義は、
-
-
-@verbatim
-\layout {
+@example
+\layout @{
   clip-regions
   = #(list
       (cons
        (make-rhythmic-location 5 1 2)
        (make-rhythmic-location 7 3 4)))
-}
-@end verbatim
+@}
+@end example
 
 @noindent
-第 5 小節の中間から第 7 小節までを抽出します。@c
-@code{5 1 2} は第 5 小節の先頭から 1/2 音符の位置を意味し、@c
-@code{7 3 4} は第 7 小節の先頭から 4 分音符 3 つ分の位置を意味します。
+This example will extract a single fragment of the input file
+@emph{starting} after a half-note duration in fifth measure
+(@code{5 1 2}) and @emph{ending} after the third quarter-note in the
+seventh measure (@code{7 3 4}).
+この例では、5 小節目の 2 分音符 1 つ分後 (@code{5 1 2}) @emph{から}、@c
+7小節目の 4 分音符 3 つ分後 (@code{7 3 4}) @emph{まで}の部分を抽出します。
 
-リズムによる位置のペアをリストに追加することによって、@c
-更に多くの切り抜き範囲を定義することができます。
+@code{\layout} ブロックの @code{clip-regions} リストに
+@code{make-rhythmic-location} のペアを追加することで、断片を追加することが@c
+できます。
 
-この機能を使用するには、@c
-LilyPond を @option{-dclip-systems} を付けて呼び出す必要があります。@c
-切り抜きは EPS ファイルとして出力され、@c
-更にフォーマットが指定されている場合には PDF や PNG に変換されます。
+デフォルトでは、それぞれの断片は別々の @code{EPS} ファイルに出力されますが、@c
+必要であれば @code{PDF} や @code{PNG} などの別のフォーマットで出力することも@c
+できます。抽出された音楽は、元の楽譜を文字通り@q{切り抜いた}かのように@c
+出力されるため、断片が複数行にまたがる場合には、行ごとに出力ファイルが@c
+分割されます。
 
-出力フォーマットについての更なる情報は、@c
-@rprogram{lilypond を呼び出す} を参照してください。
+@seealso
+記譜法リファレンス:
+@ref{The layout block}
+
+アプリケーション使用方法:
+@rprogram{Command-line usage}
 
 @node 校正済みの音楽をスキップする
 @subsection 校正済みの音楽をスキップする
