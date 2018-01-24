@@ -2791,10 +2791,6 @@ Unicode U+03BE の文字を入力します
 @end example
 
 @noindent
-This example will extract a single fragment of the input file
-@emph{starting} after a half-note duration in fifth measure
-(@code{5 1 2}) and @emph{ending} after the third quarter-note in the
-seventh measure (@code{7 3 4}).
 この例では、5 小節目の 2 分音符 1 つ分後 (@code{5 1 2}) @emph{から}、@c
 7小節目の 4 分音符 3 つ分後 (@code{7 3 4}) @emph{まで}の部分を抽出します。
 
@@ -2830,10 +2826,10 @@ seventh measure (@code{7 3 4}).
 最後の数小節以外の譜刻をスキップすることができます。@c
 これはソース ファイルの中に以下を置くことによって実現できます:
 
-@verbatim
+@example
 showLastLength = R1*5
-\score { ... }
-@end verbatim
+\score @{ @dots{} @}
+@end example
 
 @noindent
 これは入力ファイルの中にあるそれぞれの @code{\score} の最後の 5 小節だけを@c
@@ -2853,12 +2849,13 @@ showLastLength = R1*5
 くれぐれも注意してください。
 
 @lilypond[quote,ragged-right,verbatim]
-\relative {
-  c''8 d
+\relative c' {
+  c1
   \set Score.skipTypesetting = ##t
-  e8 e e e e e e e
+  \tempo 4 = 80
+  c4 c c c
   \set Score.skipTypesetting = ##f
-  c8 d b bes a g c2
+  d4 d d d
 }
 @end lilypond
 
@@ -2876,10 +2873,10 @@ showLastLength = R1*5
 @cindex EPS output (EPS 出力)
 
 譜刻される楽譜のデフォルト出力フォーマットは、@c
-Portable Document Format (PDF) と PostScript (PS) です。@c
+Portable Document Format (PDF), PostScript (PS) です。@c
 コマンド ライン オプションを指定することにより、@c
-Scalable Vector Graphics (SVG), Encapsulated PostScript (EPS) それに
-Portable Network Graphics (PNG) 出力フォーマットが利用可能です。@c
+Portable Network Graphics (PNG), Scalable Vector Graphics (SVG),
+Encapsulated PostScript (EPS) による出力が利用可能です。@c
 @rprogram{Basic command line options for LilyPond} を参照してください。
 
 
@@ -2887,7 +2884,8 @@ Portable Network Graphics (PNG) 出力フォーマットが利用可能です。
 @subsection 記譜フォントを置換する
 @translationof Replacing the notation font
 
-LilyPond で使用される Emmentaler フォントの代わりに Gonville に使うことができます。@c
+Gonville は、LilyPond で使われるグリフ セットで、@emph{Feta}
+-- Emmentaler フォントの一部 -- の代わりとなります。@c
 Gonville は以下からダウンロードできます:
 @example
 @uref{http://www.chiark.greenend.org.uk/~sgtatham/gonville/ ,http://www.chiark.greenend.org.uk/~sgtatham/gonville/}
@@ -2897,28 +2895,70 @@ Gonville のサンプル小節です:
 
 @c NOTE: these images are a bit big, but that's important
 @c       for the font comparison.  -gp
-@sourceimage{Gonville_after,,,}
+@sourceimage{Gonville_after,15cm,,}
 
-LilyPond の Emmentaler フォントのサンプル小節です:
+LilyPond の Feta グリフのサンプル小節です:
 
-@sourceimage{Gonville_before,,,}
+@sourceimage{Gonville_before,15cm,,}
 
-@subsubheading MacOS でのインストール手順
+@subsubheading インストール手順
+フォント ファイルをダウンロードし、展開します。@c
+@file{gonville-11.otf},
+@file{gonville-13.otf},
+@file{gonville-14.otf},
+@file{gonville-16.otf},
+@file{gonville-18.otf},
+@file{gonville-20.otf},
+@file{gonville-23.otf},
+@file{gonville-26.otf},
+@file{gonville-brace.otf} ファイルを
+@file{@dots{}/share/lilypond/current/fonts/otf} か
+@file{@dots{}/share/lilypond/@var{X.Y.Z}/fonts/otf} にコピーします。
+@file{gonville-*.svg} や @file{gonville-*.woff} のファイルを持っているならば、@c
+それらを @file{@dots{}/share/lilypond/current/fonts/svg} か
+@file{@dots{}/share/lilypond/@var{X.Y.Z}/fonts/svg} にコピーします。
+更なる情報は、@rlearning{Other sources of information} を参照してください。
 
-ZIP ファイルをダウンロードして、伸張します。@c
-@code{lilyfonts} ディレクトリを @file{@var{SHARE_DIR}/lilypond/current} に@c
-コピーします
--- 更なる情報は、@rlearning{Other sources of information} を参照してください。@c
-既存の @code{fonts} ディレクトリを @code{fonts_orig} にリネームして、@c
-@code{lilyfonts} ディレクトリを @code{fonts} にリネームします。@c
-Emmentaler フォントに戻すには、@code{fonts_orig} を @code{fonts} に戻します。
+注: @file{gonville-*.otf} ファイルは
+@code{ps} や @code{eps} バックエンドで使われます。
+(PDF や PostScript を出力します)。
+@file{gonville-*.svg} ファイルは
+@code{svg} バックエンドで @code{svg-woff} オプションが無効な場合に使われます。
+@file{gonville-*.woff} ファイルは
+@code{svg} バックエンドで @code{svg-woff} オプションが有効な場合に使われます。
+更なる情報は、@rprogram{Advanced command line options for LilyPond} を@c
+参照してください。
+
+次の構文は、記譜フォント (記号類とブレースの両方) を
+Gonville フォントに変更します:
+
+@example
+\paper @{
+  #(define fonts
+    (set-global-fonts
+     #:music "gonville"
+     #:brace "gonville"
+   ))
+@}
+@end example
+
+注: @code{set-global-fonts} を呼び出すたびに、メインの記譜フォントとテキスト
+フォントの両方を完全にリセットします。どれかのカテゴリが指定されていない@c
+場合には、そのカテゴリのデフォルトフォントが使われます。@c
+@code{set-global-fonts} を呼び出すたびに、それに続く全ての @code{\book}
+(暗黙的に生成された場合と、明示的に生成された場合の両方を含みます) の@c
+フォントを変更します。つまり、それぞれの @code{\book} の前に@c
+@code{set-global-fonts} を呼び出すことによって、@code{\book} ごとにメイン
+フォントを指定することができます。@c
+更なる情報は、@ref{Entire document fonts} を参照してください。
 
 @seealso
 学習マニュアル:
 @rlearning{Other sources of information}
 
 記譜法リファレンス:
-@ref{The Emmentaler font}.
+@ref{The Emmentaler font},
+@ref{Entire document fonts}
 
 @knownissues
 Gonville では @q{古代の音楽} を記譜することはできません。@c
@@ -2927,9 +2967,46 @@ Gonville フォント ファミリーでは、@c
 ライセンス条件等を含む Gonville の更なる情報は、@c
 製作者の Web サイトを参照してください。
 
+@subsubheading 他の記譜フォント
 
-@c 2017/9/22 ノード名とその翻訳のみ変更
-@c 第1章のxrefを正しく動作させるため。
+@file{@var{fontname}-*.otf}, @file{@var{fontname}-*.svg},
+@file{@var{fontname}-*.woff} のような他の記譜フォントを持っている場合、@c
+Gonville と同じように使用することができます。
+
+つまり、
+@file{@var{fontname}-*.otf} ファイルを
+@file{@dots{}/share/lilypond/current/fonts/otf} や
+@file{@dots{}/share/lilypond/@var{X.Y.Z}/fonts/otf} にコピーします。
+@file{@var{fontname}-*.svg} や @file{@var{fontname}-*.woff} ファイルを@c
+持っているならば、それらを
+@file{@dots{}/share/lilypond/current/fonts/svg} や
+@file{@dots{}/share/lilypond/@var{X.Y.Z}/fonts/svg} にコピーします。
+
+注: 現在、LilyPond はフォントのファイル名に以下の接尾が付いていることを@c
+想定します。インストールしたフォントが正しく動作するためには、@c
+これらの全てが上のインストール フォルダに存在している必要があります:
+@file{-11}, @file{-13}, @file{-14}, @file{-16},
+@file{-18}, @file{-20}, @file{-23}, @file{-26}, @file{-brace} です。
+例えば、@file{emmentaler-11.otf}, @file{emmentaler-20.svg},
+@file{emmentaler-brace.woff} のようなファイルが必要です。
+
+次の構文は、記譜フォント (記号類とブレースの両方) を
+@var{fontname} フォントに変更します:
+
+@example
+\paper @{
+  #(define fonts
+    (set-global-fonts
+     #:music "@var{fontname}" ; font filename without suffix and extension
+     #:brace "@var{fontname}" ; font filename without suffix and extension
+   ))
+@}
+@end example
+
+注: @code{music} や @code{brace} カテゴリには、@c
+接尾や拡張子を除いたフォントのファイル名を指定してください。
+
+
 @node MIDI 出力を作り出す
 @section MIDI 出力を作り出す
 @translationof Creating MIDI output
@@ -2937,25 +3014,14 @@ Gonville フォント ファミリーでは、@c
 @cindex Sound (サウンド)
 @cindex MIDI
 
-MIDI (Musical Instrument Digital Interface) はデジタル楽器接続 / 制御の@c
-標準インタフェイスです。@c
-MIDI ファイルはいくつかのトラックの中にある音符の連なりです。@c
-MIDI ファイルは実際はサウンド ファイルではありません。@c
-音符の連なりと実際のサウンドの翻訳を行うには専用のソフトウェアが必要になります。
+LilyPond は MIDI (Musical Instrument Digital Interface) 標準に従う@c
+ファイルを出力することが出来るため、音楽の出力を聴いてチェックすることが@c
+できます (MIDI を解釈できるアプリケーションやデバイスが必要です)。@c
+MIDI 出力を聞くことで、間違えて入力された音符や、臨時記号の欠落などのミスを@c
+発見しやすくなります。
 
-LilyPond で記述した音楽は MIDI ファイルに変換することができ、@c
-入力されたものを聴くことができます。@c
-これは音楽をチェックするのに便利です。オクターブの外れや臨時記号の付け間違いは
-MIDI 出力を聴いたときに際立ちます。
-
-標準 MIDI 出力には粗雑さがあります。@c
-オプションで @ref{The Articulate script} を用いることにより、@c
-強化されたリアルな MIDI 出力を得ることができます。
-
-MIDI 出力は譜毎に 1 つのチャンネルを割り当て、@c
-ドラムのためにチャンネル 10 を予約します。@c
-デバイス 1 つにつき MIDI チャンネルは 16 しかないため、@c
-楽譜が 16 以上の譜を保持している場合、MIDI チャンネルは再利用されます。
+MIDI ファイルは (AAC, MP3, Vorbis ファイルのような) 音を含みません。@c
+これらから音を作り出すためには、追加のソフトウェアが必要です。
 
 @menu
 * MIDI ファイルを作り出す::
