@@ -3024,157 +3024,378 @@ MIDI ファイルは (AAC, MP3, Vorbis ファイルのような) 音を含みま
 これらから音を作り出すためには、追加のソフトウェアが必要です。
 
 @menu
-* MIDI ファイルを作り出す::
+* MIDI でサポートされている記法::
+* MIDI でサポートされていない記法::
 * MIDI ブロック::
-* 何が MIDI に出力されるのか？::
-* MIDI での繰り返し::
 * MIDI での音の強弱を制御する::
-* MIDI での打楽器::
+* MIDI の楽器::
+* MIDI での繰り返し::
+* MIDI のチャンネル マッピング::
+* MIDI エフェクトのためのコンテキスト プロパティ::
 * MIDI 出力をより良くする::
 @end menu
 
-@node MIDI ファイルを作り出す
-@subsection MIDI ファイルを作り出す
-@translationof Creating MIDI files
+@cindex MIDI, Supported notation (MIDI でサポートされている記法)
 
-LilyPond 入力ファイルから MIDI ファイルを作り出すには、@c
-スコアに @code{\midi} ブロックを付け加えます。@c
-例えば、以下のように:
+@node MIDI でサポートされている記法
+@subsection MIDI でサポートされている記法
+@translationof Supported notation for MIDI
 
-@example
-\score @{
-  @var{...music...}
-  \midi @{ @}
-@}
-@end example
+次に挙げる記法は、LilyPond の標準 MIDI 出力機能で使うことができます:
 
-@code{\layout} ブロックを持たない @code{\score} の中に
-@code{\midi} ブロックがある場合、MIDI 出力だけが生成されます。@c
-楽譜も必要な場合は、@code{\layout} ブロックも存在している必要があります。
+@itemize
+@item ブレス記号
+@item コード ネームとして入力された和音
+@item 複数の音符にまたがるクレッシェンドとデクレッシェンド。音量が始点から@c
+終点まで線形に変化します
+@item @code{ppppp} から @code{fffff} までの強弱記号
+(@code{mp}, @code{mf}, @code{sf} を含む)
+@item 和音@emph{ではない}微分音。ピッチ ベンドをサポートする MIDI プレイヤーが@c
+必要です。
+@item 歌詞
+@item ピッチ
+@item 長さが入力されたリズム (連符を含む)
+@item @q{シンプルな}アーティキュレーション:
+スタッカート、スタッカーティッシモ、アクセント、マルカート、ポルタート
+@item @code{\tempo} 関数が使われたテンポ変化
+@item タイ
+@item @q{@code{:}[@var{number}]} で入力@emph{されていない}トレモロ
+@end itemize
 
-@example
-\score @{
-  @var{...music...}
-  \midi @{ @}
-  \layout @{ @}
-@}
-@end example
+パン、バランス、エクスプレッション、リバーブ、コーラスのエフェクトは@c
+コンテキスト プロパティをセットすることで操作できます。@c
+@ref{Context properties for MIDI effects} を参照してください。
 
-ピッチ、リズム、タイ、強弱記号、テンポの変更は解釈されて@c
-正確に MIDI 出力に翻訳されます。@c
-強弱記号、クレッシェンド、デクレッシェンドは MIDI ボリューム レベルに@c
-翻訳されます。@c
-強弱記号は利用可能な MIDI ボリューム レンジ内のある固定値に翻訳されます。@c
-クレッシェンドとデクレッシェンドはそれらの開始点と終了点の間でボリュームを@c
-線形に変化させます。@c
-MIDI 出力における強弱記号の効果を完全に削除することができます
- -- @ref{MIDI block} を参照してください。
+次の @file{articulate} スクリプトと一緒に使うと、これらの表記も
+MIDI に出力することができます:
 
-初期のテンポと後のテンポ変化は、音楽記譜内部の @code{\tempo} コマンドで@c
-指定することができます。@c
-通常このコマンドはメトロノーム記号を表示させますが、@c
-表示を抑制することができます
--- @ref{Metronome marks} を参照してください。@c
-初期 MIDI テンポあるいは MIDI 全体のテンポを指定するための代替手段が@c
-この後で記述されています -- @ref{MIDI block} を参照してください。
-
-Windows の制限により、Windows での MIDI ファイルのデフォルトの拡張子は
-@code{.mid} です。@c
-他の OS では、拡張子は @code{.midi} となります。@c
-他の拡張子を使いたいのであれば、入力ファイルの最上位で、@c
-@code{\book} ブロック, @code{\bookpart} ブロック、それに @code{\score}
-ブロックの前に以下の行を挿入します:
+@itemize
+@item アッポジャトゥーラ。次の音符の半分の長さが使われます
+(付点は考慮されません)。例えば:
 
 @example
-#(ly:set-option 'midi-extension "midi")
-@end example
-
-上記の行は、MIDI ファイルのデフォルトの拡張子を @code{.midi} にします。
-
-上記の方法の代わりとして、@c
-コマンド ラインで以下のオプションを与える方法があります:
-
-@example
-lilypond … -dmidi-extension=midi lilyFile.ly
-@end example
-
-
-@unnumberedsubsubsec 楽器名
-@c @unnumberedsubsubsec Instrument names
-
-@cindex instrument names (楽器名)
-@funindex Staff.midiInstrument
-
-@code{Staff.midiInstrument} プロパティに楽器名を設定することで、@c
-使用する MIDI 楽器が指定されます。@c
-楽器名は @ref{MIDI instruments} にあるリストから選択しなければなりません。
-
-@example
-\new Staff @{
-  \set Staff.midiInstrument = #"glockenspiel"
-  @var{...notes...}
-@}
-@end example
-
-@example
-\new Staff \with @{midiInstrument = #"cello"@} @{
-  @var{...notes...}
-@}
-@end example
-
-選択された楽器が MIDI 楽器のリストにある楽器に一致しない場合、@c
-グランド ピアノ (@code{"acoustic grand"}) 楽器が使用されます。
-
-
-@snippets
-
-@lilypondfile[verbatim,quote,ragged-right,texidoc,doctitle]
-{changing-midi-output-to-one-channel-per-voice.ly}
-
-@knownissues
-
-@c In 2.11 the following no longer seems to be a problem -td
-@ignore
-Unterminated (de)crescendos will not render properly in the midi file,
-resulting in silent passages of music.  The workaround is to explicitly
-terminate the (de)crescendo.  For example,
-
-終端の無い(デ)クレッシェンドは適切に MIDI ファイルを作り出しません。@c
-結果として無音の音楽パッセージとなります。@c
-回避方法として、明示的に(デ)クレッシェンドを終了させます。@c
-例えば、
-
-@example
-@{ a\< b c d\f @}
+\appoggiatura c8 d2.
 @end example
 
 @noindent
-will not work properly but
-これは正しく機能しませんが、
+では、c の音が四分音符の長さを取ります。
 
-@example
-@{ a\< b c d\!\f @}
-@end example
+@item 装飾記号 (例えば、モルデント、トリル、ターンなど)
+@item ラレンタンド、アッチェレランド、リタルダント、ア テンポ
+@item スラー (フレージング スラーを含む)
+@item テヌート
+@end itemize
 
 @noindent
-will.
-これは正しく機能します。
-@end ignore
+@ref{Enhancing MIDI output} を参照してください。
 
-MIDI ボリュームの変化は音符の開始点でのみ起こります。@c
-そのため、クレッシェンドとデクレッシェンドは@c
-単一の音符のボリューム変化には効果を持ちません。
+@cindex MIDI, Unsupported notation (MIDI でサポートされていない記法)
 
-すべての MIDI プレイヤが MIDI 出力の中にあるテンポ変化を@c
-正しく処理するわけではありません。@c
-正しく機能するプレイヤとして知られているものには MS Windows の Media Player や
-@uref{http://@/timidity@/.sourceforge@/.net/,timidity} があります。
+@node MIDI でサポートされていない記法
+@subsection MIDI でサポートされていない記法
+@translationof Unsupported notation for MIDI
+
+次の記法は、MIDI に出力することはできません:
+
+@itemize
+@item スタッカート、スタッカーティッシモ、アクセント、マルカート、@c
+ポルタート以外のアーティキュレーション
+@item @emph{一つの}音符にまたがるクレッシェンドとデクレッシェンド
+@item フェルマータ
+@item 通奏低音
+@item グリッサンド
+@item Fall や Doit
+@item 微分音の和音
+@item スウィングなどの、注釈として入力されたリズム
+@item @code{\tempo} 以外で入力されたテンポ変化 (注釈として入力された場合など)
+@item @q{@code{:}[@var{number}]} @emph{で}入力されたトレモロ
+@end itemize
+
 
 @node MIDI ブロック
 @subsection MIDI ブロック
-@translationof MIDI block
+@translationof The MIDI block
 
 @cindex MIDI block (MIDI ブロック)
+
+LilyPond 入力ファイルから MIDI 出力ファイルを作り出す場合、@code{\score}
+ブロックの中に @code{\midi} ブロックを挿入します。@code{\midi} ブロックは@c
+空でも構いません。
+
+@example
+\score @{
+  @var{@dots{} music @dots{}}
+  \layout @{ @}
+  \midi @{ @}
+@}
+@end example
+
+@warning{@code{@bs{}score} ブロックが音楽と、@code{@bs{}midi} ブロックしか@c
+含まない場合 (つまり、@code{@bs{}layout} ブロックを@emph{持たない}場合)、@c
+MIDI 出力ファイルのみを作り出します。楽譜は出力されません。
+
+デフォルトの出力ファイルの拡張子 (@code{.midi}) は @code{lilypond} コマンドに@c
+@code{-dmidi-extension} オプションを指定することで変更することができます:
+
+@example
+lilypond -dmidi-extension=mid MyFile.ly
+@end example
+
+または、@code{\book}, @code{\bookpart}, @code{\score} ブロックのいずれかの@c
+前に、次の Scheme コードを追加することでも変更することができます。@c
+@ref{File structure} を参照してください。
+
+@example
+#(ly:set-option 'midi-extension "mid")
+@end example
+
+@seealso
+記譜法リファレンス:
+@ref{File structure},
+@ref{Creating output file metadata}
+
+インストールされているファイル:
+@file{scm/midi.scm}
+
+@knownissues
+MIDI チャンネルは 15 個が利用可能で、さらにドラムのためのチャンネルが 1 つ (#10)
+あります。譜は一つずつ順番にチャンネルが割り当てられるため、15 よりも多くの@c
+譜を持つ楽譜は、複数の譜が同じ MIDI チャンネルに割り当てられます
+(上書きはされません)。この時、チャンネル毎に設定されるプロパティが競合して@c
+セットされている場合 -- 例えば、異なる楽器が指定されている場合 -- は@c
+問題になることがあります。
+
+@node MIDI での音の強弱を制御する
+@subsection MIDI での音の強弱を制御する
+@translationof Controlling MIDI dynamics
+
+MIDI 全体の音量や、強弱記号による相対的な音量、楽器ごとの相対的な音量を@c
+設定することができます。
+
+強弱記号は、可能な範囲内の MIDI 音量に変換されます。一方、@c
+クレッシェンドやデクレッシェンドは、始点と終点の間の音量を線形に変化させます。@c
+強弱記号の相対的な音量や、楽器ごとの全体的な音量を設定することができます。
+
+@menu
+* MIDI での強弱記号::
+* MIDI の音量を設定する::
+* MIDI ブロック プロパティを設定する::
+@end menu
+
+@cindex MIDI volume (MIDI での音量)
+@cindex MIDI equalization (MIDI でのイコライズ)
+@cindex MIDI dynamics (MIDI での強弱記号)
+@cindex Dynamics in MIDI (MIDI での強弱記号)
+
+
+@node MIDI での強弱記号
+@unnumberedsubsubsec MIDI での強弱記号
+@translationof Dynamic marks in MIDI
+
+@code{mp}, @code{mf}, @code{sf} を含む、@code{ppppp} から @code{fffff} までの@c
+強弱記号のみが音量値を設定されています。@c
+そして、この値が全体の MIDI 音量レンジの値に適用されます。@c
+MIDI 出力において、指定された強弱記号に対応した最終的な音量を得るために、@c
+これらの値が全体の音量範囲に収まるように適用されます。@c
+デフォルトで、割合の最小値は 0.25 (@notation{ppppp}) で、最大値は
+0.95 (@notation{fffff}) です。全ての強弱記号と、それに@c
+関連付けられた音量の割合の一覧は @file{scm/midi.scm} にあります。
+
+
+@snippets
+@lilypondfile[verbatim,quote,ragged-right,texidoc,doctitle]
+{creating-custom-dynamics-in-midi-output.ly}
+
+インストールされているファイル:
+@file{ly/script-init.ly}
+@file{scm/midi.scm}
+
+コード断片集:
+@rlsr{MIDI}
+
+内部リファレンス:
+@rinternals{Dynamic_performer}
+
+
+@node MIDI の音量を設定する
+@unnumberedsubsubsec MIDI の音量を設定する
+@translationof Setting MIDI volume
+
+全体の MIDI 音量の最小値と最大値は、@code{midiMinimumVolume} と
+@code{midiMaximumVolume} を @code{Score} レベルでセットすることで@c
+設定できます。これらのプロパティは
+次の式
+The minimum and maximum overall volume of MIDI dynamic markings is
+controlled by setting the properties @code{midiMinimumVolume} and
+@code{midiMaximumVolume} at the @code{Score} level.  These properties
+have an effect only at the start of a voice and on dynamic marks.  The
+fraction corresponding to each dynamic mark is modified with this
+formula
+
+@example
+midiMinimumVolume + (midiMaximumVolume - midiMinimumVolume) * fraction
+@end example
+
+次の例では、全体の MIDI 音量の範囲を @code{0.2} - @code{0.5} に制限します:
+
+@example
+\score @{
+  <<
+    \new Staff @{
+      \set Staff.midiInstrument = #"flute"
+      @var{@dots{} music @dots{}}
+    @}
+    \new Staff @{
+      \set Staff.midiInstrument = #"clarinet"
+      @var{@dots{} music @dots{}}
+    @}
+  >>
+  \midi @{
+    \context @{
+      \Score
+      midiMinimumVolume = #0.2
+      midiMaximumVolume = #0.5
+    @}
+  @}
+@}
+@end example
+
+Simple MIDI instrument equalization can be achieved by setting
+@code{midiMinimumVolume} and @code{midiMaximumVolume} properties within
+the @code{Staff} context.
+
+@example
+\score @{
+  \new Staff @{
+    \set Staff.midiInstrument = #"flute"
+    \set Staff.midiMinimumVolume = #0.7
+    \set Staff.midiMaximumVolume = #0.9
+    @var{@dots{} music @dots{}}
+  @}
+  \midi @{ @}
+@}
+@end example
+
+For scores with multiple staves and multiple MIDI instruments, the
+relative volumes of each instrument can be set individually;
+
+@example
+\score @{
+  <<
+    \new Staff @{
+      \set Staff.midiInstrument = #"flute"
+      \set Staff.midiMinimumVolume = #0.7
+      \set Staff.midiMaximumVolume = #0.9
+      @var{@dots{} music @dots{}}
+    @}
+    \new Staff @{
+      \set Staff.midiInstrument = #"clarinet"
+      \set Staff.midiMinimumVolume = #0.3
+      \set Staff.midiMaximumVolume = #0.6
+      @var{@dots{} music @dots{}}
+    @}
+  >>
+  \midi @{ @}
+@}
+@end example
+
+In this example the volume of the clarinet is reduced relative to the
+volume of the flute.
+
+If these volumes properties are not set then LilyPond still applies a
+@q{small degree} of equalization to certain instruments.  See
+@file{scm/midi.scm}.
+
+Installed Files:
+@file{scm/midi.scm}.
+
+@seealso
+Notation Reference:
+@ref{Score layout}.
+
+Internals Reference:
+@rinternals{Dynamic_performer}.
+
+@snippets
+@lilypondfile[verbatim,quote,ragged-right,texidoc,doctitle]
+{replacing-default-midi-instrument-equalization.ly}
+
+@knownissues
+Changes in the MIDI volume take place only on starting a note, so
+crescendi and decrescendi cannot affect the volume of a single note.
+
+
+@node Setting MIDI block properties
+@unnumberedsubsubsec Setting MIDI block properties
+
+The @code{\midi} block can contain context rearrangements, new context
+definitions or code that sets the values of certain properties.
+
+@example
+\score @{
+  @var{@dots{} music @dots{}}
+  \midi @{
+    \tempo 4 = 72
+  @}
+@}
+@end example
+
+Here the tempo is set to 72 quarter-note beats per minute.  The tempo
+mark in the @code{\midi} block will not appear in the printed score.
+Although any other @code{\tempo} indications specified within the
+@code{\score} block will also be reflected in the MIDI output.
+
+In a @code{\midi} block the @code{\tempo} command is setting properties
+during the interpretation of the music and in the context of output
+definitions; so it is interpreted @emph{as if} it were a context
+modification.
+
+@cindex MIDI context definitions
+@cindex context definitions with MIDI
+
+Context definitions follow the same syntax as those in a @code{\layout}
+block;
+
+@example
+\score @{
+  @var{@dots{} music @dots{}}
+  \midi @{
+    \context @{
+      \Voice
+      \remove "Dynamic_performer"
+    @}
+  @}
+@}
+@end example
+
+This example removes the effect of dynamics from the MIDI output.  Note:
+LilyPond's translation modules used for sound are called @q{performers}.
+
+@seealso
+Learning Manual:
+@rlearning{Other sources of information}.
+
+Notation Reference:
+@ref{Expressive marks},
+@ref{Score layout}.
+
+Installed Files:
+@file{ly/performer-init.ly}.
+
+Snippets:
+@rlsr{MIDI}.
+
+Internals Reference:
+@rinternals{Dynamic_performer}.
+
+@knownissues
+Some MIDI players do not always correctly handle tempo changes in the
+midi output.
+
+Changes to the @code{midiInstrument}, as well as some MIDI options, at
+the @emph{beginning} of a staff may appear twice in the MIDI output.
+
+
 
 MIDI 出力が必要な場合、@c
 スコア内部に @code{\midi} ブロックを置く必要があります。@c
