@@ -3028,8 +3028,8 @@ MIDI ファイルは (AAC, MP3, Vorbis ファイルのような) 音を含みま
 * MIDI でサポートされていない記法::
 * MIDI ブロック::
 * MIDI での音の強弱を制御する::
-* MIDI の楽器::
-* MIDI での繰り返し::
+* MIDI の楽器を用いる::
+* MIDI で繰り返しを用いる::
 * MIDI のチャンネル マッピング::
 * MIDI エフェクトのためのコンテキスト プロパティ::
 * MIDI 出力をより良くする::
@@ -3050,7 +3050,7 @@ MIDI ファイルは (AAC, MP3, Vorbis ファイルのような) 音を含みま
 終点まで線形に変化します
 @item @code{ppppp} から @code{fffff} までの強弱記号
 (@code{mp}, @code{mf}, @code{sf} を含む)
-@item 和音@emph{ではない}微分音。ピッチ ベンドをサポートする MIDI プレイヤーが@c
+@item 和音@emph{ではない}微分音。ピッチ ベンドをサポートする MIDI プレイヤが@c
 必要です。
 @item 歌詞
 @item ピッチ
@@ -3183,7 +3183,7 @@ MIDI 全体の音量や、強弱記号による相対的な音量、楽器ごと
 @end menu
 
 @cindex MIDI volume (MIDI での音量)
-@cindex MIDI equalization (MIDI でのイコライズ)
+@cindex MIDI equalization (MIDI での音量の均等化)
 @cindex MIDI dynamics (MIDI での強弱記号)
 @cindex Dynamics in MIDI (MIDI での強弱記号)
 
@@ -3223,14 +3223,8 @@ MIDI 出力において、指定された強弱記号に対応した最終的な
 
 全体の MIDI 音量の最小値と最大値は、@code{midiMinimumVolume} と
 @code{midiMaximumVolume} を @code{Score} レベルでセットすることで@c
-設定できます。これらのプロパティは
-次の式
-The minimum and maximum overall volume of MIDI dynamic markings is
-controlled by setting the properties @code{midiMinimumVolume} and
-@code{midiMaximumVolume} at the @code{Score} level.  These properties
-have an effect only at the start of a voice and on dynamic marks.  The
-fraction corresponding to each dynamic mark is modified with this
-formula
+設定できます。これらのプロパティはボイスの開始時か強弱記号が配置された時に@c
+適用されます。それぞれの強弱記号に対応する音量の割合は次の式で計算されます:
 
 @example
 midiMinimumVolume + (midiMaximumVolume - midiMinimumVolume) * fraction
@@ -3260,9 +3254,9 @@ midiMinimumVolume + (midiMaximumVolume - midiMinimumVolume) * fraction
 @}
 @end example
 
-Simple MIDI instrument equalization can be achieved by setting
-@code{midiMinimumVolume} and @code{midiMaximumVolume} properties within
-the @code{Staff} context.
+楽器ごとの音量を均等化するための単純な方法は、@c
+@code{midiMinimumVolume} と @code{midiMaximumVolume} プロパティを
+@code{Staff} コンテキストでセットすることです:
 
 @example
 \score @{
@@ -3276,8 +3270,8 @@ the @code{Staff} context.
 @}
 @end example
 
-For scores with multiple staves and multiple MIDI instruments, the
-relative volumes of each instrument can be set individually;
+複数の譜を持ち、複数の MIDI 楽器を用いる楽譜では、それぞれの相対的な音量を@c
+セットすることができます:
 
 @example
 \score @{
@@ -3299,37 +3293,36 @@ relative volumes of each instrument can be set individually;
 @}
 @end example
 
-In this example the volume of the clarinet is reduced relative to the
-volume of the flute.
+この例では、フルートの音量に比べてクラリネットの音量が減らされています。
 
-If these volumes properties are not set then LilyPond still applies a
-@q{small degree} of equalization to certain instruments.  See
-@file{scm/midi.scm}.
+これらの音量プロパティがセットされていない場合でも、LilyPond は特定の楽器に@c
+@q{わずかな}音量の均等化を行っています。@file{scm/midi.scm} を参照してください。
 
-Installed Files:
-@file{scm/midi.scm}.
+インストールされているファイル:
+@file{scm/midi.scm}
 
 @seealso
-Notation Reference:
-@ref{Score layout}.
+記譜法リファレンス:
+@ref{Score layout}
 
-Internals Reference:
-@rinternals{Dynamic_performer}.
+内部リファレンス:
+@rinternals{Dynamic_performer}
 
 @snippets
 @lilypondfile[verbatim,quote,ragged-right,texidoc,doctitle]
 {replacing-default-midi-instrument-equalization.ly}
 
 @knownissues
-Changes in the MIDI volume take place only on starting a note, so
-crescendi and decrescendi cannot affect the volume of a single note.
+MIDI での音量変化は音符の開始時にのみ適用されます。そのため、クレッシェンドや@c
+デクレッシェンドが単一の音符に適用された場合、音量は変化しません。
 
 
-@node Setting MIDI block properties
-@unnumberedsubsubsec Setting MIDI block properties
+@node MIDI ブロック プロパティを設定する
+@unnumberedsubsubsec MIDI ブロック プロパティを設定する
+@translationof Setting MIDI block properties
 
-The @code{\midi} block can contain context rearrangements, new context
-definitions or code that sets the values of certain properties.
+@code{\midi} ブロックでは、コンテキストを再構成したり、新たなコンテキストを@c
+定義したり、特定のプロパティに値をセットしたりすることができます。
 
 @example
 \score @{
@@ -3340,21 +3333,18 @@ definitions or code that sets the values of certain properties.
 @}
 @end example
 
-Here the tempo is set to 72 quarter-note beats per minute.  The tempo
-mark in the @code{\midi} block will not appear in the printed score.
-Although any other @code{\tempo} indications specified within the
-@code{\score} block will also be reflected in the MIDI output.
+この例では、テンポが四分音符 72 にセットされます。@code{\midi} ブロックの@c
+テンポ記号は、楽譜には出力されません。しかし、他の @code{\tempo} 指示が
+@code{\score} ブロックで指定された場合、それも MIDI 出力に反映されます。
 
-In a @code{\midi} block the @code{\tempo} command is setting properties
-during the interpretation of the music and in the context of output
-definitions; so it is interpreted @emph{as if} it were a context
-modification.
+@code{\midi} ブロック内で、@code{\tempo} コマンドが記述された場合、@c
+音楽の解釈中に、出力定義のコンテキスト内でプロパティをセットします。@c
+そのため、それはコンテキストの変更である@emph{かのように}解釈されます。
 
-@cindex MIDI context definitions
-@cindex context definitions with MIDI
+@cindex MIDI context definitions (MIDI のコンテキスト定義)
+@cindex context definitions with MIDI (MIDI のコンテキスト定義)
 
-Context definitions follow the same syntax as those in a @code{\layout}
-block;
+コンテキスト定義は、@code{\layout} ブロックと同じ表記を用います:
 
 @example
 \score @{
@@ -3368,32 +3358,235 @@ block;
 @}
 @end example
 
-This example removes the effect of dynamics from the MIDI output.  Note:
-LilyPond's translation modules used for sound are called @q{performers}.
+この例は、MIDI 出力から強弱記号の効果を取り除きます。注: LilyPond では、@c
+音楽表記から MIDI 出力に変換するモジュール (translator) は@c
+@q{パフォーマ} (performer) と呼ばれます。
 
 @seealso
-Learning Manual:
-@rlearning{Other sources of information}.
+学習マニュアル:
+@rlearning{Other sources of information}
 
-Notation Reference:
+記譜法リファレンス:
 @ref{Expressive marks},
-@ref{Score layout}.
+@ref{Score layout}
 
-Installed Files:
-@file{ly/performer-init.ly}.
+インストールされているファイル:
+@file{ly/performer-init.ly}
 
-Snippets:
-@rlsr{MIDI}.
+コード断片集:
+@rlsr{MIDI}
 
-Internals Reference:
-@rinternals{Dynamic_performer}.
+内部リファレンス:
+@rinternals{Dynamic_performer}
 
 @knownissues
-Some MIDI players do not always correctly handle tempo changes in the
-midi output.
+MIDI プレイヤの中には，出力のテンポ変化を正しく処理しないものがあります。
 
-Changes to the @code{midiInstrument}, as well as some MIDI options, at
-the @emph{beginning} of a staff may appear twice in the MIDI output.
+@code{midiInstrument} や他の MIDI オプションの変更を@c
+譜の@emph{始め}に行った場合、MIDI 出力ファイル内でその変更が二重に@c
+記述されている場合があります。
+
+@node MIDI の楽器を用いる
+@subsection MIDI の楽器を用いる
+@translationof Using MIDI instruments
+
+MIDI の楽器は、@code{Staff} コンテキストで @code{midiInstrument} プロパティを@c
+セットすることで指定することができます:
+
+@example
+\score @{
+  \new Staff @{
+    \set Staff.midiInstrument = #"glockenspiel"
+    @var{@dots{} music @dots{}}
+  @}
+  \midi @{ @}
+@}
+@end example
+
+または:
+
+@example
+\score @{
+  \new Staff \with @{midiInstrument = #"cello"@} @{
+    @var{@dots{} music @dots{}}
+  @}
+  \midi @{ @}
+@}
+@end example
+
+楽器名が @q{MIDI の楽器} セクションにある一覧のどれにも当てはまらない場合、@c
+@code{acoustic grand} 楽器が代わりに使用されます。
+@ref{MIDI instruments} を参照してください。
+
+@seealso
+学習マニュアル:
+@rlearning{Other sources of information}
+
+記譜法リファレンス:
+@ref{MIDI instruments},
+@ref{Score layout}
+
+インストールされているファイル:
+@file{scm/midi.scm}.
+
+@knownissues
+@code{DrumStaff} コンテキストで記譜されるパーカッションの楽器は、@c
+正しく MIDI の 10@tie{}チャンネルに出力されますが、@c
+いくつかのピッチ付きのパーカッション楽器 (シロフォン、マリンバ、@c
+ビブラフォン、ティンパニなど) は@qq{通常の}楽器として扱われます。@c
+そのため、これらの楽器の MIDI 出力を正しく得る場合には、音楽は
+(@code{DrumStaff} ではなく) @code{Staff} コンテキストに入力されるべきです。@c
+10@tie{}チャンネルのドラム キット (@code{channel 10 drum-kits}) の完全な@c
+リストは、@file{scm/midi.scm} にあります。@c
+@rlearning{Other sources of information} を参照してください。
+
+@node MIDI で繰り返しを用いる
+@subsection MIDI で繰り返しを用いる
+@translationof Using repeats with MIDI
+
+@cindex repeats in MIDI (MIDI での繰り返し)
+@cindex MIDI using repeats (MIDI で繰り返しを用いる)
+@funindex \unfoldRepeats
+
+繰り返しを MIDI で表現するためには、@code{\unfoldRepeats} コマンドを適用します:
+
+@example
+\score @{
+  \unfoldRepeats @{
+    \repeat tremolo 8 @{ c'32 e' @}
+    \repeat percent 2 @{ c''8 d'' @}
+    \repeat volta 2 @{ c'4 d' e' f' @}
+    \alternative @{
+      @{ g' a' a' g' @}
+      @{ f' e' d' c' @}
+    @}
+  @}
+  \midi @{ @}
+@}
+@end example
+
+楽譜を出力しつつ、@code{\unfoldRepeats} の効果を MIDI 出力のみに制限するには、@c
+@code{\score} ブロックを@emph{二つ}作る必要があります: 一つは
+(@code{\unfoldRepeats} を用いる) MIDI 用の @code{\score}、もう一つは
+(@code{volta}, @code{tremolo}, @code{percent} による繰り返しを用いる) 記譜用の
+@code{\score} です。
+
+@example
+\score @{
+  @var{@dots{} music @dots{}}
+  \layout @{ @}
+@}
+\score @{
+  \unfoldRepeats @{
+    @var{@dots{} music @dots{}}
+  @}
+  \midi @{ @}
+@}
+@end example
+
+複数のボイスを使用している場合、正しい MIDI 出力を得るためには@c
+全てのボイスの繰り返しが完全に展開されている必要があります。
+
+@seealso
+記譜法リファレンス:
+@ref{Repeats}
+
+@node MIDI チャンネル マッピング
+@subsection MIDI チャンネル マッピング
+@translationof MIDI channel mapping
+
+@cindex MIDI Channels (MIDI チャンネル)
+@cindex MIDI Tracks (MIDI トラック)
+@funindex midiChannelMapping
+
+楽譜から MIDI ファイルを生成する場合、LilyPond は自動的に全ての音符を、@c
+MIDI デバイスに転送された時に再生されるべき MIDI チャンネルに割り当てます。@c
+MIDI チャンネル毎に設定できるパラメータがあり、@c
+例えば、そのチャンネルで音符が演奏される時に用いられる楽器を選択したり、@c
+そのチャンネルで演奏された音にいくつかのエフェクトを加えるように、MIDI
+デバイスに指示をしたりすることができます。@c
+常に、それぞれのパラメータはチャンネル毎に 1 つの値しか持つことができません
+(しかし途中で変更することは可能で、例えば楽譜の途中で楽器を変更することが@c
+できます)。
+
+MIDI は標準で 1 デバイスにつき 16 チャンネルのみを持つことができます。@c
+このチャンネル数の制限は、一度に演奏できる異なる楽器の数の制限にもなっています。
+
+LilyPond は譜ごと、Lyrics コンテキスト毎に異なる MIDI トラックを生成します。
+(@code{Score.midiChannelMapping} の値によっては、異なる楽器やボイス毎に@c
+トラックが生成される場合があります。)
+トラックの数には制限はありません。
+
+MIDI のチャンネル数が制限されていることに対処するために、LilyPond には
+MIDI のチャンネル配置にいくつかの異なるモードが存在します。これは
+@code{Score.midiChannelMapping} コンテキスト プロパティで設定します。@c
+どの場合でも、制限よりも多い MIDI チャンネルが必要になった場合、@c
+割り当てられるチャンネル番号は 0 に戻ってきます。そのため、楽器の割り当てが@c
+間違っている音符ができるかもしれません。このコンテキスト プロパティは@c
+次のうちのどれかに設定することができます:
+
+@table @var
+
+@item @code{'staff}
+
+楽譜に存在する譜ごとに異なる MIDI チャンネルを割り当てます (これがデフォルト@c
+です)。それぞれの譜に含まれる全てのボイスの全ての音符は同じ MIDI
+チャンネルを共有し、同じ MIDI トラックにエンコードされます。
+
+MIDI の歌詞は MIDI チャンネルを占有しませんが、@c
+譜と Lyrics コンテキストの合計数が 16 チャンネルの制限の対象となります。
+
+@item @code{'instrument}
+
+Allocate a separate MIDI channel to each distinct MIDI instrument
+specified in the score.  This means that all the notes played with the
+same MIDI instrument will share the same MIDI channel (and track), even
+if the notes come from different voices or staves.
+
+In this case the lyrics contexts do not count towards the MIDI channel
+limit of 16 (as they will not be assigned to a MIDI instrument), so
+this setting may allow a better allocation of MIDI channels when the
+number of staves and lyrics contexts in a score exceeds 16.
+
+@item @code{'voice}
+
+Allocate a separate MIDI channel to each voice in the score that has a
+unique name among the voices in its enclosing staff.  Voices in
+different staves are always assigned separate MIDI channels, but any two
+voices contained within the same staff will share the same MIDI channel
+if they have the same name.  Because @code{midiInstrument} and the
+several MIDI controls for effects are properties of the staff context,
+they cannot be set separately for each voice.  The first voice will be
+played with the instrument and effects specified for the staff, and
+voices with a different name from the first will be assigned the default
+instrument and effects.
+
+Note: different instruments and/or effects can be assigned to several
+voices on the same staff by moving the @code{Staff_performer} from the
+@code{Staff} to the @code{Voice} context, and leaving
+@code{midiChannelMapping} to default to @code{'staff} or set to
+@code{'instrument}; see the snippet below.
+
+@end table
+
+For example, the default MIDI channel mapping of a score can be changed
+to the @code{'instrument} setting as shown:
+
+@example
+\score @{
+  ...music...
+  \midi @{
+    \context @{
+      \Score
+      midiChannelMapping = #'instrument
+    @}
+  @}
+@}
+@end example
+
+@snippets
+@lilypondfile[verbatim,quote,ragged-right,texidoc,doctitle]
+{changing-midi-output-to-one-channel-per-voice.ly}
 
 
 
@@ -3822,7 +4015,7 @@ MIDI 最小/最大ボリューム プロパティが設定されていない場�
 以下の例は 1 オクターブの中にあるすべての半シャープと半フラットの音を@c
 示しています。@c
 この例をコピーしてコンパイルすることで、@c
-あなたが持っている MIDI プレイやで微分音をテストすることができます。
+あなたが持っている MIDI プレイヤで微分音をテストすることができます。
 
 @lilypond[verbatim,quote]
 \score {
