@@ -3538,39 +3538,35 @@ MIDI の歌詞は MIDI チャンネルを占有しませんが、@c
 
 @item @code{'instrument}
 
-Allocate a separate MIDI channel to each distinct MIDI instrument
-specified in the score.  This means that all the notes played with the
-same MIDI instrument will share the same MIDI channel (and track), even
-if the notes come from different voices or staves.
+楽譜に指定された MIDI 楽器ごとに異なる MIDI チャンネルを割り当てます。@c
+つまり、同じ MIDI 楽器を持つ音符は、譜やボイスが異なっていても、@c
+同じ MIDI チャンネル (やトラック) を共有するということです。
 
-In this case the lyrics contexts do not count towards the MIDI channel
-limit of 16 (as they will not be assigned to a MIDI instrument), so
-this setting may allow a better allocation of MIDI channels when the
-number of staves and lyrics contexts in a score exceeds 16.
+この場合、歌詞コンテキストは (MIDI 楽器が指定されないため) MIDI チャンネルの
+16 個という制限に数えられません。そのためこの設定は、楽譜に存在する譜や歌詞が
+16 を超える場合には、MIDI チャンネルの割り当てがより良くなるかもしれません。
 
 @item @code{'voice}
 
-Allocate a separate MIDI channel to each voice in the score that has a
-unique name among the voices in its enclosing staff.  Voices in
-different staves are always assigned separate MIDI channels, but any two
-voices contained within the same staff will share the same MIDI channel
-if they have the same name.  Because @code{midiInstrument} and the
-several MIDI controls for effects are properties of the staff context,
-they cannot be set separately for each voice.  The first voice will be
-played with the instrument and effects specified for the staff, and
-voices with a different name from the first will be assigned the default
-instrument and effects.
+譜の中で異なる名前を持つボイスごとに、異なる MIDI チャンネルを割り当てます。@c
+異なる譜に属するボイスは必ず異なる MIDI チャンネルに割り当てられますが、@c
+同じ譜に属するボイスが同じ名前を持つ場合、それらは同じ MIDI チャンネルに@c
+割り当てられます。@code{midiInstrument} や、いくつかのエフェクトを操作する
+プロパティは Staff コンテキストに属するため、ボイスごとに異なる値を持つことは@c
+できません。1 番目のボイスが、譜に設定された楽器やエフェクトで演奏され、@c
+1 番目のボイスと異なる名前を持つ他のボイスは、デフォルトの楽器やエフェクトで@c
+演奏されます。
 
-Note: different instruments and/or effects can be assigned to several
-voices on the same staff by moving the @code{Staff_performer} from the
-@code{Staff} to the @code{Voice} context, and leaving
-@code{midiChannelMapping} to default to @code{'staff} or set to
-@code{'instrument}; see the snippet below.
+注: @code{Staff_performer} を @code{Staff} から @code{Voice} コンテキストへ@c
+移動し、@code{midiChannelMapping} をデフォルトの @code{'staff} か
+@code{'instrument} にすることで、同じ譜にあるボイスによって@c
+異なる楽器やエフェクトを指定することができます。下のコード断片を@c
+参照してください。
 
 @end table
 
-For example, the default MIDI channel mapping of a score can be changed
-to the @code{'instrument} setting as shown:
+下の例では、デフォルトの MIDI チャンネルの割り当て方法を @code{'instrument} に@c
+変更しています:
 
 @example
 \score @{
@@ -3587,6 +3583,120 @@ to the @code{'instrument} setting as shown:
 @snippets
 @lilypondfile[verbatim,quote,ragged-right,texidoc,doctitle]
 {changing-midi-output-to-one-channel-per-voice.ly}
+
+
+@node MIDI エフェクトのためのコンテキスト プロパティ
+@subsection MIDI エフェクトのためのコンテキスト プロパティ
+@subsection Context properties for MIDI effects
+
+@cindex Effects in MIDI (MIDI でのエフェクト)
+@cindex Pan position in MIDI (MIDI でのパン ポジション)
+@cindex Stereo balance in MIDI (MIDI でのステレオ バランス)
+@cindex Balance in MIDI (MIDI でのバランス)
+@cindex Expression in MIDI (MIDI でのエクスプレッション)
+@cindex Reverb in MIDI (MIDI でのリバーブ)
+@cindex Chorus level in MIDI (MIDI でのコーラス)
+@funindex midiPanPosition
+@funindex midiBalance
+@funindex midiExpression
+@funindex midiReverbLevel
+@funindex midiChorusLevel
+
+以下のコンテキスト プロパティは、様々な MIDI エフェクトを、@c
+割り当てられた MIDI チャンネルの音符に適用するために使われます。
+(チャンネルが譜、MIDI 楽器、ボイスのどの単位で割り当てられるかは、@c
+@code{Score.midiChannelMapping} コンテキスト プロパティと、@c
+@code{Staff_performer} がどのコンテキストに配置されるかに依存します。@c
+@ref{MIDI channel mapping} を参照してください)。
+
+これらのコンテキスト プロパティを変更すると、チャンネルに属するその後の全ての@c
+音符に影響を与えます。しかし、この内のいくつかは、すでに音が鳴っている音符にも@c
+適用されるものがあります (これは、MIDI 出力デバイスの実装次第です)。
+
+以下のコンテキスト プロパティがサポートされています:
+
+@table @var
+
+@item @code{Staff.midiPanPosition}
+
+パン ポジションは、MIDI チャンネルの音が左から右までのどこに定位するかを@c
+設定します。このコンテキスト プロパティは -1.0 (@code{#LEFT}) から
+1.0 (@code{#RIGHT}) までの数値を受理します。-1.0 は全ての音がステレオの@c
+左側から鳴るようになります (右側からは音が鳴りません)。@c
+0.0 (@code{#CENTER}) は左側と右側に均等に音を振り割ります。@c
+1.0 は全ての音が右側から鳴るようになります。@c
+-1.0 と 1.0 の間の値は、完全な左側と、完全な右側の間にある定位となります。
+
+@item @code{Staff.midiBalance}
+
+MIDI チャンネルのステレオ バランスを設定します。パンと同様に、@c
+このコンテキスト プロパティは -1.0 (@code{#LEFT}) から
+1.0 (@code{#RIGHT}) までの数値を受理します。@c
+ステレオ信号の分布状態を変化させずに、2 つのステレオ スピーカーに送られる@c
+音量の相対値を調節します。
+
+@item @code{Staff.midiExpression}
+
+MIDI チャンネルに適用するエクスプレッション レベルを (可能な最大レベルとの@c
+比として) 設定します。MIDI デバイスは MIDI チャンネルのエクスプレッション
+レベルと、ボイスの現在の強弱レベル (@code{\p} や @code{\ff} などで@c
+設定されます) とを組み合わせて、ボイス中の各音符の最終的な音量を決定します。@c
+エクスプレッションは、例えば、1 つの長い音符の中でクレッシェンドや@c
+デクレッシェンドを表現するために使うことができます (LilyPond はこれを@c
+自動ではサポートしません)。
+
+@c Issue 4059 contains an attached snippet which shows how this might
+@c be done, but this is too large and complex for the NR, even as a
+@c referenced snippet.  It could be added to the LSR.
+
+エクスプレッション レベルは 0.0 (ゼロ エクスプレッション、つまり音量ゼロ) から
+1.0 (フル エクスプレッション) までです。
+
+@item @code{Staff.midiReverbLevel}
+
+MIDI チャンネルに適用するリバーブ レベルを (可能な最大レベルとの比として)
+設定します。このプロパティは 0.0 (リバーブ無し) から 1.0 (フル エフェクト)
+までの数値を受理します。
+
+@item @code{Staff.midiChorusLevel}
+
+MIDI チャンネルに適用するコーラス レベルを (可能な最大レベルとの比として)
+設定します。このプロパティは 0.0 (コーラス無し) から 1.0 (フル エフェクト)
+までの数値を受理します。
+
+@end table
+
+
+@knownissues
+
+MIDI ファイルは実際の音声データを含まないため、これらのコンテキスト
+プロパティの変化は
+～
+ある MIDI デバイス (例えばソフトウェア MIDI プレイヤ) が、MIDI ファイル内に@c
+あるこれらの要求を実際に扱うかどうかは、完全にそのデバイスの実装に依存します。@c
+つまり、デバイスによっては、要求のいくつか、または全てを無視することが@c
+あるということです。また、
+As MIDI files do not contain any actual audio data, changes in these
+context properties translate only to requests for changing MIDI channel
+controls in the outputted MIDI files.  Whether a particular MIDI device
+(such as a software MIDI player) can actually handle any of these
+requests in a MIDI file is entirely up to the implementation of the
+device: a device may choose to ignore some or all of these requests.
+Also, how a MIDI device will interpret different values for these
+controls (generally, the MIDI standard fixes the behavior only at the
+endpoints of the value range available for each control), and whether a
+change in the value of a control will affect notes already playing on
+that MIDI channel or not, is also specific to the MIDI device
+implementation.
+
+When generating MIDI files, LilyPond will simply transform the
+fractional values within each range linearly into values in a
+corresponding (7-bit, or 14-bit for MIDI channel controls which support
+fine resolution) integer range (0-127 or 0-32767, respectively),
+rounding fractional values towards the nearest integer away from zero.
+The converted integer values are stored as-is in the generated MIDI
+file.  Please consult the documentation of your MIDI device for
+information about how the device interprets these values.
 
 
 
