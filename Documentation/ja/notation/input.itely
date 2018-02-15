@@ -1,6 +1,6 @@
 @c -*- coding: utf-8; mode: texinfo; documentlanguage: ja -*-
 @ignore
-    Translation of GIT committish: d5647c5fd1c38d4124d2374725b923f4901f3661
+    Translation of GIT committish: 89bfaa4d13b036691e7e0ece78558a0af4d813d3
 
     When revising a translation, copy the HEAD committish of the
     version that you are working on.  For details, see the Contributors'
@@ -1239,7 +1239,7 @@ variable = \markup @{
 @example
   \on-the-fly \first-page
   \on-the-fly \last-page
-  @{ \markup @dots{} \fromproperty #'header: @dots{} @}
+  @code{@{ \markup @dots{} \fromproperty #'header: @dots{} @}}
 @end example
 
 これは、出力が単一のページかどうかを判断します。
@@ -1841,6 +1841,8 @@ Unicode 文字をマークに使うこともできます
 @code{\paper} ブロックの中で定義します。@c
 @q{予め定義された}マークアップが 2 種類あります:
 
+@itemize
+
 @item
 @code{tocTitleMarkup}
 
@@ -2065,6 +2067,7 @@ DOS/Windows ではバックスラッシュ \ を使用します) によって@c
 (あるいは、メイン入力ファイルの先頭に
 @code{#(ly:set-option 'relative-includes #t)} を付け加えることによって)
 グローバルに変更することができます。@c
+
 @code{relative-includes} をセットした時、@c
 各 @code{\include} コマンドのパスは@c
 そのコマンドを保持しているファイルからの相対参照になります。@c
@@ -2307,8 +2310,8 @@ allLyrics = \lyricmode { King of glo -- ry }
 @lilypond[verbatim,quote]
 music = \relative {
   g'8. c32 d
-  \tag #'trills {d8.\trill }
-  \tag #'expand {\repeat unfold 3 {e32 d} }
+  \tag #'trills { d8.\trill }
+  \tag #'expand {\repeat unfold 3 { e32 d } }
   c32 d
  }
 
@@ -3587,7 +3590,7 @@ MIDI の歌詞は MIDI チャンネルを占有しませんが、@c
 
 @node MIDI エフェクトのためのコンテキスト プロパティ
 @subsection MIDI エフェクトのためのコンテキスト プロパティ
-@subsection Context properties for MIDI effects
+@translationof Context properties for MIDI effects
 
 @cindex Effects in MIDI (MIDI でのエフェクト)
 @cindex Pan position in MIDI (MIDI でのパン ポジション)
@@ -3712,7 +3715,7 @@ MIDI の楽器を指定したり、@code{\midi} ブロックのプロパティ�
 
 @node 奏法スクリプト
 @unnumberedsubsubsec 奏法スクリプト
-@translationof The Articulate script
+@translationof The articulate script
 
 奏法スクリプトを使うには、入力ファイルの最初にこのような
 @code{\include} コマンドを追加します:
