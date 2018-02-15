@@ -3670,517 +3670,26 @@ MIDI チャンネルに適用するコーラス レベルを (可能な最大レ
 @knownissues
 
 MIDI ファイルは実際の音声データを含まないため、これらのコンテキスト
-プロパティの変化は
-～
+プロパティの変化は、MIDI ファイル内においてはチャンネル コントロールを@c
+変化させるという要求に変換されるに過ぎません。@c
 ある MIDI デバイス (例えばソフトウェア MIDI プレイヤ) が、MIDI ファイル内に@c
-あるこれらの要求を実際に扱うかどうかは、完全にそのデバイスの実装に依存します。@c
+あるこれらの要求を実際に扱うかどうかは、そのデバイスの実装に完全に依存します。@c
 つまり、デバイスによっては、要求のいくつか、または全てを無視することが@c
-あるということです。また、
-As MIDI files do not contain any actual audio data, changes in these
-context properties translate only to requests for changing MIDI channel
-controls in the outputted MIDI files.  Whether a particular MIDI device
-(such as a software MIDI player) can actually handle any of these
-requests in a MIDI file is entirely up to the implementation of the
-device: a device may choose to ignore some or all of these requests.
-Also, how a MIDI device will interpret different values for these
-controls (generally, the MIDI standard fixes the behavior only at the
-endpoints of the value range available for each control), and whether a
-change in the value of a control will affect notes already playing on
-that MIDI channel or not, is also specific to the MIDI device
-implementation.
+あるということです。また、MIDI デバイスがこれらのコントロールの値の違いを@c
+どのように解釈するか (MIDI の標準規格は、コントロールが最小値や最大値を@c
+取る時にどのように振る舞うかを標準化しているのみです)、@c
+あるいはコントロールの値の変化が、その MIDI チャンネルで@c
+既に演奏されている音符に対して影響を与えるかも、MIDI デバイスの実装次第です。
+
+MIDI ファイルを生成する際、LilyPond は範囲内にある割合の数値を、@c
+対応する整数へと (通常 7 ビット: 0-127、MIDI チャンネル コントロールが@c
+より細かな分解能をサポートする場合は 14 ビット: 0-32767) 線形に変換します。@c
+その際、小数は四捨五入されます。@c
+変換された整数値が、生成された MIDI ファイルにそのまま記録されます。@c
+手持ちの MIDI デバイスがこれらの値をどのように扱うかについては、@c
+デバイスのドキュメントを参照してください。
 
-When generating MIDI files, LilyPond will simply transform the
-fractional values within each range linearly into values in a
-corresponding (7-bit, or 14-bit for MIDI channel controls which support
-fine resolution) integer range (0-127 or 0-32767, respectively),
-rounding fractional values towards the nearest integer away from zero.
-The converted integer values are stored as-is in the generated MIDI
-file.  Please consult the documentation of your MIDI device for
-information about how the device interprets these values.
 
-
-
-MIDI 出力が必要な場合、@c
-スコア内部に @code{\midi} ブロックを置く必要があります。@c
-MIDI ブロックはレイアウト ブロックに似ていますが、それよりも単純です。@c
-しばしば、@code{\midi} ブロックは空のままですが、コンテキストの再編成
--- 新しいコンテキスト定義やプロパティの値を設定するためのコード --
-を保持することもできます。@c
-例えば以下の例は、テンポ指示を譜刻することなしに、@c
-MIDI ファイルの初期テンポを設定します:
-
-@example
-\score @{
-  @var{...music...}
-  \midi @{
-    \tempo 4 = 72
-  @}
-@}
-@end example
-
-この例では、テンポは 1 分間あたり 72 個の 4 分音符にセットされています。@c
-@code{\tempo} は実際、コンパイルの最中にプロパティを設定する音楽コマンドです:
-@code{\midi} ブロックのような出力定義コンテキストの中にある @code{\tempo} は@c
-当然のこととして、コンテキストを変更するものとして解釈されます。
-
-@cindex MIDI context definitions (MIDI コンテキスト定義)
-
-@code{\midi} ブロック内部でのコンテキスト定義は、@c
-@code{\layout} ブロック内部でのコンテキスト定義の構文とまったく同じです。@c
-サウンドのモジュールへの翻訳は performer と呼ばれます。@c
-MIDI 出力のためのコンテキストは
-@file{../ly/performer-init.ly} で定義されています
--- @rlearning{Other sources of information} を参照してください。@c
-例えば、MIDI 出力から強弱記号の効果を削除するには、@c
-@code{\midi@{ @}} ブロックの中に以下のコードを挿入します。
-
-@example
-\midi @{
-  ...
-  \context @{
-    \Voice
-    \remove "Dynamic_performer"
-  @}
-@}
-@end example
-
-MIDI 出力は、@code{\score} コマンドで定義されたスコア ブロック内部に
-@code{\midi} ブロックが存在する場合にのみ生成されます。
-
-@ignore
-@code{\midi} ブロックが明示的にインスタンス化されたスコア コンテキストの中
-(例えば、@code{\new Score} ブロックの中) に配置された場合、@c
-その LilyPond ファイルはエラーになります。@c
-これを解決するには、@code{\new Score} と @code{\midi} コマンドを
-@code{\score} ブロックの中に置きます。
-@end ignore
-
-@example
-\score @{
-  @{ @dots{}notes@dots{} @}
-  \midi @{ @}
-@}
-@end example
-
-
-@node 何が MIDI に出力されるのか？
-@subsection 何が MIDI に出力されるのか？
-@translationof What goes into the MIDI output?
-
-@c TODO Check grace notes - timing is suspect?
-
-@unnumberedsubsubsec MIDI でサポートされるもの
-@c @unnumberedsubsubsec Supported in MIDI
-
-@cindex Pitches in MIDI (MIDI でのピッチ)
-@cindex MIDI, Pitches (MIDI でのピッチ)
-@cindex Quarter tones in MIDI (MIDI での4 分音)
-@cindex MIDI, quarter tones (MIDI での4 分音)
-@cindex Microtones in MIDI (MIDI での微分音)
-@cindex MIDI, microtones (MIDI での微分音)
-@cindex Chord names in MIDI (MIDI でのコード ネーム)
-@cindex MIDI, chord names (MIDI でのコード ネーム)
-@cindex Rhythms in MIDI (MIDI でのリズム)
-@cindex MIDI, Rhythms (MIDI でのリズム)
-@cindex Articlulate scripts (奏法スクリプト)
-@cindex MIDI, articulations (MIDI での奏法)
-@cindex articulations in MIDI (MIDI での奏法)
-@cindex trills in MIDI (MIDI でのトリル)
-@cindex turns in MIDI (MIDI でのターン)
-@cindex rallentando in MIDI (MIDI でのラレンタンド)
-@cindex accelerando in MIDI (MIDI でのアッチェレランド)
-@c TODO etc
-
-以下の記譜要素が MIDI 出力に反映されます:
-
-@itemize
-@item ピッチ
-@item 微分音 (@ref{Accidentals} を参照してください。@c
-演奏にはピッチ ベンドをサポートするプレイヤが必要になります。)
-@item コード名で入力された和音
-@item 音符の演奏時間として入力されたリズム -- 連符を含みます
-@item @q{@code{:}[@var{number}]} を使わずに入力されたトレモロ
-@item タイ
-@item 強弱記号
-@item 複数の音符にかかるクレッシェンド、デクレッシェンド
-@item テンポ記号で入力されたテンポ変化
-@item 歌詞
-@end itemize
-
-@ref{The Articulate script} を用いることで、@c
-上記のリストにいくつかの要素が追加されます:
-
-@itemize
-@item アーティキュレーション (スラー、スタッカート等)
-@item トリル、ターン
-@item ラレンタンドとアッチェレランド
-@end itemize
-
-@unnumberedsubsubsec MIDI でサポートされないもの
-@c @unnumberedsubsubsec Unsupported in MIDI
-
-@c TODO index as above
-
-以下の記譜要素は MIDI 出力に影響を与えません:
-
-@itemize
-@item 注記 -- 例えば swing -- として入力されたリズム
-@item テンポ記号を使わずに注記として入力されたテンポ変化
-@item スタッカートと他のアーティキュレーションや装飾
-@item スラーとフレージング スラー
-@item 単一の音符に付けられたクレッシェンド、デクレッシェンド
-@item @q{@code{:}[@var{number}]} を使って入力されたトレモロ
-@item 通奏低音
-@item 微分音の和音
-@end itemize
-
-
-@node MIDI での繰り返し
-@subsection MIDI での繰り返し
-@translationof Repeats in MIDI
-
-@cindex repeats in MIDI (MIDI での繰り返し)
-@funindex \unfoldRepeats
-
-ちょっとした追加で、@c
-すべてのタイプの繰り返しを MIDI 出力に反映させることができます。@c
-これは @code{\unfoldRepeats} 音楽関数を適用することによって@c
-達成することができます。@c
-この関数はすべての繰り返しを展開します。
-
-@lilypond[quote,verbatim]
-\unfoldRepeats {
-  \repeat tremolo 8 { c'32 e' }
-  \repeat percent 2 { c''8 d'' }
-  \repeat volta 2 { c'4 d' e' f' }
-  \alternative {
-    { g' a' a' g' }
-    { f' e' d' c' }
-  }
-}
-\bar "|."
-@end lilypond
-
-複数のボイスを持つスコアで、繰り返しを正しく MIDI 出力に展開するには、@c
-@emph{各ボイス} の繰り返し指示が完全に記譜されている必要があります。
-
-MIDI のために @code{\unfoldRepeats} を使用する楽譜ファイルを作成する場合、@c
-2 つの @code{\score} ブロックが必要になります:
-1 つは MIDI のため (繰り返しを展開します) で、@c
-もう 1 つは楽譜のため
-(差し替え、トレモロ、パーセント記号の繰り返しを使用します) です。@c
-例えば、以下のようにします:
-
-@example
-\score @{
-  @var{..music..}
-  \layout @{ .. @}
-@}
-\score @{
-  \unfoldRepeats @var{..music..}
-  \midi @{ .. @}
-@}
-@end example
-
-@node MIDI での音の強弱を制御する
-@subsection MIDI での音の強弱を制御する
-@translationof Controlling MIDI dynamics
-
-@c MIDI dynamics: MIDI での音の強弱？
-MIDI での音の強弱は @code{Dynamic_performer}
--- これはデフォルトでは Voice コンテキストの中に存在します --
-によって実装されます。@c
-MIDI 全体のボリューム、強弱記号による相対ボリューム、@c
-楽器間の相対ボリュームを制御することができます。
-
-@unnumberedsubsubsec 強弱記号
-@c @unnumberedsubsubsec Dynamic marks
-
-強弱記号は利用可能な MIDI ボリューム レンジ内のある固定の分数に翻訳されます。@c
-デフォルトでの分数の範囲は、@notation{ppppp} に対する 0.25 から、@c
-@notation{fffff} に対する 0.95 までです。@c
-強弱記号とそれに対応する分数のセットを @file{../scm/midi.scm} で@c
-調べることができます
--- @rlearning{Other sources of information} を参照してください。@c
-引数として強弱記号をとり、それに対する分数を返す関数を作成し、@c
-その関数を @code{Score.dynamicAbsoluteVolumeFunction} に@c
-セットすることによって、分数のセットを変更あるいは拡張することができます。
-
-例えば、@notation{リンフォルツァンド} 強弱記号 -- @code{\rfz} -- を@c
-使う必要がある場合、@c
-この強弱記号はデフォルト セットの中に含まれていないため、@c
-MIDI ボリュームに影響を与えません。@c
-同様に @code{make-dynamic-script} で新しい強弱記号を定義した場合、@c
-その強弱記号もデフォルト セットには含まれません。@c
-以下の例は、そのような強弱記号に対する MIDI ボリュームを追加する方法を@c
-示しています。@c
-以下の Scheme 関数は、rfz の強弱記号があった場合は分数に 0.9 をセットし、@c
-そうでない場合はデフォルトの関数を呼び出します。
-
-@lilypond[verbatim,quote]
-#(define (myDynamics dynamic)
-    (if (equal? dynamic "rfz")
-      0.9
-      (default-dynamic-absolute-volume dynamic)))
-
-\score {
-  \new Staff {
-    \set Staff.midiInstrument = #"cello"
-    \set Score.dynamicAbsoluteVolumeFunction = #myDynamics
-    \new Voice {
-      \relative {
-        a'4\pp b c-\rfz
-      }
-    }
-  }
-  \layout {}
-  \midi {}
-}
-@end lilypond
-
-分数テーブル全体を再定義する必要がある場合、@c
-上記の方法の代わりに @file{../scm/midi.scm} の中にある
-@notation{default-dynamic-absolute-volume} プロシージャと@c
-そのモデルとなる関連テーブルを使用する方が良いでしょう。@c
-このセクションの最後の例で、その方法を示しています。
-
-@unnumberedsubsubsec MIDI 全体でのボリューム
-@c @unnumberedsubsubsec Overall MIDI volume
-
-強弱記号に対する MIDI 全体の最小ボリュームと最大ボリュームは
-@code{Score} レベルでプロパティ @code{midiMinimumVolume} と
-@code{midiMaximumVolume} を設定することで制御できます。@c
-これらのプロパティは強弱記号に対してのみ効果を発揮します。@c
-そのため、楽譜の開始からそれらのプロパティを適用するには、@c
-楽譜の開始点に強弱記号を置く必要があります。@c
-各強弱記号に対応する分数は以下の式で算出されます:
-
-@example
-midiMinimumVolume + (midiMaximumVolume - midiMinimumVolume) * fraction
-@end example
-
-以下の例では、MIDI 全体のボリュームの範囲は 0.2 - 0.5 の範囲に制限されています。
-
-@lilypond[verbatim,quote]
-\score {
-  <<
-    \new Staff {
-      \key g \major
-      \time 2/2
-      \set Staff.midiInstrument = #"flute"
-      \new Voice \relative {
-        r2 g''\mp g fis~
-        4 g8 fis e2~
-        4 d8 cis d2
-      }
-    }
-    \new Staff {
-      \key g \major
-      \set Staff.midiInstrument = #"clarinet"
-      \new Voice \relative {
-        b'1\p a2. b8 a
-        g2. fis8 e
-        fis2 r
-      }
-    }
-  >>
-  \layout {}
-  \midi {
-    \tempo 2 = 72
-    \context {
-      \Score
-      midiMinimumVolume = #0.2
-      midiMaximumVolume = #0.5
-    }
-  }
-}
-@end lilypond
-
-@unnumberedsubsubsec 楽器の音の強さを均一化する (i)
-@c @unnumberedsubsubsec Equalizing different instruments (i)
-
-@code{Staff} コンテキストの中で最小 MIDI ボリューム プロパティと@c
-最大 MIDI ボリューム プロパティが設定されている場合、@c
-MIDI 楽器間の相対ボリュームを制御することができます。@c
-これは基本的な楽器イコライザであり、@c
-MIDI 出力の品質を著しく高めることができます。
-
-以下の例では、クラリネットのボリュームはフルートのボリュームよりも@c
-相対的に低く設定されています。@c
-これを正しく機能させるには、それぞれの楽器の最初の音符に@c
-強弱記号を置く必要があります。
-
-@lilypond[verbatim,quote]
-\score {
-  <<
-    \new Staff {
-      \key g \major
-      \time 2/2
-      \set Staff.midiInstrument = #"flute"
-      \set Staff.midiMinimumVolume = #0.7
-      \set Staff.midiMaximumVolume = #0.9
-      \new Voice \relative {
-        r2 g''\mp g fis~
-        4 g8 fis e2~
-        4 d8 cis d2
-      }
-    }
-    \new Staff {
-      \key g \major
-      \set Staff.midiInstrument = #"clarinet"
-      \set Staff.midiMinimumVolume = #0.3
-      \set Staff.midiMaximumVolume = #0.6
-      \new Voice \relative {
-        b'1\p a2. b8 a
-        g2. fis8 e
-        fis2 r
-      }
-    }
-  >>
-  \layout {}
-  \midi {
-    \tempo 2 = 72
-  }
-}
-@end lilypond
-
-@unnumberedsubsubsec 楽器の音の強さを均一化する (ii)
-@c @unnumberedsubsubsec Equalizing different instruments (ii)
-
-MIDI 最小/最大ボリューム プロパティが設定されていない場合、@c
-デフォルトでは、LilyPond はいくつかの楽器に軽度の均一化を適用します。@c
-適用を受ける楽器とその equalization は @file{../scm/midi.scm} の中にある@c
-テーブル @notation{instrument-equalizer-alist} に示されています。
-
-引数として MIDI 楽器名だけを受け入れて、その楽器に適用する@c
-最小/最大ボリュームの分数ペアを返す Scheme プロシージャを
-@code{Score} コンテキストの中にある
-@code{instrumentEqualizer} にセットすることで、@c
-この基本的なデフォルト イコライザを置き換えることができます。@c
-この置き換えは、このセクションの始めでの
-@code{dynamicAbsoluteVolumeFunction}  の再設定の方法とまったく同じです。@c
-@file{../scm/midi.scm} の中にあるデフォルト イコライザ
-@notation{default-instrument-equalizer} は@c
-そのようなプロシージャをどのように記述するのかを示しています。
-
-以下の例は、フルートとクラリネットの相対ボリュームを@c
-前の例と同じ値にセットしています。
-
-@lilypond[verbatim,quote]
-#(define my-instrument-equalizer-alist '())
-
-#(set! my-instrument-equalizer-alist
-  (append
-    '(
-      ("flute" . (0.7 . 0.9))
-      ("clarinet" . (0.3 . 0.6)))
-    my-instrument-equalizer-alist))
-
-#(define (my-instrument-equalizer s)
-  (let ((entry (assoc s my-instrument-equalizer-alist)))
-    (if entry
-      (cdr entry))))
-
-\score {
-  <<
-    \new Staff {
-      \key g \major
-      \time 2/2
-      \set Score.instrumentEqualizer = #my-instrument-equalizer
-      \set Staff.midiInstrument = #"flute"
-      \new Voice \relative {
-        r2 g''\mp g fis ~
-        4 g8 fis e2 ~
-        4 d8 cis d2
-      }
-    }
-    \new Staff {
-      \key g \major
-      \set Staff.midiInstrument = #"clarinet"
-      \new Voice \relative {
-        b'1\p a2. b8 a
-        g2. fis8 e
-        fis2 r
-      }
-    }
-  >>
-  \layout { }
-  \midi {
-    \tempo 2 = 72
-  }
-}
-@end lilypond
-
-@ignore
-@c Delete when satisfied this is adequately covered elsewhere -td
-
-@n ode Microtones in MIDI (MIDI での微分音)
-@s ubsection Microtones in MIDI (MIDI での微分音)
-
-@cindex microtones in MIDI (MIDI での微分音)
-
-半シャープと半フラットからなる微分音は MIDI ファイルにエクスポートされ、@c
-ピッチ ベンドをサポートする MIDI プレーヤで正しく演奏されます。@c
-@ref{Note names in other languages} を参照してください。@c
-以下の例は 1 オクターブの中にあるすべての半シャープと半フラットの音を@c
-示しています。@c
-この例をコピーしてコンパイルすることで、@c
-あなたが持っている MIDI プレイヤで微分音をテストすることができます。
-
-@lilypond[verbatim,quote]
-\score {
-  \relative {
-    c' cih cis cisih
-    d dih ees eeh
-    e eih f fih
-    fis fisih g gih
-    gis gisih a aih
-    bes beh b bih
-  }
-  \layout {}
-  \midi {}
-}
-@end lilypond
-@end ignore
-
-
-@node MIDI での打楽器
-@subsection MIDI での打楽器
-@translationof Percussion in MIDI
-
-打楽器は一般的に @code{DrumStaff} コンテキストの中で記譜され、@c
-そのように記譜された場合、その打楽器は正しく MIDI チャンネル 10 に@c
-出力されます。@c
-しかしながら、いくつかのピッチを持つ打楽器
--- ザイロフォン、マリンバ、ビブラフォン、ティンパニなど --
-は @qq{通常の} 楽器のように扱われ、正しい MIDI 出力を得るには、@c
-それらの楽器のための音楽を@c
-通常の @code{Staff} コンテキストに入力する必要があります
- -- @code{DrumStaff} には入力しません。
-
-
-いくつかのピッチを持たない打楽器
--- メロディック トム、太鼓、シンセドラムなど --
-のサウンドは一般の MIDI 標準に含まれ、MIDI チャネル@tie{}10 経由では@c
-使用できません。@c
-そのため、そのような楽器の記譜も適切なピッチを使って@c
-通常の @code{Staff} コンテキストに入力すべきです。
-
-多くの打楽器 -- カスタネットなど -- は一般の MIDI 標準には含まれません。@c
-そのような楽器のための記述を行っている場合に MIDI 出力を作り出すための@c
-最も容易な -- けれども不十分な -- 方法は、@c
-標準セットから最も近いサウンドを代わりに用いることです。
-
-@c TODO Expand with examples, and any other issues
-
-@knownissues
-
-一般の MIDI 標準はリム ショットを含まないため、@c
-代わりにサイドスティックを用います。
-
-@c 2017-9-22 このノードと、続く奏法スクリプトのノードのみ先に翻訳
-@c 第1章のxrefを正しく動作させるため。
-@c 元の奏法スクリプトのノードは移動（実質削除）しました。
 @node MIDI 出力をより良くする
 @subsection MIDI 出力をより良くする
 @translationof Enhancing MIDI output
@@ -4280,12 +3789,12 @@ LilyPond 記譜法で書かれた音楽表記を@c
 は、以下を表示します:
 
 @example
-@{ a,4 cis e fis g @}
+@{ a,4 cis4 e4 fis4 g4 @}
 @end example
 
 デフォルトでは、LilyPond は上記のメッセージを@c
 他のすべてのメッセージと一緒にコンソールに表示します。@c
-上記のメッセージを分離して @code{\display@{STUFF@}} の結果を保存するには、@c
+上記のメッセージを分離して @code{\displayLilyMusic} の結果を保存するには、@c
 出力をファイルにリダイレクトします。
 
 @example
@@ -4298,13 +3807,15 @@ LilyPond は音楽表記を表示するだけでなく、それを解釈しま�
 (なぜなら、@code{\displayLilyMusic} は追加で音楽表記を表示するために@c
 返すだけだからです)。@c
 既存の音楽に @code{\displayLilyMusic} を挿入するだけで@c
-その音楽の情報を得るられるので便利です。@c
-本当に LilyPond に音楽を解釈させたくないのであれば、@c
-@code{\void} を使ってその音楽を無視させます:
+その音楽の情報を得られるので便利です。
+
+音楽を解釈させ、コンソールには音楽を表示したい一方で、出力ファイルからは@c
+それを削除したいならば、@code{\void} コマンドを使います:
 
 @example
 @{
   \void \displayLilyMusic \transpose c a, @{ c4 e g a bes @}
+  c1
 @}
 @end example
 
@@ -4347,7 +3858,7 @@ LilyPond は音楽表記を表示するだけでなく、それを解釈しま�
 その後にオプション パラメータが続きます。
 
 @example
-@var{time}  @var{type}  @var{...params...}
+@var{time}  @var{type}  @var{@dots{}params@dots{}}
 @end example
 
 この情報は、@c
