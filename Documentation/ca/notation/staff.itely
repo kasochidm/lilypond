@@ -86,7 +86,7 @@ preparada per a un conjunt de bateria típic.  Cada instrument es
 presenta amb un símbol diferent.  Els instruments s'escriuen en el
 mode de percussió que segueix a una ordre @code{\drummode}, amb
 cada instrument identificat per un nom.  Per veure més detalls,
-consulteu @rusernamed{Percussion staves,Pautes de percussió}.
+consulteu @ref{Pautes de percussió}.
 
 @lilypond[verbatim,quote]
 \new DrumStaff {
@@ -105,7 +105,7 @@ reals.  Per veure més detalls, consulteu
 
 @code{TabStaff} crea una tabulatura amb sis cordes en l'afinació
 estàndard de la guitarra.  Per veure més detalls, consulteu
-@rusernamed{Default tablatures,Tabulatures predeterminades}.
+@ref{Tabulatures predeterminades}.
 
 @lilypond[verbatim,quote]
 \new TabStaff \relative { c''4 d e f }
@@ -131,9 +131,9 @@ Glossari musical:
 
 Referència de la notació:
 @rusernamed{Creating and referencing contexts,Creació i referència de contextos},
-@rusernamed{Percussion staves,Pautes de percussió},
+@ref{Pautes de percussió},
 @ref{Mostrar els ritmes de la melodia},
-@rusernamed{Default tablatures,Tabulatures predeterminades},
+@ref{Tabulatures predeterminades},
 @rusernamed{Pre-defined contexts,Contextos predefinits},
 @ref{El símbol del pentagrama},
 @rusernamed{Gregorian chant contexts,Contextos del cant gregorià},
@@ -989,7 +989,7 @@ Per afegir noms d'instrument a d'altres contextos (com ara
 @code{ChordNames} o @code{FiguredBass}), hem d'afegir el gravador
 @code{Instrument_name_engraver} a aquest context.  Per veure més
 detalls, consulteu
-@rusernamed{Modifying context plugins,Modificació dels connectors de context}.
+@rusernamed{Modifying context plug-ins,Modificació dels connectors de context}.
 
 
 @cindex noms d'instrument, canviar
@@ -1041,7 +1041,7 @@ setFlute = {
 Referència de la notació:
 @rusernamed{paper variables for shifts and indents,Variables de
 paper per a desplaçaments i sagnats},
-@rusernamed{Modifying context plugins,Modificació dels connectors de context}.
+@rusernamed{Modifying context plug-ins,Modificació dels connectors de context}.
 @c Quan es tradueixi fer servir
 @c @ref{Variables de paper per a desplaçaments i sagnats,,Variables de @code{@bs{}paper} per a desplaçaments i sagnats}.
 
@@ -1558,7 +1558,7 @@ Referència de la notació:
 @ref{Transposició dels instruments},
 @ref{Noms d'instruments},
 @ref{Clau},
-@ref{Musical cues,Pistes musicals},
+@ref{Guies musicals},
 @rusernamed{Using tags,Ús de etiquetes}.
 
 

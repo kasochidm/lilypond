@@ -7,7 +7,7 @@
     Guide, node Updating translation committishes..
 @end ignore
 
-@c \version "2.19.25"
+@c \version "2.19.80"
 
 @node Keyboard and other multi-staff instruments
 @section Keyboard and other multi-staff instruments
@@ -398,6 +398,30 @@ notes can be printed automatically:
 >>
 @end lilypond
 
+A staff-change line between chords connects the chords' @qq{last notes} as
+written in the source file; this can be used to quickly adjust the line's
+vertical start and end positions.
+
+@lilypond[quote,verbatim]
+\new PianoStaff <<
+  \new Staff = "one" {
+    <c' e' g'>1
+    \showStaffSwitch
+    \change Staff = "two"
+    <a c' f>1
+    \hideStaffSwitch
+    \change Staff = "one"
+    <e' g' c'>1
+    \showStaffSwitch
+    \change Staff = "two"
+    <f a c'>1
+  }
+  \new Staff = "two" {
+    \clef bass
+    s1*4
+  }
+>>
+@end lilypond
 
 @predefined
 @code{\showStaffSwitch},
@@ -661,8 +685,8 @@ or pedal diagrams:
 
 @lilypond[quote,verbatim,fragment]
 \textLengthOn
-cis''1_\markup { \harp-pedal #"^v-|vv-^" }
-c''!1_\markup { \harp-pedal #"^o--|vv-^" }
+cis''1_\markup { \harp-pedal "^v-|vv-^" }
+c''!1_\markup { \harp-pedal "^o--|vv-^" }
 @end lilypond
 
 The @code{\harp-pedal} command accepts a string of characters, where

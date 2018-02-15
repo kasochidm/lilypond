@@ -1,14 +1,14 @@
 @c -*- coding: utf-8; mode: texinfo; documentlanguage: fr -*-
 
 @ignore
-   Translation of GIT committish: a1267e20afa61258ce3031f07d916e0e66ac6582
+   Translation of GIT committish: d88eeba3390060dbccddfc3724cbb4b8cfecceb8
 
    When revising a translation, copy the HEAD committish of the
    version that you are working on.  For details, see the Contributors'
    Guide, node Updating translation committishes..
 @end ignore
 
-@c \version "2.19.25"
+@c \version "2.19.80"
 
 @c Translators: Valentin Villenave, Jean-Charles Malahieude
 @c Translation checkers: Jean-Charles Malahieude, John Mandereau
@@ -430,6 +430,32 @@ commande @code{\showStaffSwitch} :
 >>
 @end lilypond
 
+Dans le cas d'accords, cette ligne connectera la @b{dernière} hauteur de
+chacun d'entre eux selon leur ordre d'apparition dans le fichier
+source ; ceci permet d'ajuster rapidement les positions de départ et
+d'arrivée de cette ligne.
+
+@lilypond[quote,verbatim]
+\new PianoStaff <<
+  \new Staff = "one" {
+    <c' e' g'>1
+    \showStaffSwitch
+    \change Staff = "two"
+    <a c' f>1
+    \hideStaffSwitch
+    \change Staff = "one"
+    <e' g' c'>1
+    \showStaffSwitch
+    \change Staff = "two"
+    <f a c'>1
+  }
+  \new Staff = "two" {
+    \clef bass
+    s1*4
+  }
+>>
+@end lilypond
+
 @predefined
 @code{\showStaffSwitch},
 @code{\hideStaffSwitch}.
@@ -704,8 +730,8 @@ ou bien sous forme de diagramme :
 
 @lilypond[quote,verbatim,fragment]
 \textLengthOn
-cis''1_\markup { \harp-pedal #"^v-|vv-^" }
-c''!1_\markup { \harp-pedal #"^o--|vv-^" }
+cis''1_\markup { \harp-pedal "^v-|vv-^" }
+c''!1_\markup { \harp-pedal "^o--|vv-^" }
 @end lilypond
 
 Bémol si la pédale est relâchée (ou en haut), bécarre si elle est

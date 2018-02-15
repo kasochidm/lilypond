@@ -476,8 +476,11 @@ and duration-log @var{log}."
                                 (ly:grob-property stem 'thickness)
                                 1.3)
                             line-thickness))
-         (radius (/ (+ staff-space line-thickness) 2))
-         (letter (make-center-align-markup (make-vcenter-markup pitch-string)))
+         (font-size (ly:grob-property grob 'font-size 0))
+         (radius (* (magstep font-size) (/ (+ staff-space line-thickness) 2)))
+         (letter (make-fontsize-markup
+                  -8
+                  (make-center-align-markup (make-vcenter-markup pitch-string))))
          (filled-circle (make-draw-circle-markup radius 0 #t)))
 
     (ly:stencil-translate-axis
@@ -995,8 +998,9 @@ unpure-pure-container."
                        (ly:pure-call data grob start end))))
       (lambda (grob) (ly:unpure-call func grob (ly:unpure-call data grob)))))
 
-(define*-public (grob::offset-function func data
-                                       #:optional (plus +))
+;; Don't use define* since then we can't start the body with define in
+;; Guile-1.8: crazy bug.
+(define-public (grob::offset-function func data . rest)
   "This creates a callback entity to be stored in a grob property,
 based on the grob property data @var{data} (which can be plain data, a
 callback itself, or an unpure-pure-container).
@@ -1007,22 +1011,25 @@ defaults to @code{+} but may be changed to allow for using a different
 underlying accumulation.
 
 If @var{data} is @code{#f} or @code{'()}, it is not included in the sum."
+  (define plus (if (null? rest) + (car rest)))
+  (define (maybeplus a b)
+    (if (or (not b) (null? b)) a (plus a b)))
   (cond ((or (not data) (null? data))
          func)
         ((or (ly:unpure-pure-container? func)
              (ly:unpure-pure-container? data))
          (ly:make-unpure-pure-container
           (lambda rest
-            (plus (apply ly:unpure-call func rest)
-                  (apply ly:unpure-call data rest)))
+            (maybeplus (apply ly:unpure-call func rest)
+                       (apply ly:unpure-call data rest)))
           (lambda rest
-            (plus (apply ly:pure-call func rest)
-                  (apply ly:pure-call data rest)))))
+            (maybeplus (apply ly:pure-call func rest)
+                       (apply ly:pure-call data rest)))))
         ((or (procedure? func)
              (procedure? data))
          (lambda rest
-           (plus (apply ly:unpure-call func rest)
-                 (apply ly:unpure-call data rest))))
+           (maybeplus (apply ly:unpure-call func rest)
+                      (apply ly:unpure-call data rest))))
         (else (plus func data))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

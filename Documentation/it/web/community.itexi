@@ -1,6 +1,6 @@
 @c -*- coding: utf-8; mode: texinfo; documentlanguage: it -*-
 @ignore
-    Translation of GIT committish: 3f5d679ade0f797d5f907569656223d09b09d5db
+    Translation of GIT committish: 8b66a59a9c1f1aad9eb2eab51bc33edc4e0542c9
 
     When revising a translation, copy the HEAD committish of the
     version that you are working on.  For details, see the Contributors'
@@ -120,11 +120,6 @@ iscrizione e informazioni su lilypond-user}
 archivio 1 della lista degli utenti}
 @uref{http://www.mail-archive.com/lilypond-user@@gnu.org/,
 archivio 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.general,
-archivio 3}
-
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.general,
-scrivi alla lista lilypond-user tramite gmane}
 @end quotation
 
 @warning{Quando poni domande, usa gli @ref{Esempi minimi}!}
@@ -190,7 +185,7 @@ gruppo portoghese}
 @uref{http://lists.gnu.org/mailman/listinfo/lilypond-es,
 mailing list spagnola}
 
-@uref{http://www.lilypondforum.de/,
+@uref{https://lilypondforum.de/,
 forum tedesco}
 
 @end quotation
@@ -220,10 +215,6 @@ iscrizione e informazioni su info-lilypond}
 archivio 1 della lista info}
 @uref{http://www.mail-archive.com/info-lilypond@@gnu.org/,
 archivio 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.announce,
-archivio 3}
-
-@c don't include gmane posting here.  -gp
 @end quotation
 
 
@@ -246,11 +237,6 @@ iscrizione e informazioni su lilypond-devel}
 archivio 1 della lista devel}
 @uref{http://www.mail-archive.com/lilypond-devel@@gnu.org/,
 archivio 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.devel,
-archivio 3}
-
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.devel,
-scrivi alla lista lilypond-devel tramite gmane}
 @end quotation
 
 
@@ -267,10 +253,6 @@ iscrizione e informazioni su bug-lilypond}
 archivio 1 della lista bug}
 @uref{http://www.mail-archive.com/bug-lilypond@@gnu.org/,
 archivio 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.bugs,
-archivio 3}
-
-@c don't include gmane posting here.  -gp
 @end quotation
 
 @warning{Prima di inviare un messaggio alla lista bug, leggi le nostre
@@ -465,22 +447,6 @@ creato una segnalazione bug, inviacela!
 @item
 Sei iscritto alla mailing list @uref{mailto:bug-lilypond@@gnu.org,
 bug-lilypond@@gnu.org}, puoi inviare una normale email.
-
-@item
-Se non sei iscritto, puoi comunque inviare una segnalazione bug attraverso
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.bugs,
-l'interfaccia web lilypond.bugs di gmane}.
-
-Purtroppo c'è un severo controllo @qq{contro il top-posting} nell'interfaccia di
-gmane, che viene spesso innescato erroneamente dai file lilypond.
-Per evitarlo, aggiungi
-
-@example
-> I'm not top posting.
-@end example
-
-@noindent
-(@emph{devi} includere il @code{>} ) in cima alla tua segnalazione bug.
 
 @end itemize
 @divEnd

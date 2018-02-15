@@ -8,7 +8,7 @@
     Guide, node Updating translation committishes..
 @end ignore
 
-@c \version "2.19.21"
+@c \version "2.19.80"
 
 
 @node Ancient notation
@@ -317,19 +317,19 @@ supported are @code{vaticana}, @code{medicaea}, @code{hufnagel}, and
 \new Lyrics \lyricmode {
   \markup { \column {
     \typewriter "vaticana "
-    \line { " " \musicglyph #"custodes.vaticana.u0" }
+    \line { " " \musicglyph "custodes.vaticana.u0" }
   } }
   \markup { \column {
     \typewriter "medicaea "
-    \line { " " \musicglyph #"custodes.medicaea.u0" }
+    \line { " " \musicglyph "custodes.medicaea.u0" }
   }}
   \markup { \column {
     \typewriter "hufnagel "
-    \line { " " \musicglyph #"custodes.hufnagel.u0" }
+    \line { " " \musicglyph "custodes.hufnagel.u0" }
   }}
   \markup { \column {
     \typewriter "mensural "
-    \line { " " \musicglyph #"custodes.mensural.u0" }
+    \line { " " \musicglyph "custodes.mensural.u0" }
   }}
 }
 @end lilypond
@@ -400,125 +400,52 @@ Music Glossary:
 @node Mensural clefs
 @unnumberedsubsubsec Mensural clefs
 
-@cindex clefs
+@cindex Clef styles
+@cindex Ancient music clefs
+@cindex Clef, ancient music
+@cindex Clef, petrucci
+@cindex Clef, mensural
+@cindex Clef, blackmensural
+@cindex Clef, kievan
+@cindex Petrucci clef
+@cindex Mensural clef
+@cindex Blackmensural clef
+@cindex Kievan clef
 
-The following table shows all mensural clefs that are supported via
-the @code{\clef} command.  Some of the clefs use the same glyph,
-but differ only with respect to the line they are printed on.  In
-such cases, a trailing number in the name is used to enumerate
-these clefs, numbered from the lowest to the highest line.
-You can manually force a clef glyph to be typeset on an arbitrary
-line, as described in @ref{Clef}.  The note printed to the right
-side of each clef in the example column denotes the @code{c'} with
-respect to that clef.
+Mensural clefs are supported using the @code{\clef} command.  Some of
+the clefs use the same glyph, but differ only with respect to the line
+they are printed on.  In such cases, a trailing number in the name is
+used to enumerate these clefs, numbered from the lowest to the highest
+line.
 
-Petrucci used C clefs with differently balanced left-side vertical
-beams, depending on which staff line it is printed.
-
-@multitable @columnfractions .4 .4 .2
-@item
-@b{Description}
-@tab
-@b{Supported Clefs}
-@tab
-@b{Example}
-
-@item
-mensural C clef
-@tab
-@code{mensural-c1}, @code{mensural-c2},@*
-@code{mensural-c3}, @code{mensural-c4},@*
-@code{mensural-c5}
-@tab
-@lilypond[fragment,notime]
-  \clef "mensural-c2"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'vaticana.punctum
+\clef "vaticana-do1"
+c'1
 @end lilypond
 
-@item
-mensural F clef
-@tab
-@code{mensural-f}
-@tab
-@lilypond[fragment,notime]
-  \clef "mensural-f"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'medicaea.punctum
+\clef "medicaea-do3"
+c'1
 @end lilypond
 
-@item
-mensural G clef
-@tab
-@code{mensural-g}
-@tab
-@lilypond[fragment,notime]
-  \clef "mensural-g"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'hufnagel.punctum
+\clef "hufnagel-fa2"
+c'1
 @end lilypond
 
-@item
-black mensural C clef
-@tab
-@code{blackmensural-c1}, @code{blackmensural-c2},@*
-@code{blackmensural-c3}, @code{blackmensural-c4},@*
-@code{blackmensural-c5}
-@tab
-@lilypond[fragment,notime]
-  \clef "blackmensural-c2"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'neomensural
+\clef "neomensural-c4"
+c'1
 @end lilypond
 
-@item
-neomensural C clef
-@tab
-@code{neomensural-c1}, @code{neomensural-c2},@*
-@code{neomensural-c3}, @code{neomensural-c4}
-@tab
-@lilypond[fragment,notime]
-  \clef "neomensural-c2" c'1
-@end lilypond
 
-@item
-petrucci style C clefs, for use on different staff lines
-(the example shows the 2nd staff line C clef)
-@tab
-@code{petrucci-c1}, @code{petrucci-c2},@*
-@code{petrucci-c3}, @code{petrucci-c4},@*
-@code{petrucci-c5}
-@tab
-@lilypond[fragment,notime]
-  \clef "petrucci-c2"
-  \override NoteHead.style = #'mensural
-  c'1
-@end lilypond
-
-@item
-petrucci style F clefs, for use on different staff lines
-(the example shows the 3rd staff line F clef)
-@tab
-@code{petrucci-f3}, @code{petrucci-f4},@*
-@code{petrucci-f5}
-@tab
-@lilypond[fragment,notime]
-  \clef "petrucci-f3"
-  \override NoteHead.style = #'mensural
-  c'1
-@end lilypond
-
-@item
-petrucci style G clef
-@tab
-@code{petrucci-g}
-@tab
-@lilypond[fragment,notime]
-  \clef "petrucci-g"
-  \override NoteHead.style = #'mensural
-  c'1
-@end lilypond
-@end multitable
+It is possible to manually force a clef glyph to be typeset on an
+arbitrary line, as described in @ref{Clef}.  For the complete range of
+possible clefs see @ref{Clef styles}.
 
 @seealso
 Music Glossary:
@@ -526,10 +453,23 @@ Music Glossary:
 @rglos{clef}.
 
 Notation Reference:
+@ref{Gregorian clefs},
 @ref{Clef}.
 
+Installed Files:
+@file{scm/parser-clef.scm}.
+
+Snippets:
+@rlsr{Pitches}.
+
+Internals Reference:
+@rinternals{Clef_engraver},
+@rinternals{Clef},
+@rinternals{ClefModifier},
+@rinternals{clef-interface}.
+
 @knownissues
-The mensural g clef is mapped to the Petrucci g clef.
+The Mensural g clef is mapped to the Petrucci g clef.
 
 
 @node Mensural time signatures
@@ -559,34 +499,34 @@ to particular time fractions.  In other words, to get a particular mensuration s
   \set Score.barAlways = ##t
   \textLengthOn
   s^\markup { "\\time 4/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural44" }
+"timesig.neomensural44" }
   s
   s^\markup { "\\time 2/2" }_\markup { "       " \musicglyph
-#"timesig.neomensural22" }
+"timesig.neomensural22" }
   s
   s^\markup { "\\time 6/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural64" }
+"timesig.neomensural64" }
   s
   s^\markup { "\\time 6/8" }_\markup { "       " \musicglyph
-#"timesig.neomensural68" }
+"timesig.neomensural68" }
   \break
   s^\markup { "\\time 3/2" }_\markup { "       " \musicglyph
-#"timesig.neomensural32" }
+"timesig.neomensural32" }
   s
   s^\markup { "\\time 3/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural34" }
+"timesig.neomensural34" }
   s
   s^\markup { "\\time 9/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural94" }
+"timesig.neomensural94" }
   s
   s^\markup { "\\time 9/8" }_\markup { "       " \musicglyph
-#"timesig.neomensural98" }
+"timesig.neomensural98" }
   \break
   s^\markup { "\\time 4/8" }_\markup { "       " \musicglyph
-#"timesig.neomensural48" }
+"timesig.neomensural48" }
   s
   s^\markup { "\\time 2/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural24" }
+"timesig.neomensural24" }
 }
 @end lilypond
 
@@ -647,7 +587,7 @@ This sets @code{breveTP} to 3/2 times 2 = 3 times a whole note.
 
 The @code{mensural68alt} and @code{neomensural68alt} symbols
 (alternate symbols for 6/8) are not addressable with @code{\time}.
-Use @code{\markup @{\musicglyph #"timesig.mensural68alt" @}} instead.
+Use @code{\markup @{\musicglyph "timesig.mensural68alt" @}} instead.
 
 
 @node Mensural note heads
@@ -815,8 +755,8 @@ style.
 \markup {
   \column {
     "mensural"
-    \line { " " \musicglyph #"accidentals.mensural-1"
-      " " \musicglyph #"accidentals.mensural1" }
+    \line { " " \musicglyph "accidentals.mensural-1"
+      " " \musicglyph "accidentals.mensural1" }
   }
 }
 @end lilypond
@@ -1212,16 +1152,16 @@ Accidentals for the three different Gregorian styles are available:
 \markup {
   \column {
     "vaticana"
-    \line { " " \musicglyph #"accidentals.vaticana-1"
-      " " \musicglyph #"accidentals.vaticana0" }
+    \line { " " \musicglyph "accidentals.vaticana-1"
+      " " \musicglyph "accidentals.vaticana0" }
   }
   \column {
     "medicaea"
-    \line { " " \musicglyph #"accidentals.medicaea-1" }
+    \line { " " \musicglyph "accidentals.medicaea-1" }
   }
   \column {
     "hufnagel"
-    \line { " " \musicglyph #"accidentals.hufnagel-1" }
+    \line { " " \musicglyph "accidentals.hufnagel-1" }
   }
 }
 @end lilypond

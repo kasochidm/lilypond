@@ -1,7 +1,7 @@
 @c -*- coding: utf-8; mode: texinfo; documentlanguage: fr -*-
 
 @ignore
-   Translation of GIT committish: 1e5c6b0f54079eb3285dcc4c7e53f17d8bb03933
+   Translation of GIT committish: d88eeba3390060dbccddfc3724cbb4b8cfecceb8
 
    When revising a translation, copy the HEAD committish of the
    version that you are working on.  For details, see the Contributors'
@@ -9,7 +9,7 @@
 @end ignore
 
 
-@c \version "2.19.21"
+@c \version "2.19.80"
 
 @c Translators: Jean-Charles Malahieude
 
@@ -328,19 +328,19 @@ styles disponibles sont @code{vaticana}, @code{medicaea},
 \new Lyrics \lyricmode {
   \markup { \column {
     \typewriter "vaticana "
-    \line { " " \musicglyph #"custodes.vaticana.u0" }
+    \line { " " \musicglyph "custodes.vaticana.u0" }
   } }
   \markup { \column {
     \typewriter "medicaea "
-    \line { " " \musicglyph #"custodes.medicaea.u0" }
+    \line { " " \musicglyph "custodes.medicaea.u0" }
   }}
   \markup { \column {
     \typewriter "hufnagel "
-    \line { " " \musicglyph #"custodes.hufnagel.u0" }
+    \line { " " \musicglyph "custodes.hufnagel.u0" }
   }}
   \markup { \column {
     \typewriter "mensural "
-    \line { " " \musicglyph #"custodes.mensural.u0" }
+    \line { " " \musicglyph "custodes.mensural.u0" }
   }}
 }
 @end lilypond
@@ -418,134 +418,45 @@ Glossaire musicologique :
 @cindex clefs
 @cindex clés
 @cindex anciennes, clefs
+@cindex Petrucci, clef
+@cindex Mensurale clef
+@cindex Blackmensural, clef
+@cindex Kievan, clef
 
-Avec LilyPond, de nombreuses clés sont disponibles, dont certaines sont
-dédiées à la musique ancienne.
+Les clefs dédiées à la musique ancienne sont disponibles à l'aide de la
+commande @code{\clef}.  Certaines de ces clés utilisent le même glyphe,
+attaché à l'une ou l'autre des lignes de la portée.  Le chiffre porté en
+suffixe permet alors de les différencier, en parnant de la ligne
+inférieure.
 
-Le tableau suivant présente les différentes clés anciennes que vous
-pouvez sélectionner avec la commande @code{\clef}.  Certaines de ces
-clés utilisent le même glyphe, attaché à l'une ou l'autre des lignes
-de la portée.  Le chiffre porté en suffixe permet alors de les
-différencier.  Vous pouvez forcer le positionnement du glyphe sur une
-ligne, comme expliqué à la section @ref{Clefs}.  Dans la colonne
-exemple, la note suivant la clé est un do médium.
-
-Les clés d'ut de Petrucci avaient une hampe gauche différente selon
-leur ligne de rattachement.
-
-@multitable @columnfractions .4 .4 .2
-@item
-@b{Description}
-@tab
-@b{Clef disponible}
-@tab
-@b{Exemple}
-
-@item
-Clef d'ut, style mensural historique
-@tab
-@code{mensural-c1}, @code{mensural-c2},@*
-@code{mensural-c3}, @code{mensural-c4},@*
-@code{mensural-c5}
-@tab
-@lilypond[fragment,notime]
-  \clef "mensural-c2"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'vaticana.punctum
+\clef "vaticana-do1"
+c'1
 @end lilypond
 
-@item
-Clef de fa, style mensural historique
-@tab
-@code{mensural-f}
-@tab
-@lilypond[fragment,notime]
-  \clef "mensural-f"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'medicaea.punctum
+\clef "medicaea-do3"
+c'1
 @end lilypond
 
-@item
-Clef de sol, style mensural historique
-@tab
-@code{mensural-g}
-@tab
-@lilypond[fragment,notime]
-  \clef "mensural-g"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'hufnagel.punctum
+\clef "hufnagel-fa2"
+c'1
 @end lilypond
 
-@item
-Clef d'ut, style mensural noirci
-@tab
-@code{blackmensural-c1}, @code{blackmensural-c2},@*
-@code{blackmensural-c3}, @code{blackmensural-c4},@*
-@code{blackmensural-c5}
-@tab
-@lilypond[fragment,notime]
-  \clef "blackmensural-c2"
-  \override NoteHead.style = #'mensural
-  c'1
+@lilypond[notime,verbatim,quote,fragment]
+\override NoteHead.style = #'neomensural
+\clef "neomensural-c4"
+c'1
 @end lilypond
 
-@item
-Clef d'ut, style mensural moderne
-@tab
-@code{neomensural-c1}, @code{neomensural-c2},@*
-@code{neomensural-c3}, @code{neomensural-c4}
-@tab
-@lilypond[fragment,notime]
-  \clef "neomensural-c2" c'1
-@end lilypond
-
-@item
-Clef d'ut, style mensural Petrucci, positionnable sur différentes
-lignes (clef d'ut seconde pour l'exemple)
-@tab
-@code{petrucci-c1}, @code{petrucci-c2},@*
-@code{petrucci-c3}, @code{petrucci-c4},@*
-@code{petrucci-c5}
-@tab
-@lilypond[fragment,notime]
-  \clef "petrucci-c2"
-  \override NoteHead.style = #'mensural
-  c'1
-@end lilypond
-
-@item
-Clef de fa, style mensural Petrucci, positionnable sur différentes
-lignes (clef de fa troisième pour l'exemple)
-@tab
-@code{petrucci-f3}, @code{petrucci-f4},@*
-@code{petrucci-f5}
-@tab
-@lilypond[fragment,notime]
-  \clef "petrucci-f3"
-  \override NoteHead.style = #'mensural
-  c'1
-@end lilypond
-
-@item
-Clef de sol, style mensural Petrucci
-@tab
-@code{petrucci-g}
-@tab
-@lilypond[fragment,notime]
-  \clef "petrucci-g"
-  \override NoteHead.style = #'mensural
-  c'1
-@end lilypond
-@end multitable
-
-@emph{Moderne} signifie @qq{gravé comme dans les transcriptions
-contemporaines de musique mesurée.}
-
-@emph{Petrucci} signifie @qq{inspiré des éditions réalisées par le
-maître graveur Petrucci (1466-1539).}
-
-@emph{Historique} signifie @qq{gravé comme dans les éditions
-historiques, manuscrites ou non, autres que celles de Petrucci.}
+Un glyphe de clef peut tout à fait arbitrairement être positionné sur
+une ligne particulière, comme indiqué à la rubrique @ref{Clefs}.  Une
+liste exhaustive des différentes clefs est disponible à l’annexe
+@ref{Styles de clef}.
 
 @seealso
 Glossaire musicologique :
@@ -553,7 +464,20 @@ Glossaire musicologique :
 @rglos{clef}.
 
 Manuel de notation :
+@ref{Clefs grégoriennes},
 @ref{Clefs}.
+
+Fichiers d'initialisation :
+@file{scm/parser-clef.scm}.
+
+Morceaux choisis :
+@rlsrnamed{Pitches,Hauteurs}.
+
+Référence des propriétés internes :
+@rinternals{Clef_engraver},
+@rinternals{Clef},
+@rinternals{ClefModifier},
+@rinternals{clef-interface}.
 
 @knownissues
 La clef de sol mensurale est calquée sur celle de Petrucci.
@@ -590,34 +514,34 @@ suivantes :
   \set Score.barAlways = ##t
   \textLengthOn
   s^\markup { "\\time 4/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural44" }
+"timesig.neomensural44" }
   s
   s^\markup { "\\time 2/2" }_\markup { "       " \musicglyph
-#"timesig.neomensural22" }
+"timesig.neomensural22" }
   s
   s^\markup { "\\time 6/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural64" }
+"timesig.neomensural64" }
   s
   s^\markup { "\\time 6/8" }_\markup { "       " \musicglyph
-#"timesig.neomensural68" }
+"timesig.neomensural68" }
   \break
   s^\markup { "\\time 3/2" }_\markup { "       " \musicglyph
-#"timesig.neomensural32" }
+"timesig.neomensural32" }
   s
   s^\markup { "\\time 3/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural34" }
+"timesig.neomensural34" }
   s
   s^\markup { "\\time 9/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural94" }
+"timesig.neomensural94" }
   s
   s^\markup { "\\time 9/8" }_\markup { "       " \musicglyph
-#"timesig.neomensural98" }
+"timesig.neomensural98" }
   \break
   s^\markup { "\\time 4/8" }_\markup { "       " \musicglyph
-#"timesig.neomensural48" }
+"timesig.neomensural48" }
   s
   s^\markup { "\\time 2/4" }_\markup { "       " \musicglyph
-#"timesig.neomensural24" }
+"timesig.neomensural24" }
 }
 @end lilypond
 
@@ -682,7 +606,7 @@ Ce qui définira @code{breveTP} à 3/2 fois 2 = 3 fois une ronde.
 Les symboles @code{mensural68alt} et @code{neomensural68alt} --
 alternatives à la métrique 6/8 -- ne sont pas accessibles par la
 commande @code{\time}.  Utilisez alors un
-@code{\markup @{\musicglyph #"timesig.mensural68alt" @}}.
+@code{\markup @{\musicglyph "timesig.mensural68alt" @}}.
 
 
 @node Têtes de note anciennes
@@ -860,8 +784,8 @@ toutefois il était requis, le bécarre sera emprunté au style
 \markup {
   \column {
     "mensural"
-    \line { " " \musicglyph #"accidentals.mensural-1"
-      " " \musicglyph #"accidentals.mensural1" }
+    \line { " " \musicglyph "accidentals.mensural-1"
+      " " \musicglyph "accidentals.mensural1" }
   }
 }
 @end lilypond
@@ -1267,16 +1191,16 @@ LilyPond dispose d'altérations pour les trois styles grégoriens :
 \markup {
   \column {
     "vaticana"
-    \line { " " \musicglyph #"accidentals.vaticana-1"
-      " " \musicglyph #"accidentals.vaticana0" }
+    \line { " " \musicglyph "accidentals.vaticana-1"
+      " " \musicglyph "accidentals.vaticana0" }
   }
   \column {
     "medicaea"
-    \line { " " \musicglyph #"accidentals.medicaea-1" }
+    \line { " " \musicglyph "accidentals.medicaea-1" }
   }
   \column {
     "hufnagel"
-    \line { " " \musicglyph #"accidentals.hufnagel-1" }
+    \line { " " \musicglyph "accidentals.hufnagel-1" }
   }
 }
 @end lilypond

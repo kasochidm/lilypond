@@ -1,14 +1,14 @@
 @c -*- coding: utf-8; mode: texinfo; documentlanguage: fr -*-
 
 @ignore
-   Translation of GIT committish: b7fff49e6e45ba9d3e3b48df76fe36d60dab518c
+   Translation of GIT committish: d88eeba3390060dbccddfc3724cbb4b8cfecceb8
 
    When revising a translation, copy the HEAD committish of the
    version that you are working on.  For details, see the Contributors'
    Guide, node Updating translation committishes..
 @end ignore
 
-@c \version "2.19.21"
+@c \version "2.19.80"
 
 @c Translators: Jean-Charles Malahieude
 
@@ -362,7 +362,7 @@ textuelle (commande @code{\markup}) de doigté (commande @code{\finger}).
 
 @lilypond[verbatim,quote]
 \relative {
-  c''4-1 d-2 f\finger \markup \tied-lyric #"4~3" c\finger "2 - 3"
+  c''4-1 d-2 f\finger \markup \tied-lyric "4~3" c\finger "2 - 3"
 }
 @end lilypond
 

@@ -4,7 +4,7 @@
 
     When revising a translation, copy the HEAD committish of the
     version that you are working on.  For details, see the Contributors'
-    Guide, node Updating translation committishes..@end ignore
+    Guide, node Updating translation committishes..
 @end ignore
 
 @c \version "2.19.21"
@@ -994,7 +994,7 @@ moltoF = \tweak DynamicText.self-alignment-X #LEFT
 @end lilypond
 
 古代記譜法でのブレス記号の音楽指示子 --
-divisio (ディビジオー: 区切り記号) がサポートされています。@c
+divisio (ディビジオ: 区切り記号) がサポートされています。@c
 詳細は @ref{Divisiones} を参照してください。
 
 

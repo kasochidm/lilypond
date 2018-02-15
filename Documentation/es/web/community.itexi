@@ -125,11 +125,6 @@ Suscripción e información sobre lilypond-user}
 Archivo 1 de la lista de usuarios}
 @uref{http://www.mail-archive.com/lilypond-user@@gnu.org/,
 Archivo 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.general,
-Archivo 3}
-
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.general,
-Escribir a la lista lilypond-user a través de gmane}
 @end quotation
 
 @warning{Al formular preguntas, por favor, ¡utilice
@@ -190,7 +185,7 @@ preferentemente enviarse a una de las listas de correo.
 @uref{http://lists.gnu.org/mailman/listinfo/lilypond-es,
 Lista de correo en español}
 
-@uref{http://www.lilypondforum.de/,
+@uref{https://lilypondforum.de/,
 Foro alemán}
 
 @uref{http://groups.google.com/group/lilypond-brasil,
@@ -224,10 +219,6 @@ Suscripción e información sobre info-lilypond}
 Archivo 1 de la lista info}
 @uref{http://www.mail-archive.com/info-lilypond@@gnu.org/,
 Archivo 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.announce,
-Archivo 3}
-
-@c don't include gmane posting here.  -gp
 @end quotation
 
 
@@ -250,11 +241,6 @@ Suscripción e información sobre lilypond-devel}
 Archivo 1 de la lista devel}
 @uref{http://www.mail-archive.com/lilypond-devel@@gnu.org/,
 Archivo 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.devel,
-Archivo 3}
-
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.devel,
-Escribir a la lista lilypond-devel a través de gmane}
 @end quotation
 
 
@@ -271,10 +257,6 @@ Suscripción e información sobre bug-lilypond}
 Archivo 1 de la lista bug}
 @uref{http://www.mail-archive.com/bug-lilypond@@gnu.org/,
 Archivo 2}
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.bugs,
-Archivo 3}
-
-@c don't include gmane posting here.  -gp
 @end quotation
 
 @warning{Antes de enviar un mensaje a la lista de fallos, lea
@@ -479,24 +461,6 @@ creado el informe, ¡puede enviárnoslo!
 Si está suscrito a la lista de correo
 @uref{mailto:bug-lilypond@@gnu.org,bug-lilypond@@gnu.org}, envíe
 un mensaje de la forma habitual.
-
-@item
-Si no está suscrito, aún puede enviar un informe de fallo con el
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.bugs,
-interfaz web de gmane para lilypond.bugs}.
-
-Sin embargo, existe una comprobación muy estricta de que no hay
-@qq{top-posting} (contestar por encima) en el interfaz de gmane,
-que se dispara incorrectamente con frecuencia a causa de los
-archivos de lilypond.  Para evitarlo, escriba:
-
-@example
-> I'm not top posting.
-@end example
-
-@noindent
-(@emph{debe} escribir el ángulo @code{>} ) al principio de su
-informe.
 
 @end itemize
 @divEnd

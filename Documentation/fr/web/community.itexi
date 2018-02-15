@@ -1,7 +1,7 @@
 @c -*- coding: utf-8; mode: texinfo; documentlanguage : fr -*-
 @c This file is part of web.texi
 @ignore
-   Translation of GIT committish: 93be41a1622bc33a01719d1d75af3dca40d75354
+   Translation of GIT committish: d88eeba3390060dbccddfc3724cbb4b8cfecceb8
 
    When revising a translation, copy the HEAD committish of the
    version that you are working on.  For details, see the Contributors'
@@ -133,11 +133,6 @@ page de souscription à lilypond-user}
 archive1 de la liste},
 @uref{http://www.mail-archive.com/lilypond-user@@gnu.org/,
 archive2},
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.general,
-archive3}.
-
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.general,
-poster sur lilypond-user à l'aide de gmane}
 @end quotation
 
 @warning{Lorsque vous posez une question, merci de fournir des
@@ -199,7 +194,7 @@ intéresser d'autres utilisateurs.
 @subsubheading Autres langues
 
 @quotation
-@uref{http://www.lilypondforum.de/,
+@uref{https://lilypondforum.de/,
 Forum germanophone}
 
 @uref{http://www.lilypondforum.nl/,
@@ -241,10 +236,6 @@ page de souscription à info-lilypond}
 archive1 de la liste},
 @uref{http://www.mail-archive.com/info-lilypond@@gnu.org/,
 archive2},
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.announce,
-archive3}
-
-@c don't include gmane posting here.  -gp
 @end quotation
 
 @divEnd
@@ -268,11 +259,6 @@ Page de souscription à lilypond-devel}
 archive1 de la liste},
 @uref{http://www.mail-archive.com/lilypond-devel@@gnu.org/,
 archive2},
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.devel,
-archive3}.
-
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.devel,
-poster sur lilypond-devel à l'aide de gmane}
 @end quotation
 
 
@@ -290,10 +276,6 @@ page de souscription à bug-lilypond}
 archive1 de la liste},
 @uref{http://www.mail-archive.com/bug-lilypond@@gnu.org/,
 archive2},
-@uref{http://dir.gmane.org/gmane.comp.gnu.lilypond.bugs,
-archive3}.
-
-@c don't include gmane posting here.  -gp
 @end quotation
 
 @warning{Les directives à suivre pour poster un message sur cette
@@ -449,7 +431,7 @@ Si votre saisie entraîne un crash ou une sortie erronée, c'est un bogue.
 @subheading Étape 1 : Le bogue est-il déjà recensé ?
 
 Un recensement des bogues non encore résolus est disponible sur notre
-@emph{google bug tracker} ; suivez le lien
+@emph{bug tracker} ; suivez le lien
 
 @example
 @uref{http://sourceforge.net/p/testlilyissues/issues/}
@@ -506,32 +488,6 @@ rédigé votre rapport de bogue, n'hésitez pas à nous le transmettre.
 Si vous êtes déjà inscrit à la liste de diffusion
 @uref{mailto:bug-lilypond@@gnu.org,bug-lilypond@@gnu.org}, envoyez un
 courriel comme à l'accoutumée.
-
-@item
-Si vous n'avez pas souscrit à la liste de diffusion, vous pouvez
-cependant transmettre votre rapport de bogue au travers de
-@uref{http://post.gmane.org/post.php?group=gmane.comp.gnu.lilypond.bugs,
-l'interface gmane de lilypond.bugs}.
-
-Nous tenons à préciser que l'interface gmane applique une politique
-stricte de « no top-posting » bien souvent mise en défaut par les
-fichiers LilyPond.  Aussi nous vous prions de bien vouloir ajouter une
-ligne
-
-@example
-> I'm not top posting.
-@end example
-
-@noindent
-sans oublier le @code{>} au tout début de votre message ; c'est
-@strong{impératif}.
-
-Si vous ne voulez ou ne pouvez pas envoyer un rapport de bogue selon les
-instructions et en anglais, envoyez votre rapport ou posez votre
-question sur la
-@uref{http://lists.gnu.org/mailman/listinfo/lilypond-user-fr,
-liste francophone} ; nous nous chargerons de transmettre un rapport
-à la liste anglophone et assurerons le suivi.
 
 @end itemize
 @divEnd

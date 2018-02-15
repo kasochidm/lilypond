@@ -228,6 +228,9 @@ EPS backend.")
     (clip-systems
      #f
      "Generate cut-out snippets of a score.")
+    (crop
+     #f
+     "Match the size of the normal output to the typeset image.")
     (datadir
      #f
      "LilyPond prefix for data files (read-only).")
@@ -326,6 +329,9 @@ file to given string.")
      #f
      "Convert text strings to paths when glyphs belong
 to a music font.")
+    (music-font-encodings
+     #f
+     "Use font encodings and the ps show operator with music fonts.")
     (point-and-click
      #t
      "Add point & click links to PDF and SVG output.")
