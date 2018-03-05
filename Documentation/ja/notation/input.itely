@@ -379,7 +379,7 @@ LilyPond がどのように単一のソース ファイルから作り出され�
 最上位に同じタイプの出力定義が複数ある場合は組み合わされますが、@c
 衝突した場合は後ろの方にある出力定義が優先されます。@c
 出力定義が @code{\layout} ブロックにどのような影響を与えるかの詳細は
-@ref{The layout block,,The @code{@bs{}layout} block} を参照してください。
+@ref{layout ブロック,,@code{@bs{}layout} ブロック} を参照してください。
 
 
 @item
@@ -542,7 +542,7 @@ foo = @{ c4 d e d @}
 
 記譜法リファレンス:
 @ref{Titles explained},
-@ref{The layout block,,The @code{@bs{}layout} block}
+@ref{layout ブロック,,@code{@bs{}layout} ブロック}
 
 
 @node タイトルとヘッダ
@@ -573,7 +573,7 @@ foo = @{ c4 d e d @}
 @menu
 * タイトルの説明::
 * ブック パートとスコアのタイトルのデフォルト レイアウト::
-* ヘッダとフッタのデフォルト レウアウト::
+* ヘッダとフッタのデフォルト レイアウト::
 @end menu
 
 @node タイトルの説明
@@ -752,7 +752,7 @@ foo = @{ c4 d e d @}
 記譜法リファレンス:
 @ref{File structure},
 @ref{Default layout of bookpart and score titles},
-@ref{Custom layout for titles}
+@ref{タイトルのカスタム レイアウト}
 
 
 @node ブック パートとスコアのタイトルのデフォルト レイアウト
@@ -835,7 +835,7 @@ foo = @{ c4 d e d @}
 
 @end itemize
 
-デフォルトのレイアウトを変更するには @ref{Custom layout for title blocks}
+デフォルトのレイアウトを変更するには @ref{タイトルのカスタム レイアウト}
 を参照してください。
 
 @cindex breakbefore
@@ -873,7 +873,7 @@ foo = @{ c4 d e d @}
 @rlearning{How LilyPond input files work}
 
 記譜法リファレンス:
-@ref{Custom layout for titles},
+@ref{タイトルのカスタム レイアウト},
 @ref{File structure}
 
 インストールされているファイル:
@@ -1252,8 +1252,8 @@ variable = \markup @{
 インストールされているファイル:
 @file{../ly/titling-init.ly}
 
-@node 出力ファイルのメタデータを作成する::
-@subsection 出力ファイルのメタデータを作成する::
+@node 出力ファイルのメタデータを作成する
+@subsection 出力ファイルのメタデータを作成する
 @translationof Creating output file metadata
 
 @cindex PDF metadata (PDF メタデータ)
@@ -2809,7 +2809,7 @@ Unicode U+03BE の文字を入力します
 
 @seealso
 記譜法リファレンス:
-@ref{The layout block}
+@ref{layout ブロック,,@code{@bs{}layout} ブロック}
 
 アプリケーション使用方法:
 @rprogram{Command-line usage}
@@ -3135,7 +3135,7 @@ LilyPond 入力ファイルから MIDI 出力ファイルを作り出す場合�
 
 @warning{@code{@bs{}score} ブロックが音楽と、@code{@bs{}midi} ブロックしか@c
 含まない場合 (つまり、@code{@bs{}layout} ブロックを@emph{持たない}場合)、@c
-MIDI 出力ファイルのみを作り出します。楽譜は出力されません。
+MIDI 出力ファイルのみを作り出します。楽譜は出力されません。}
 
 デフォルトの出力ファイルの拡張子 (@code{.midi}) は @code{lilypond} コマンドに@c
 @code{-dmidi-extension} オプションを指定することで変更することができます:
@@ -3494,8 +3494,8 @@ MIDI の楽器は、@code{Staff} コンテキストで @code{midiInstrument} プ
 記譜法リファレンス:
 @ref{Repeats}
 
-@node MIDI チャンネル マッピング
-@subsection MIDI チャンネル マッピング
+@node MIDI のチャンネル マッピング
+@subsection MIDI のチャンネル マッピング
 @translationof MIDI channel mapping
 
 @cindex MIDI Channels (MIDI チャンネル)
