@@ -250,8 +250,8 @@
 
 @cindex mensurstriche layout (計量音楽風のレイアウト)
 @cindex renaissance music (ルネサンス音楽)
-@cindex transcription of mensural music (計量音楽の編曲)
-@cindex mensural music, transcription of (計量音楽の編曲)
+@cindex transcription of mensural music (計量音楽の転写)
+@cindex mensural music, transcription of (計量音楽の転写)
 
 @lilypondfile[verbatim,quote,texidoc,doctitle]
 {mensurstriche-layout-bar-lines-between-the-staves.ly}
