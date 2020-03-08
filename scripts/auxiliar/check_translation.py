@@ -93,7 +93,7 @@ def do_file (file_name, lang_codes):
             buildlib.read_pipe (text_editor + ' ' + file_name + ' ' + diff_file)
             os.remove (diff_file)
     else:
-        sys.stdout.write (diff_string)
+        sys.stdout.buffer.write (diff_string)
 
 def usage ():
     sys.stdout.write (r'''
